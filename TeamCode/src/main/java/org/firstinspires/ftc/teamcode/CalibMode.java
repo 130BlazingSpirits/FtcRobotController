@@ -21,10 +21,6 @@ public class CalibMode extends OpMode {
 
         super.init_loop();
 
-
-        hardware.cabin.holdCargo();
-        hardware.elevator.doInitLoop();
-        hardware.arm.doInitLoop();
         hardware.ernie.doConfigurationLoop();
 
         hardware.init_loop();  //log csv and update previous values
