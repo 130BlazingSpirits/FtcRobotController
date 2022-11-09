@@ -21,7 +21,7 @@ public class CalibMode extends OpMode {
 
         super.init_loop();
 
-        hardware.ernie.doConfigurationLoop();
+//        hardware.ernie.doConfigurationLoop();
 
         hardware.init_loop();  //log csv and update previous values
     }
