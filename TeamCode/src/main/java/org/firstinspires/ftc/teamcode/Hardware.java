@@ -40,6 +40,7 @@ public class Hardware {
     //Control Classes
     public ErnieBot ernie = null;
     public Claw claw = null;
+    
     public DriveTrain driveTrain = null;
 
     //Drive Motors
@@ -176,7 +177,7 @@ public class Hardware {
         //BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
         //BNO055IMU.Parameters parameters2 = new BNO055IMU.Parameters();
 
-        ernie = new ErnieBot(opMode, this);
+//        ernie = new ErnieBot(opMode, this);
         driveTrain = new DriveTrain(opMode, this);
 
         // drive train HW
@@ -233,7 +234,7 @@ public class Hardware {
 
         driveTrain.init();
         claw.init();
-        ernie.init();
+//        ernie.init();
 
         logCSVData();
     }
@@ -254,7 +255,7 @@ public class Hardware {
     public void loop() {
         logCSVData();
         driveTrain.loop();
-        ernie.doLoop();
+//        ernie.doLoop();
         //elevator.loop();  //Probably not needed here, because it's not so vitally important to always keep the elevator up and running
         updatePreviousValues();
     }
