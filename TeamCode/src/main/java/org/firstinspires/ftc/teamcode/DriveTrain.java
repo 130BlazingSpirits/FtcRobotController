@@ -12,6 +12,7 @@ import java.util.Set;
 public class DriveTrain {
     private OpMode opMode = null;
     private Hardware hardware = null;
+    public boolean isMecanum = false;
 
     private Gyroscope imu = null;
     private DcMotorEx motorLFront = null;

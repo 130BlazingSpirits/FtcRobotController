@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp
-public class OpMode2122 extends OpMode {
+public class OpMode2223 extends OpMode {
     private Hardware hardware = new Hardware();
 
     private static final double STRAFE_POWER = 0.50;
@@ -63,12 +63,12 @@ public class OpMode2122 extends OpMode {
                 isAccelDriveMode = false;
             }
 
-            if (hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+            if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
                 // Sliiide to the left!
                 hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
                 //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
             }
-            else if (hardware.gamepad1_current_right_bumper &&!hardware.gamepad1_previous_right_bumper) {
+            else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
                 // Sliiide to the right!
                 hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
                 //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
@@ -119,16 +119,8 @@ public class OpMode2122 extends OpMode {
                 hardware.claw.open();
             }
 
-            //Cabin Controls
-            if(hardware.gamepad2_current_a && !hardware.gamepad2_previous_a){
-                hardware.cabin.dropCargo();
-            }
-            else if(hardware.gamepad2_current_b && !hardware.gamepad2_previous_b){
-                hardware.cabin.holdCargo();
-            }
-
             //Elevator Motor
-            desiredLiftPower = Math.pow(-game2LeftY,3)/Math.abs(game2LeftY);
+            /*desiredLiftPower = Math.pow(-game2LeftY,3)/Math.abs(game2LeftY);
             if(Math.abs(desiredLiftPower) < 0.02) {
                 targetLiftPower = 0.0;
             }
@@ -138,35 +130,7 @@ public class OpMode2122 extends OpMode {
             if(hardware.ernie.transferState == 0){
                 hardware.elevator.goElevatorLift(targetLiftPower);
             }
-
-            //Arm Motor
-            desiredArmPower = Math.pow(-game2RightY,3)/Math.abs(game2RightY);
-            if(Math.abs(desiredArmPower) < 0.02) {
-                targetArmPower = 0.0;
-            }
-            else {
-                targetArmPower = desiredArmPower;
-            }
-            if(hardware.ernie.transferState == 0){
-                hardware.arm.goArmLift(targetArmPower);
-            }
-
-            //Spin left
-            if (hardware.gamepad2_current_left_trigger >= 0.1) {
-                targetSpinPower = -hardware.gamepad2_current_left_trigger;
-            }
-            //Spin right
-            else if (hardware.gamepad2_current_right_trigger >= 0.1) {
-                targetSpinPower = hardware.gamepad2_current_right_trigger;
-            }
-            //Spin Electron
-//            else if (hardware.gamepad1_current_right_trigger >= 0.1) {
-//                targetSpinPower = hardware.gamepad1_current_right_trigger;
-//            }
-            else {
-                targetSpinPower = 0.0;
-            }
-            hardware.turntable.goTurnSpin(targetSpinPower*0.5);
+             */
 
 //            if(gamepad1.right_trigger > 0.10 && !gamepad1RightTriggerPreviouslyPressed){
 //                gamepad1RightTriggerPreviouslyPressed = true;
@@ -223,25 +187,6 @@ public class OpMode2122 extends OpMode {
             prevRPower = targetRPower;
 
             telemetry.addData("Delta Time", hardware.getDeltaTime());
-            //telemetry.addData("a button", hardware.gamepad2_current_a);
-            //telemetry.addData("b button", hardware.gamepad1_current_b);
-            //telemetry.addData("up button", hardware.gamepad1_current_dpad_up);
-            //telemetry.addData("down button", hardware.gamepad1_current_dpad_down);
-            //telemetry.addData("clawpos", hardware.claw.getCurrentPos());
-            //telemetry.addData("cabpos", hardware.cabin.getCurrentPos());
-            //telemetry.addData("armDistance", hardware.armDistanceSensor.getDistance(DistanceUnit.INCH));
-            telemetry.addData("rearDistance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
-            //telemetry.addData("The Button?", hardware.liftLimit.isPressed());
-            telemetry.addData("elevpos", hardware.elevatorMotor.getCurrentPosition());
-            telemetry.addData("armpos", hardware.arm.getCurrentPos());
-            //telemetry.addData("armpow", hardware.arm.getCurrentPow());
-            //telemetry.addData("elevpow", hardware.elevator.getCurrentPow());
-            //telemetry.addData("RFPos", hardware.motorLFront.getCurrentPosition());
-            //telemetry.addData("RBPos", hardware.motorLBack.getCurrentPosition());
-            //telemetry.addData("LFPos", hardware.motorRFront.getCurrentPosition());
-            //telemetry.addData("LBPos", hardware.motorRBack.getCurrentPosition());
-            //telemetry.addData("left stick", targetLiftPower);
-            //telemetry.addData("right stick", targetArmPower);
             telemetry.addData("is red", hardware.ernie.isRedTeam);
             telemetry.addData("Status","Running");
             telemetry.update();

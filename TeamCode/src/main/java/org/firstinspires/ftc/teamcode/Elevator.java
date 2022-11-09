@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Elevator {
+    /*
     private OpMode opMode = null;
     private Hardware hardware = null;
 
@@ -121,4 +122,5 @@ public class Elevator {
         elevatorMotor.setPower(ELEVATOR_POWER*0.2);
         state = ELEVATORBACKOFFHOME;
     }
+     */
 }

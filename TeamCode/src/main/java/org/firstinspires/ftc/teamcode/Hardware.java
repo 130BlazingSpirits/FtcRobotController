@@ -39,35 +39,26 @@ public class Hardware {
 
     //Control Classes
     public ErnieBot ernie = null;
-    public Arm arm = null;
     public Claw claw = null;
-    public Cabin cabin = null;
     public DriveTrain driveTrain = null;
-    public Elevator elevator = null;
-    public Turntable turntable = null;
-    //public TouchSensor heightLimitSwitch = null;
+
     //Drive Motors
     public Gyroscope imu = null;
     public DcMotorEx motorLFront = null;
     public DcMotorEx motorLBack = null;
     public DcMotorEx motorRFront = null;
     public DcMotorEx motorRBack = null;
-    public Rev2mDistanceSensor armDistanceSensor = null;
-    public Rev2mDistanceSensor rearDistance = null;
-    public TouchSensor liftLimit = null;
+    public TouchSensor liftHome = null;
 
-    //Elevator
-    public DcMotorEx elevatorMotor = null;
-    //Arm hw
-    public DcMotorEx armFlip = null;
-    //Turntable
-    public DcMotorEx turnTable = null;
+    //Lift
+    public DcMotorEx liftMotor = null;
 
-    //claw hw
+    //Claw
     public Servo clawServo = null;
 
-    //cabin tilt hw
-    public Servo cabinTilt = null;
+    //Flippers
+    public Servo leftFlipServo = null;
+    public Servo rightFlipServo = null;
 
     // IMU(s)
     public BNO055IMU imu1 = null;
@@ -187,16 +178,15 @@ public class Hardware {
 
         ernie = new ErnieBot(opMode, this);
         driveTrain = new DriveTrain(opMode, this);
-        arm = new Arm(opMode, this);
-        elevator = new Elevator(opMode, this);
-        turntable = new Turntable(opMode, this);
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
         motorLFront = hwMap.get(DcMotorEx.class, "motorLFront");
-        motorLBack = new DummyMotor();
+//        motorLBack = hwMap.get(DcMotorEx.class, "motorLBack");
+        motorLBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
         motorRFront = hwMap.get(DcMotorEx.class, "motorRFront");
-        motorRBack = new DummyMotor();
+//        motorRBack = hwMap.get(DcMotorEx.class, "motorRBack");
+        motorRBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
         motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -218,41 +208,12 @@ public class Hardware {
         motorRFront.setMotorEnable();
         motorRBack.setMotorEnable();
 
-        //Elevator
-        elevatorMotor = hwMap.get(DcMotorEx.class, "motorElevatorLift");
-        elevatorMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevatorMotor.setDirection(DcMotor.Direction.FORWARD);
-        elevatorMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevatorMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevatorMotor.setMotorEnable();
-        //elevatorMotor.setPower(0.3);
-
         // Servos
-        cabin = new Cabin(opMode, this);
-        cabinTilt = hwMap.get(Servo.class, "cabinServo");
         claw = new Claw(opMode, this);
         clawServo = hwMap.get(Servo.class, "clawServo");
 
-        //Arm that flips the claw over
-        armFlip = hwMap.get(DcMotorEx.class, "motorClawFlip");
-        armFlip.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armFlip.setDirection(DcMotor.Direction.REVERSE);
-        armFlip.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armFlip.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armFlip.setMotorEnable();
-
-        //Device to fling ducks
-        turnTable = hwMap.get(DcMotorEx.class, "motorTurntable");
-        turnTable.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        turnTable.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        turnTable.setMotorEnable();
-
         //Sensors
-        Arm distSense = new Arm(opMode, this);
-        armDistanceSensor = hwMap.get(Rev2mDistanceSensor.class, "armDistSensor");
-        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistSensor");
-        Elevator elevatorLimitSwitch = new Elevator(opMode, this);
-        liftLimit = hwMap.get(TouchSensor.class, "elevatorLimit");
+
         /*
         // imu(s)
         imu1 = hwMap.get(BNO055IMU.class, "imu1");
@@ -271,11 +232,7 @@ public class Hardware {
         createCSVTimersFile();
 
         driveTrain.init();
-        arm.init();
-        elevator.init();
         claw.init();
-        cabin.init();
-        turntable.init();
         ernie.init();
 
         logCSVData();
@@ -332,24 +289,6 @@ public class Hardware {
                 + "motorRBack current pos,"
                 + "motorRBack power,"
                 + "motorRBack velocity,"
-
-                + "motorClawFlip target pos"
-                + "motorClawFlip current pos,"
-                + "motorClawFlip power,"
-                + "motorClawFlip velocity,"
-
-                + "motorTurntable target pos"
-                + "motorTurntable current pos,"
-                + "motorTurntable power,"
-                + "motorTurntable velocity,"
-
-                + "motorElevatorLift target pos"
-                + "motorElevatorLift current pos,"
-                + "motorElevatorLift power,"
-                + "motorElevatorLift velocity,"
-
-                + "armCalibration distance,"
-                + "rearLocator distance,"
 
 //                +"isRed"
 //                +"distanceFromCarousel"
@@ -445,23 +384,6 @@ public class Hardware {
                     motorRBack.getPower(),
                     motorRBack.getVelocity(),
 
-                    armFlip.getTargetPosition(),
-                    armFlip.getCurrentPosition(),
-                    armFlip.getPower(),
-                    armFlip.getVelocity(),
-
-                    turnTable.getTargetPosition(),
-                    turnTable.getCurrentPosition(),
-                    turnTable.getPower(),
-                    turnTable.getVelocity(),
-
-                    elevatorMotor.getTargetPosition(),
-                    elevatorMotor.getCurrentPosition(),
-                    elevatorMotor.getPower(),
-                    elevatorMotor.getVelocity(),
-
-                    armDistanceSensor.getDistance(DistanceUnit.INCH),
-                    rearDistance.getDistance(DistanceUnit.INCH),
 
 
                     //heightLimitSwitch.getValue(),
