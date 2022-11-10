@@ -13,6 +13,7 @@ public class DriveTrain {
     private OpMode opMode = null;
     private Hardware hardware = null;
     public boolean isMecanum = false;
+    public boolean isTank = false;
 
     private Gyroscope imu = null;
     private DcMotorEx motorLFront = null;
@@ -159,6 +160,9 @@ public class DriveTrain {
         motorRFront.setPower(power*FRONTPOWERREDUCTION);
         motorRBack.setPower(-1.0*power*BACKPOWERINCREASE);*/
     }
+
+    public void rotateClockwise(double angle){}
+    public void rotateCounterClockwise(double angle){}
 
     public void goTankDrive(double leftPower, double rightPower){
         driveMode = DRIVE_MODE_POWER;

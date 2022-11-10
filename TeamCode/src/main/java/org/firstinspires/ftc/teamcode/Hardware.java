@@ -195,10 +195,10 @@ public class Hardware {
         motorLBack.setDirection(DcMotor.Direction.REVERSE);
         motorRFront.setDirection(DcMotor.Direction.FORWARD);
         motorRBack.setDirection(DcMotor.Direction.FORWARD);
-        motorLFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //Speed control
-        motorLBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLFront.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Position Control
+        motorLBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //Speed Control
+        motorRFront.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Position Control
+        motorRBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //Speed Control
         motorLFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

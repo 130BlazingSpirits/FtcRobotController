@@ -81,8 +81,14 @@ public class OpMode2223 extends OpMode {
                 // Tank drive! *doomph! doomph!
                 //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
                 //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
-                desiredLPower = (Math.pow(-game1LeftY,3)/Math.abs(game1LeftY))*0.7;
-                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
+                if(hardware.driveTrain.isTank)
+                {
+                    desiredLPower = (Math.pow(-game1LeftY,3)/Math.abs(game1LeftY))*0.7;
+                    desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
+                }else{
+                    desiredLPower = (Math.pow(-game1RightY,3)/Math.abs(game1RightY))*0.7;
+                    desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
+                }
 
                 if(Math.abs(desiredLPower) < 0.02) {
                     targetLPower = 0.0;
@@ -164,9 +170,9 @@ public class OpMode2223 extends OpMode {
 
             }
 
-            if(hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
-                hardware.ernie.transferBlock();
-            }
+//            if(hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
+//                hardware.ernie.transferBlock();
+//            }
 
             if(hardware.gamepad1_current_dpad_up){
 
@@ -187,7 +193,7 @@ public class OpMode2223 extends OpMode {
             prevRPower = targetRPower;
 
             telemetry.addData("Delta Time", hardware.getDeltaTime());
-            telemetry.addData("is red", hardware.ernie.isRedTeam);
+//            telemetry.addData("is red", hardware.ernie.isRedTeam);
             telemetry.addData("Status","Running");
             telemetry.update();
     }
