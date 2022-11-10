@@ -49,10 +49,10 @@ public class Hardware {
     public DcMotorEx motorLBack = null;
     public DcMotorEx motorRFront = null;
     public DcMotorEx motorRBack = null;
-    public TouchSensor liftHome = null;
 
     //Lift
     public DcMotorEx liftMotor = null;
+    public TouchSensor liftHome = null;
 
     //Claw
     public Servo clawServo = null;
@@ -214,6 +214,7 @@ public class Hardware {
         clawServo = hwMap.get(Servo.class, "clawServo");
 
         //Sensors
+        liftHome = hwMap.get(TouchSensor.class, "liftHome");
 
         /*
         // imu(s)
