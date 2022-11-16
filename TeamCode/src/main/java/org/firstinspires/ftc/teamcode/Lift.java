@@ -25,7 +25,7 @@ public class Lift {
     private static final int LIFTFINDINGHOME = 1;
     private static final int LIFTBACKOFFHOME = 2;
     private static final int LIFTREADY = 3;
-    private              int state = LIFTREADY;
+    private              int state = LIFTNOTHOMED;
     private static final double MAX_TIMEOUT = 5.0;
 
     public Lift(OpMode opMode, Hardware hardware) {
