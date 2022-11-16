@@ -40,6 +40,7 @@ public class Hardware {
     //Control Classes
     public ErnieBot ernie = null;
     public Claw claw = null;
+    public Lift lift = null;
     public DriveTrain driveTrain = null;
 
     //Drive Motors
