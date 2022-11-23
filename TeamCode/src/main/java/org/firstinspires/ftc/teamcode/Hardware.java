@@ -181,7 +181,9 @@ public class Hardware {
         driveTrain = new DriveTrain(opMode, this);
 
         //Lift
+        lift = new Lift(opMode,this);
         liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
@@ -219,7 +221,6 @@ public class Hardware {
 
         // Servos
         claw = new Claw(opMode, this);
-        clawServo = hwMap.get(Servo.class, "clawServo");
 
         //Sensors
         liftHome = hwMap.get(TouchSensor.class, "liftHome");
@@ -242,6 +243,7 @@ public class Hardware {
         createCSVTimersFile();
 
         driveTrain.init();
+        lift.init();
         claw.init();
 //        ernie.init();
 
@@ -264,6 +266,7 @@ public class Hardware {
     public void loop() {
         logCSVData();
         driveTrain.loop();
+        lift.doLoop();
 //        ernie.doLoop();
         //elevator.loop();  //Probably not needed here, because it's not so vitally important to always keep the elevator up and running
         updatePreviousValues();

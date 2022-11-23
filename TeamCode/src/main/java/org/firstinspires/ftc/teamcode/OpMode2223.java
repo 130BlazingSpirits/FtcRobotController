@@ -54,7 +54,18 @@ public class OpMode2223 extends OpMode {
 
             hardware.updateValues();
 
+            //Testing
+            if(hardware.gamepad1_current_a & !hardware.gamepad1_previous_a){
+                hardware.lift.calibrateLift();
+            }
+            int targetPosition = 0;
 
+            if(hardware.gamepad1_current_left_stick_y > 0.03) {
+                targetPosition = hardware.lift.getCurrentPos() + 250;
+            }else if(hardware.gamepad1_current_left_stick_y < -0.03) {
+                targetPosition = hardware.lift.getCurrentPos() - 250;
+            }
+            hardware.lift.goLift(targetPosition);
 
             if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left){
                 isAccelDriveMode = false;
@@ -192,6 +203,7 @@ public class OpMode2223 extends OpMode {
             prevLPower = targetLPower;
             prevRPower = targetRPower;
 
+            telemetry.addData("Lift Home isPressed", hardware.liftHome.isPressed());
             telemetry.addData("Delta Time", hardware.getDeltaTime());
 //            telemetry.addData("is red", hardware.ernie.isRedTeam);
             telemetry.addData("Status","Running");
