@@ -31,9 +31,9 @@ public class RCCheckElement extends RobCommand{
 
     public boolean isComplete(){
         //hardware.opMode.telemetry.addData("isComplete checkElement", place);
-        if (hardware.rearDistance.getDistance(DistanceUnit.INCH) < 7.0){
-            ((AutoOne)hardware.opMode).scoringPieceAt = place;
-        }
+//        if (hardware.rearDistance.getDistance(DistanceUnit.INCH) < 7.0){
+//            ((AutoOne)hardware.opMode).scoringPieceAt = place;
+//        }
         return true;
     }
 }

@@ -46,9 +46,9 @@ public class RCDriveForwardUntil extends RobCommand{
     }
 
     public boolean isComplete(){
-        if ((hardware.rearDistance.getDistance(DistanceUnit.INCH) < targetSensorDist) || (hardware.getCurrentTime() - moveStartSplit > timeOut)){
-            return true;
-        }
+//        if ((hardware.rearDistance.getDistance(DistanceUnit.INCH) < targetSensorDist) || (hardware.getCurrentTime() - moveStartSplit > timeOut)){
+//            return true;
+//        }
         return false;
     }
 }
