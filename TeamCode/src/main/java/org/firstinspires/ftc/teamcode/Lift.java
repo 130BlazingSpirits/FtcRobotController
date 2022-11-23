@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Lift {
     private OpMode opMode = null;
     private Hardware hardware = null;
@@ -26,6 +29,7 @@ public class Lift {
     private static final int LIFTBACKOFFHOME = 2;
     private static final int LIFTREADY = 3;
     private              int state = LIFTNOTHOMED;
+    List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
 
     public Lift(OpMode opMode, Hardware hardware) {
@@ -46,20 +50,15 @@ public class Lift {
     }
 
     public void doInitLoop() {
-        opMode.telemetry.addData("Arm Status", "Starting. Finding home...");
+        opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
         opMode.telemetry.update();
         switch(state)
         {
             case LIFTNOTHOMED:
-                if(liftSensor.isPressed()){
-                    backOffHome();
-                }else{
-                    findHome();
-                }
                 break;
 
             case LIFTBACKOFFHOME:
-                if(opMode.time - startTime >= 0.5){
+                if(opMode.time - startTime >= 0.1){
                     findHome();
                 }
                 break;
@@ -67,6 +66,8 @@ public class Lift {
             case LIFTFINDINGHOME:
                 if(!liftSensor.isPressed()){
                     if(opMode.time - startTime >= MAX_TIMEOUT){
+                        liftMotor.setPower(0);
+                        opMode.telemetry.addLine("Lift could not find home position");
                     }
                     break;
                 }
@@ -77,8 +78,7 @@ public class Lift {
                 }
                 break;
         }
-        opMode.telemetry.addData("Claw Status", "Done doing init loop");
-        opMode.telemetry.update();
+        opMode.telemetry.addData("Lift State", states.get(state));
     }
 
     //Getters for power and position
@@ -107,6 +107,15 @@ public class Lift {
         liftMotor.setTargetPosition(Math.max(Math.min(targetPos, LIFTMAXHEIGHT), 0));
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftMotor.setPower(targetPow);
+    }
+
+    public void calibrateLift(){
+        state = LIFTNOTHOMED;
+        if(liftSensor.isPressed()){
+            backOffHome();
+        }else{
+            findHome();
+        }
     }
 
     public void findHome(){
