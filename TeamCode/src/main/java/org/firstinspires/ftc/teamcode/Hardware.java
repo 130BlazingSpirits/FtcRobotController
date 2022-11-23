@@ -180,6 +180,9 @@ public class Hardware {
 //        ernie = new ErnieBot(opMode, this);
         driveTrain = new DriveTrain(opMode, this);
 
+        //Lift
+        liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
+
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
         motorLFront = hwMap.get(DcMotorEx.class, "motorLFront");
