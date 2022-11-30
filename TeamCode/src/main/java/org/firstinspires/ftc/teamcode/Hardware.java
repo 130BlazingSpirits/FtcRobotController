@@ -303,15 +303,6 @@ public class Hardware {
                 + "motorRBack power,"
                 + "motorRBack velocity,"
 
-//                +"isRed"
-//                +"distanceFromCarousel"
-
-                //+ "heightLimitSwitch current value,"
-
-                //+ "clawServo current pos,"
-
-                //+ "cabinTilt current pos,"
-
                 /*
                 // orientation and gravity
                 + "imu1 heading,"
@@ -326,7 +317,8 @@ public class Hardware {
                 + "imu2 accel x,"
                 + "imu2 accel y,"
                 + "imu2 accel z,"
-*/
+                */
+
                 // gamepad 1 states
                 + "gamepad1 a,"
                 + "gamepad1 b,"
@@ -336,34 +328,34 @@ public class Hardware {
                 + "gamepad1 dpad_left,"
                 + "gamepad1 dpad_right,"
                 + "gamepad1 dpad_up,"
-                + "gamepad1 left_bumper (move left),"
-                + "gamepad1 right_bumper (move right),"
+                + "gamepad1 left_bumper,"
+                + "gamepad1 right_bumper,"
                 + "gamepad1 left_stick_button,"
                 + "gamepad1 right_stick_button,"
                 + "gamepad1 left_stick_x,"
-                + "gamepad1 left_stick_y (tank left),"
+                + "gamepad1 left_stick_y,"
                 + "gamepad1 left_trigger,"
                 + "gamepad1 right_stick_x,"
-                + "gamepad1 right_stick_y (tank right),"
+                + "gamepad1 right_stick_y,"
                 + "gamepad1 right_trigger,"
                 // gamepad 2 states
-                + "gamepad2 a (close hand),"
-                + "gamepad2 b (open hand),"
-                + "gamepad2 x (lower hand),"
-                + "gamepad2 y (raise hand),"
-                + "gamepad2 dpad_down (lift adjust down),"
+                + "gamepad2 a,"
+                + "gamepad2 b,"
+                + "gamepad2 x,"
+                + "gamepad2 y,"
+                + "gamepad2 dpad_down ,"
                 + "gamepad2 dpad_left,"
                 + "gamepad2 dpad_right,"
-                + "gamepad2 dpad_up (lift adjust up),"
-                + "gamepad2 left_bumper (lift down),"
-                + "gamepad2 right_bumper (lift up),"
+                + "gamepad2 dpad_up,"
+                + "gamepad2 left_bumper,"
+                + "gamepad2 right_bumper,"
                 + "gamepad2 left_stick_button,"
                 + "gamepad2 right_stick_button,"
                 + "gamepad2 left_stick_x,"
-                + "gamepad2 left_stick_y (rotate arm),"
+                + "gamepad2 left_stick_y ,"
                 + "gamepad2 left_trigger,"
                 + "gamepad2 right_stick_x,"
-                + "gamepad2 right_stick_y (extend arm),"
+                + "gamepad2 right_stick_y,"
                 + "gamepad2 right_trigger,"
 
                 + "_";
@@ -397,15 +389,7 @@ public class Hardware {
                     motorRBack.getPower(),
                     motorRBack.getVelocity(),
 
-
-
-                    //heightLimitSwitch.getValue(),
-
-                    //clawServo.getPosition(),
-
-                    //cabinTilt.getPosition(),
-
-/*
+                    /*
                 // orientation and gravity
                 angles1.firstAngle,
                 angles1.secondAngle,
@@ -419,7 +403,7 @@ public class Hardware {
                 gravity2.xAccel,
                 gravity2.yAccel,
                 gravity2.zAccel,
-*/
+                */
 
                     // gamepad 1 states
                     gamepad1_current_a?1.0:0.0,
