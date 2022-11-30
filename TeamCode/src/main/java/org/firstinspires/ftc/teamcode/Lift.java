@@ -118,15 +118,15 @@ public class Lift {
         hardware.liftMotor.setMotorEnable();
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setPower(liftHomingPower);
-        state = LIFTFINDINGHOME;
         hardware.logMessage(false, "Lift","Lift State: Finding Home");
+        state = LIFTFINDINGHOME;
     }
     public void backOffHome(){
         startTime = opMode.time;
         hardware.liftMotor.setMotorEnable();
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setPower(liftPower*0.5);
-        state = LIFTBACKOFFHOME;
         hardware.logMessage(false, "Lift","Lift State: Backing Off Home");
+        state = LIFTBACKOFFHOME;
     }
 }
