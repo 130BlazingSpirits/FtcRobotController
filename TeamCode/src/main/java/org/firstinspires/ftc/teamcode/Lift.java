@@ -75,6 +75,7 @@ public class Lift {
                 else{
                     liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     setPosition(0, liftPower);
+                    hardware.logMessage(false, "Lift","Lift State:  Ready");
                     state = LIFTREADY;
                 }
                 break;
@@ -103,6 +104,7 @@ public class Lift {
     }
 
     public void calibrateLift(){
+        hardware.logMessage(false, "Lift", "Starting to calibrate Lift");
         state = LIFTNOTHOMED;
         if(liftSensor.isPressed()){
             backOffHome();
@@ -117,6 +119,7 @@ public class Lift {
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setPower(liftHomingPower);
         state = LIFTFINDINGHOME;
+        hardware.logMessage(false, "Lift","Lift State: Finding Home");
     }
     public void backOffHome(){
         startTime = opMode.time;
@@ -124,5 +127,6 @@ public class Lift {
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setPower(liftPower*0.5);
         state = LIFTBACKOFFHOME;
+        hardware.logMessage(false, "Lift","Lift State: Backing Off Home");
     }
 }
