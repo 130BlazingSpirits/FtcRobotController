@@ -63,11 +63,11 @@ public class LiftTest extends OpMode {
 
         if(hardware.gamepad1_current_dpad_up && !hardware.gamepad1_previous_dpad_up) {
             targetPosition += positionIncrement;
-            hardware.lift.goLift(targetPosition);
+            hardware.lift.setPosition(targetPosition);
         }
         if(hardware.gamepad1_current_dpad_down && !hardware.gamepad1_previous_dpad_down) {
             targetPosition -= positionIncrement;
-            hardware.lift.goLift(targetPosition);//CHANGE TO SETPOSITION LATER
+            hardware.lift.setPosition(targetPosition);
         }
 
         hardware.loop();
