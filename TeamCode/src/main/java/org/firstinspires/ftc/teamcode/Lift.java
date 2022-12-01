@@ -104,10 +104,8 @@ public class Lift {
         liftMotor.setPower(targetPow);
     }
 
-    public void goHome()
-    {
-        setPosition(LIFT_MINPOS);
-    }
+    public void goMin() {setPosition(LIFT_MINPOS);}
+    public void goMax() {setPosition(LIFT_MAXPOS);}
 
     public void calibrateLift(){
         hardware.logMessage(false, "Lift", "Starting to calibrate Lift");

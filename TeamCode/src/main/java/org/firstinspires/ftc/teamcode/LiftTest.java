@@ -45,7 +45,7 @@ public class LiftTest extends OpMode {
 
         // HOMING
         if(hardware.gamepad1_current_right_bumper){
-            //hardware.lift.goHome();
+            hardware.lift.calibrateLift();
         }
         if(hardware.gamepad1_current_left_bumper){
             hardware.lift.backOffHome();
@@ -66,6 +66,13 @@ public class LiftTest extends OpMode {
         if(hardware.gamepad1_current_dpad_down && !hardware.gamepad1_previous_dpad_down) {
             targetPosition -= positionIncrement;
             hardware.lift.setPosition(targetPosition);
+        }
+
+        if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left) {
+            hardware.lift.goMin();
+        }
+        if(hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right) {
+            hardware.lift.goMax();
         }
 
         hardware.loop();
