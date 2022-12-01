@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.os.Environment;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,7 +14,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.BufferedWriter;
@@ -52,7 +50,7 @@ public class Hardware {
 
     //Lift
     public DcMotorEx liftMotor = null;
-    public TouchSensor liftHome = null;
+    public TouchSensor liftHomeButton = null;
 
     //Claw
     public Servo clawServo = null;
@@ -185,7 +183,7 @@ public class Hardware {
         liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        liftHome = hwMap.get(TouchSensor.class, "liftHome");
+        liftHomeButton = hwMap.get(TouchSensor.class, "liftHome");
 
 
         // drive train HW
@@ -303,6 +301,13 @@ public class Hardware {
                 + "motorRBack power,"
                 + "motorRBack velocity,"
 
+                + "liftMotor target pos,"
+                + "liftMotor current pos,"
+                + "liftMotor power,"
+                + "liftMotor velocity,"
+
+                + "LiftHomeButton"
+
                 /*
                 // orientation and gravity
                 + "imu1 heading,"
@@ -388,6 +393,13 @@ public class Hardware {
                     motorRBack.getCurrentPosition(),
                     motorRBack.getPower(),
                     motorRBack.getVelocity(),
+
+                    liftMotor.getTargetPosition(),
+                    liftMotor.getCurrentPosition(),
+                    liftMotor.getPower(),
+                    liftMotor.getVelocity(),
+
+                    liftHomeButton.isPressed()?1.0:0.0,
 
                     /*
                 // orientation and gravity

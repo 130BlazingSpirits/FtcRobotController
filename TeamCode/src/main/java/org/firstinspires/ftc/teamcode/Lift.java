@@ -41,7 +41,7 @@ public class Lift {
     public void init() {
         opMode.telemetry.addData("Lift Status", "Initializing");
         liftMotor = hardware.liftMotor;
-        liftSensor = hardware.liftHome;
+        liftSensor = hardware.liftHomeButton;
         runtime.reset();
         timeout.reset();
 

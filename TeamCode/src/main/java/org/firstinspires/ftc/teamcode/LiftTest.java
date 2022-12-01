@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Hardware;
-
 @TeleOp(name="LiftTest", group="tests")
 public class LiftTest extends OpMode {
     private Hardware hardware = new Hardware();
@@ -72,7 +70,7 @@ public class LiftTest extends OpMode {
 
         hardware.loop();
 
-        telemetry.addData("Home Presssed?", hardware.liftHome.isPressed());
+        telemetry.addData("Home Presssed?", hardware.liftHomeButton.isPressed());
         telemetry.addData("Current Position", hardware.lift.getCurrentPos());
         telemetry.addData("Target Position", hardware.liftMotor.getTargetPosition());
 
