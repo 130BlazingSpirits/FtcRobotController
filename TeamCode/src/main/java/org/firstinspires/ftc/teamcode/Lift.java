@@ -22,7 +22,9 @@ public class Lift {
 
     private double startTime = 0;
     private double liftPower = 1.0;
+    private double liftPowerDownFactor = 0.5;
     private double liftHomingPower =- 0.5;
+    private int previousTargetPos = 0;
 
     //State Variables
     private static final int LIFTNOTHOMED = 0;
@@ -99,9 +101,12 @@ public class Lift {
     }
 
     public void setPosition(int targetPos, double targetPow){
-        liftMotor.setTargetPosition(Math.max(Math.min(targetPos, LIFT_MAXPOS), 0));
+        int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
+        liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(targetPow);
+        if(targetPos < previousTargetPos) {liftMotor.setPower(targetPow * liftPowerDownFactor);}
+        else{liftMotor.setPower(targetPow);}
+        previousTargetPos = tp;
     }
 
     public void goMin() {setPosition(LIFT_MINPOS);}
