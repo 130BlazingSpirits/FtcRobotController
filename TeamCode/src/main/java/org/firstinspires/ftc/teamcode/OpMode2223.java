@@ -15,12 +15,15 @@ public class OpMode2223 extends OpMode {
     private boolean isAccelDriveMode = false;
     private boolean gamepad1RightTriggerPreviouslyPressed = false;
 
+    int targetPosition = 0;
+
     @Override
     public void init() {
 
         hardware.init(hardwareMap,this);
         hardware.driveTrain.setSpeedMode();
     }
+
 
     @Override
     public void init_loop() {
@@ -58,14 +61,13 @@ public class OpMode2223 extends OpMode {
             if(hardware.gamepad1_current_a & !hardware.gamepad1_previous_a){
                 hardware.lift.calibrateLift();
             }
-            int targetPosition = 0;
 
             if(hardware.gamepad1_current_left_stick_y > 0.03) {
                 targetPosition = hardware.lift.getCurrentPos() + 250;
             }else if(hardware.gamepad1_current_left_stick_y < -0.03) {
                 targetPosition = hardware.lift.getCurrentPos() - 250;
             }
-            hardware.lift.goLift(targetPosition);
+            hardware.lift.setPosition(targetPosition);
 
             if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left){
                 isAccelDriveMode = false;

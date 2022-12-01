@@ -17,7 +17,8 @@ public class Lift {
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime timeout = new ElapsedTime();
-    private static final int LIFTMAXHEIGHT = 1600;
+    private static final int LIFT_MAXPOS = 3100; //(Hardware limit is 3175)
+    private static final int LIFT_MINPOS = 20;
 
     private double startTime = 0;
     private double liftPower = 1.0;
@@ -69,6 +70,7 @@ public class Lift {
                     if(opMode.time - startTime >= MAX_TIMEOUT){
                         liftMotor.setPower(0);
                         opMode.telemetry.addLine("Lift could not find home position");
+                        hardware.logMessage(true, "Lift", "COULD NOT LOCATE HOME POSITION");
                     }
                     break;
                 }
@@ -91,16 +93,20 @@ public class Lift {
         return liftMotor.getCurrentPosition();
     }
 
-    public void goLift(int position){
-        liftMotor.setTargetPosition(position);
-        liftMotor.setPower(liftPower);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    //Lift Movement
+    public void setPosition(int targetPos){
+        this.setPosition(targetPos, liftPower);
     }
 
     public void setPosition(int targetPos, double targetPow){
-        liftMotor.setTargetPosition(Math.max(Math.min(targetPos, LIFTMAXHEIGHT), 0));
+        liftMotor.setTargetPosition(Math.max(Math.min(targetPos, LIFT_MAXPOS), 0));
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftMotor.setPower(targetPow);
+    }
+
+    public void goHome()
+    {
+        setPosition(LIFT_MINPOS);
     }
 
     public void calibrateLift(){

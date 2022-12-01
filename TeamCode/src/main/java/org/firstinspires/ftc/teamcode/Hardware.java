@@ -183,7 +183,10 @@ public class Hardware {
         //Lift
         lift = new Lift(opMode,this);
         liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftHome = hwMap.get(TouchSensor.class, "liftHome");
+
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
@@ -221,9 +224,6 @@ public class Hardware {
 
         // Servos
         claw = new Claw(opMode, this);
-
-        //Sensors
-        liftHome = hwMap.get(TouchSensor.class, "liftHome");
 
         /*
         // imu(s)
