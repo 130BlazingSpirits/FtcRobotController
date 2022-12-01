@@ -57,15 +57,15 @@ public class OpMode2223 extends OpMode {
 
             hardware.updateValues();
 
-            //Testing
-            if(hardware.gamepad1_current_a & !hardware.gamepad1_previous_a){
+            //Lift Testing
+            if(hardware.gamepad2_current_a & !hardware.gamepad2_previous_a){
                 hardware.lift.calibrateLift();
             }
 
-            if(hardware.gamepad1_current_left_stick_y > 0.03) {
-                targetPosition = hardware.lift.getCurrentPos() + 250;
-            }else if(hardware.gamepad1_current_left_stick_y < -0.03) {
-                targetPosition = hardware.lift.getCurrentPos() - 250;
+            if(hardware.gamepad2_current_left_stick_y > 0.03) {
+                liftTargetPosition = hardware.lift.getCurrentPos() + 250;
+            }else if(hardware.gamepad2_current_left_stick_y < -0.03) {
+                liftTargetPosition = hardware.lift.getCurrentPos() - 250;
             }
             hardware.lift.setPosition(targetPosition);
 
