@@ -10,9 +10,9 @@ public class Claw {
 
     private Servo clawServo = null;
 
-    private static final double OPENPOS = 0.4; // 1300 us
-    private static final double GRIPPOS = 1.00; // 2500 us
-    private static final double STOWPOS = 0;
+    private static final double OPENPOS = 0.5;
+    private static final double GRIPPOS = 0.35;
+    private static final double STOWPOS = 0.78;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime timeout = new ElapsedTime();
@@ -38,18 +38,23 @@ public class Claw {
     }
 
     public void open() {
-        clawServo.setPosition(OPENPOS);
+        setPosition(OPENPOS);
         hardware.logMessage(false, "Claw", "open");
     }
 
     public void grip() {
-        clawServo.setPosition(GRIPPOS);
+        setPosition(GRIPPOS);
         hardware.logMessage(false, "Claw", "grip");
     }
 
     public void stow(){
-        clawServo.setPosition(STOWPOS);
+        setPosition(STOWPOS);
         hardware.logMessage(false, "Claw", "stow");
+    }
+
+    public void setPosition(double pos){
+//        clawServo.setPosition(Math.min(Math.max(pos, 0.0),1.0));
+        clawServo.setPosition(pos);
     }
 
     public double getCurrentPos(){

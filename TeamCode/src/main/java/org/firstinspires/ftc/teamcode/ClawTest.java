@@ -60,6 +60,8 @@ public class ClawTest extends OpMode
 
     private Servo clawServo = null;
 
+    private double positionIncrement = .1;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -79,6 +81,11 @@ public class ClawTest extends OpMode
      */
     @Override
     public void init_loop() {
+        hardware.updateValues();
+
+        super.init_loop();
+
+        hardware.init_loop();
     }
 
     /*
@@ -87,6 +94,11 @@ public class ClawTest extends OpMode
     @Override
     public void start() {
         runtime.reset();
+        hardware.updateValues();
+
+        hardware.logMessage(false, "MyFirstJava", "Start Button Pressed");
+        super.start();
+        hardware.start();
     }
 
     /*
@@ -94,23 +106,39 @@ public class ClawTest extends OpMode
      */
     @Override
     public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
-        Boolean currentDpadUp = gamepad1.dpad_up;
-        Boolean currentDpadDown = gamepad1.dpad_down;
-        Boolean currentDpadLeft = gamepad1.dpad_left;
-        Boolean currentDpadRight = gamepad1.dpad_right;
+        hardware.updateValues();
+
+        if(hardware.gamepad1_current_x){positionIncrement = 0.001;}
+        if(hardware.gamepad1_current_y){positionIncrement = .01;}
+        if(hardware.gamepad1_current_b){positionIncrement = .1;}
+
+//        if(hardware.gamepad1_current_dpad_up & !hardware.gamepad1_previous_dpad_up){
+//            //clawPosition = Math.min(Math.max((clawPosition + positionIncrement),0.0),1.0);
+//            clawPosition = clawPosition + positionIncrement;
+//        }
+//        else if(hardware.gamepad1_current_dpad_up & !hardware.gamepad1_previous_dpad_down) {
+//            //clawPosition = Math.min(Math.max((clawPosition - positionIncrement),0.0),1.0);
+//            clawPosition = clawPosition - positionIncrement;
+//        }
+
 
         if(gamepad1.dpad_up){
-            clawPosition = Math.min(Math.max(clawPosition + 0.001,0),1);
+            //clawPosition = Math.min(Math.max((clawPosition + positionIncrement),0.0),1.0);
+            clawPosition = clawPosition + positionIncrement;
         }
         else if(gamepad1.dpad_down) {
-            clawPosition = Math.min(Math.max(clawPosition - 0.001,0),1);
+            //clawPosition = Math.min(Math.max((clawPosition - positionIncrement),0.0),1.0);
+            clawPosition = clawPosition - positionIncrement;
         }
-        clawServo.setPosition(clawPosition);
+        hardware.claw.setPosition(clawPosition);
+
+        hardware.loop();
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Claw Servo Position", clawPosition);
+        telemetry.addData("Claw Servo Hardware Position", clawServo.getPosition());
+        telemetry.addData("Claw Servo increment", positionIncrement);
         telemetry.update();
     }
 
@@ -118,5 +146,12 @@ public class ClawTest extends OpMode
      * Code to run ONCE after the driver hits STOP
      */
     @Override
-    public void stop() {}
+    public void stop() {
+        hardware.updateValues();
+
+        hardware.logMessage(false, "MyFirstJava", "Stop Button Pressed");
+        hardware.stop();
+        super.stop();
+    }
 }
+//NOT WORKING PROPERLY, CLAW INCREMENTS WHEN USING SET POSITION ARE NOT CORRECT
