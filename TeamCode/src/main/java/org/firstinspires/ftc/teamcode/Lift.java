@@ -26,7 +26,6 @@ public class Lift {
     private double liftHomingPower =- 0.5;
     private int previousTargetPos = 0;
 
-    //State Variables
     private static final int LIFTNOTHOMED = 0;
     private static final int LIFTFINDINGHOME = 1;
     private static final int LIFTBACKOFFHOME = 2;
@@ -34,6 +33,11 @@ public class Lift {
     private              int state = LIFTNOTHOMED;
     List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
+
+    private static final int GROUND_JUCTION_POSITION= -999;
+    private static final int LOW_JUCTION_POSITION= -999;
+    private static final int MED_JUCTION_POSITION= -999;
+    private static final int HIGH_JUCTION_POSITION= -999;
 
     public Lift(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;
@@ -109,8 +113,15 @@ public class Lift {
         previousTargetPos = tp;
     }
 
+    //GOTO MIN & MAX Positions
     public void goMin() {setPosition(LIFT_MINPOS);}
     public void goMax() {setPosition(LIFT_MAXPOS);}
+
+    //GOTO Different Junction Positions
+    public void goToGround(){setPosition(GROUND_JUCTION_POSITION);};
+    public void goToLow(){setPosition(LOW_JUCTION_POSITION);};
+    public void goToMed(){setPosition(MED_JUCTION_POSITION);};
+    public void goToHigh(){setPosition(HIGH_JUCTION_POSITION);};
 
     public void calibrateLift(){
         hardware.logMessage(false, "Lift", "Starting to calibrate Lift");

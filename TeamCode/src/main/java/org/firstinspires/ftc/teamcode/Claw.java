@@ -12,6 +12,7 @@ public class Claw {
 
     private static final double OPENPOS = 0.4; // 1300 us
     private static final double GRIPPOS = 1.00; // 2500 us
+    private static final double STOWPOS = 0;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime timeout = new ElapsedTime();
@@ -44,6 +45,11 @@ public class Claw {
     public void grip() {
         clawServo.setPosition(GRIPPOS);
         hardware.logMessage(false, "Claw", "grip");
+    }
+
+    public void stow(){
+        clawServo.setPosition(STOWPOS);
+        hardware.logMessage(false, "Claw", "stow");
     }
 
     public double getCurrentPos(){
