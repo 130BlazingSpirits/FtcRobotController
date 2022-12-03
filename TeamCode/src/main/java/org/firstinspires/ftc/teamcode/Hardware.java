@@ -40,6 +40,9 @@ public class Hardware {
     public Claw claw = null;
     public Lift lift = null;
     public DriveTrain driveTrain = null;
+    public Flipper leftFlipper = null;
+    public Flipper rightFlipper = null;
+
 
     //Drive Motors
     public Gyroscope imu = null;
@@ -185,6 +188,15 @@ public class Hardware {
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         liftHomeButton = hwMap.get(TouchSensor.class, "liftHome");
 
+        //Claw
+        claw = new Claw(opMode, this);
+        clawServo = hwMap.get(Servo.class,"clawServo");
+
+        //Flippers
+        leftFlipServo = hwMap.get(Servo.class, "leftFlipServo");
+        rightFlipServo = hwMap.get(Servo.class, "rightFlipServo");
+        leftFlipper = new Flipper(opMode,this, leftFlipServo, 0, 1);
+        rightFlipper = new Flipper(opMode,this, rightFlipServo, 0,1);
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
@@ -219,9 +231,6 @@ public class Hardware {
         motorLBack.setMotorEnable();
         motorRFront.setMotorEnable();
         motorRBack.setMotorEnable();
-
-        // Servos
-        claw = new Claw(opMode, this);
 
         /*
         // imu(s)
@@ -306,7 +315,10 @@ public class Hardware {
                 + "liftMotor power,"
                 + "liftMotor velocity,"
 
-                + "LiftHomeButton"
+                + "liftHomeButton"
+
+                + "leftFlipperCurrentPosition"
+                + "rightFlipperCurrentPosition"
 
                 /*
                 // orientation and gravity
@@ -400,6 +412,9 @@ public class Hardware {
                     liftMotor.getVelocity(),
 
                     liftHomeButton.isPressed()?1.0:0.0,
+
+                    leftFlipper.getCurrentPosition(),
+                    rightFlipper.getCurrentPosition(),
 
                     /*
                 // orientation and gravity
