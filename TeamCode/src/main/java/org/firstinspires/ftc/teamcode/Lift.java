@@ -22,7 +22,7 @@ public class Lift {
 
     private double startTime = 0;
     private double liftPower = 1.0;
-    private double liftPowerDownFactor = 0.5;
+    private double liftPowerDownFactor = 1.0;
     private double liftHomingPower =- 0.5;
     private int previousTargetPos = 0;
 
@@ -34,10 +34,10 @@ public class Lift {
     List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
 
-    private static final int GROUND_JUCTION_POSITION= -999;
-    private static final int LOW_JUCTION_POSITION= -999;
-    private static final int MED_JUCTION_POSITION= -999;
-    private static final int HIGH_JUCTION_POSITION= -999;
+    private static final int GROUND_JUCTION_POSITION= 550;
+    private static final int LOW_JUCTION_POSITION= 1500;
+    private static final int MED_JUCTION_POSITION= 2300;
+    private static final int HIGH_JUCTION_POSITION= 3100;
 
     public Lift(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;

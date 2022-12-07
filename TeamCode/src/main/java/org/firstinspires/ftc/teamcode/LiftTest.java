@@ -10,6 +10,7 @@ public class LiftTest extends OpMode {
 
     private int positionIncrement = 100;
     private int targetPosition = 0;
+    private int liftTargetPosition = 0;
 
     @Override
     public void init() {
@@ -44,16 +45,23 @@ public class LiftTest extends OpMode {
         hardware.updateValues();
 
         // HOMING
-        if(hardware.gamepad1_current_right_bumper){
+        if(hardware.gamepad1_current_right_stick_button){
             hardware.lift.calibrateLift();
         }
-        if(hardware.gamepad1_current_left_bumper){
+        if(hardware.gamepad1_current_left_stick_button){
             hardware.lift.backOffHome();
         }
 
         if(hardware.gamepad1_current_x){positionIncrement = 1;}
         if(hardware.gamepad1_current_y){positionIncrement = 10;}
         if(hardware.gamepad1_current_b){positionIncrement = 100;}
+
+        if(hardware.gamepad1_current_left_bumper & !hardware.gamepad1_previous_left_bumper){
+            hardware.claw.open();
+        }
+        if(hardware.gamepad1_current_right_bumper & !hardware.gamepad1_previous_right_bumper){
+            hardware.claw.grip();
+        }
 
         if(hardware.gamepad1_current_a && !hardware.gamepad1_previous_a){
             hardware.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -73,6 +81,18 @@ public class LiftTest extends OpMode {
         }
         if(hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right) {
             hardware.lift.goMax();
+        }
+
+        if(hardware.gamepad2_current_a & !hardware.gamepad2_previous_a){
+            hardware.lift.calibrateLift();
+        }
+
+        if(hardware.gamepad1_current_right_stick_y > 0.03) {
+            liftTargetPosition = hardware.lift.getCurrentPos() - 250;
+            hardware.lift.setPosition(liftTargetPosition);
+        }else if(hardware.gamepad1_current_right_stick_y < -0.03) {
+            liftTargetPosition = hardware.lift.getCurrentPos() + 250;
+            hardware.lift.setPosition(liftTargetPosition);
         }
 
         hardware.loop();
