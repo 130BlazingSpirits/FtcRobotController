@@ -8,19 +8,21 @@ public class Flipper {
     private Hardware hardware = null;
 
     private Servo flipper = null;
-    public double minPos = 0;
-    public double maxPos = 0;
+    private double minPos = 0;
+    private double maxPos = 0;
+    public String name = "";
     public double currentPos = 0;
 
     private final double FLIPPOS = 0;
     public final double HOMEPOS = 0 ;
 
-    public Flipper(OpMode opMode, Hardware hardware, Servo flipper, double min, double max){
+    public Flipper(OpMode opMode, Hardware hardware, Servo flipper, double min, double max, String name){
         this.opMode = opMode;
         this.hardware = hardware;
         this.flipper = flipper;
         minPos = min;
         maxPos = max;
+        this.name = name;
     }
 
     public void init() {
