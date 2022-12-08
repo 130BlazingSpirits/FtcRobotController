@@ -113,6 +113,8 @@ public class Hardware {
     public float gamepad1_current_right_stick_x;
     public float gamepad1_current_right_stick_y;
     public float gamepad1_current_right_trigger;
+    public boolean gamepad1_current_start;
+
     // Current gamepad 2 values
     public boolean gamepad2_current_a;
     public boolean gamepad2_current_b;
@@ -132,6 +134,7 @@ public class Hardware {
     public float gamepad2_current_right_stick_x;
     public float gamepad2_current_right_stick_y;
     public float gamepad2_current_right_trigger;
+    public boolean gamepad2_current_start;
     // Previous gamepad 1 values
     public boolean gamepad1_previous_a;
     public boolean gamepad1_previous_b;
@@ -151,6 +154,7 @@ public class Hardware {
     public float gamepad1_previous_right_stick_x;
     public float gamepad1_previous_right_stick_y;
     public float gamepad1_previous_right_trigger;
+    public boolean gamepad1_previous_start;
     // Previous gamepad 2 values
     public boolean gamepad2_previous_a;
     public boolean gamepad2_previous_b;
@@ -170,6 +174,8 @@ public class Hardware {
     public float gamepad2_previous_right_stick_x;
     public float gamepad2_previous_right_stick_y;
     public float gamepad2_previous_right_trigger;
+    public boolean gamepad2_previous_start;
+
 
     public Hardware(){
     }
@@ -201,8 +207,8 @@ public class Hardware {
         //Flippers
         leftFlipServo = hwMap.get(Servo.class, "leftFlipServo");
         rightFlipServo = hwMap.get(Servo.class, "rightFlipServo");
-        leftFlipper = new Flipper(opMode,this, leftFlipServo, 0, 1);
-        rightFlipper = new Flipper(opMode,this, rightFlipServo, 0,1);
+        leftFlipper = new Flipper(opMode,this, leftFlipServo, 0, 1, "Left Flipper");
+        rightFlipper = new Flipper(opMode,this, rightFlipServo, 0,1, "Right Flipper");
 
         //Distance Sensors
         frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
@@ -368,6 +374,7 @@ public class Hardware {
                 + "gamepad1 right_stick_x,"
                 + "gamepad1 right_stick_y,"
                 + "gamepad1 right_trigger,"
+                + "gamepad1 start,"
                 // gamepad 2 states
                 + "gamepad2 a,"
                 + "gamepad2 b,"
@@ -387,6 +394,7 @@ public class Hardware {
                 + "gamepad2 right_stick_x,"
                 + "gamepad2 right_stick_y,"
                 + "gamepad2 right_trigger,"
+                + "gamepad2 start"
 
                 + "_";
 
@@ -467,6 +475,7 @@ public class Hardware {
                     gamepad1_current_right_stick_x,
                     gamepad1_current_right_stick_y,
                     gamepad1_current_right_trigger,
+                    gamepad1_current_start?1.0:0.0,
                     // gamepad 2 states
                     gamepad2_current_a?1.0:0.0,
                     gamepad2_current_b?1.0:0.0,
@@ -486,6 +495,8 @@ public class Hardware {
                     gamepad2_current_right_stick_x,
                     gamepad2_current_right_stick_y,
                     gamepad2_current_right_trigger,
+                    gamepad2_current_start?1.0:0.0,
+
             };
 
             appendToCSVFile(data);
@@ -699,6 +710,7 @@ public class Hardware {
         gamepad1_current_right_stick_x = 0.0f;
         gamepad1_current_right_stick_y = 0.0f;
         gamepad1_current_right_trigger = 0.0f;
+        gamepad1_current_start = false;
         // Current gamepad 2 values
         gamepad2_current_a = false;
         gamepad2_current_b = false;
@@ -718,6 +730,7 @@ public class Hardware {
         gamepad2_current_right_stick_x = 0.0f;
         gamepad2_current_right_stick_y = 0.0f;
         gamepad2_current_right_trigger = 0.0f;
+        gamepad2_current_start = false;
         // Previous gamepad 1 values
         gamepad1_previous_a = false;
         gamepad1_previous_b = false;
@@ -737,6 +750,8 @@ public class Hardware {
         gamepad1_previous_right_stick_x = 0.0f;
         gamepad1_previous_right_stick_y = 0.0f;
         gamepad1_previous_right_trigger = 0.0f;
+        gamepad1_previous_start = false;
+
         // Previous gamepad 2 values
         gamepad2_previous_a = false;
         gamepad2_previous_b = false;
@@ -756,6 +771,7 @@ public class Hardware {
         gamepad2_previous_right_stick_x = 0.0f;
         gamepad2_previous_right_stick_y = 0.0f;
         gamepad2_previous_right_trigger = 0.0f;
+        gamepad2_previous_start = false;
     }
 
     public void updateValues(){
@@ -788,6 +804,7 @@ public class Hardware {
         gamepad1_current_right_stick_x = gamepad1.right_stick_x;
         gamepad1_current_right_stick_y = gamepad1.right_stick_y;
         gamepad1_current_right_trigger = gamepad1.right_trigger;
+        gamepad1_current_start = gamepad1.start;
         // Current gamepad 2 values
         gamepad2_current_a = gamepad2.a;
         gamepad2_current_b = gamepad2.b;
@@ -807,6 +824,7 @@ public class Hardware {
         gamepad2_current_right_stick_x = gamepad2.right_stick_x;
         gamepad2_current_right_stick_y = gamepad2.right_stick_y;
         gamepad2_current_right_trigger = gamepad2.right_trigger;
+        gamepad2_current_start = gamepad2.start;
     }
 
     private void updatePreviousValues() {
@@ -831,6 +849,7 @@ public class Hardware {
         gamepad1_previous_right_stick_x = gamepad1_current_right_stick_x;
         gamepad1_previous_right_stick_y = gamepad1_current_right_stick_y;
         gamepad1_previous_right_trigger = gamepad1_current_right_trigger;
+        gamepad1_previous_start = gamepad1_current_start;
         // Previous gamepad 2 values
         gamepad2_previous_a = gamepad2_current_a;
         gamepad2_previous_b = gamepad2_current_b;
@@ -850,5 +869,6 @@ public class Hardware {
         gamepad2_previous_right_stick_x = gamepad2_current_right_stick_x;
         gamepad2_previous_right_stick_y = gamepad2_current_right_stick_y;
         gamepad2_previous_right_trigger = gamepad2_current_right_trigger;
+        gamepad2_previous_start = gamepad2_current_start;
     }
 }
