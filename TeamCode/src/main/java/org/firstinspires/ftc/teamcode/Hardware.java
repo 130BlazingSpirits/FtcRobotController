@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.os.Environment;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.io.BufferedWriter;
@@ -61,6 +63,10 @@ public class Hardware {
     //Flippers
     public Servo leftFlipServo = null;
     public Servo rightFlipServo = null;
+
+    //Distance Sensors
+    public Rev2mDistanceSensor frontDistance = null;
+    public Rev2mDistanceSensor rearDistance = null;
 
     // IMU(s)
     public BNO055IMU imu1 = null;
@@ -198,6 +204,10 @@ public class Hardware {
         leftFlipper = new Flipper(opMode,this, leftFlipServo, 0, 1);
         rightFlipper = new Flipper(opMode,this, rightFlipServo, 0,1);
 
+        //Distance Sensors
+        frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
+        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistance");
+
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
         motorLFront = hwMap.get(DcMotorEx.class, "motorLFront");
@@ -315,10 +325,13 @@ public class Hardware {
                 + "liftMotor power,"
                 + "liftMotor velocity,"
 
-                + "liftHomeButton"
+                + "liftHomeButton,"
 
-                + "leftFlipperCurrentPosition"
-                + "rightFlipperCurrentPosition"
+                + "leftFlipperCurrentPosition,"
+                + "rightFlipperCurrentPosition,"
+
+                + "frontDistance,"
+                + "rearDistance,"
 
                 /*
                 // orientation and gravity
@@ -415,6 +428,9 @@ public class Hardware {
 
                     leftFlipper.getCurrentPosition(),
                     rightFlipper.getCurrentPosition(),
+
+                    frontDistance.getDistance(DistanceUnit.INCH),
+                    rearDistance.getDistance(DistanceUnit.INCH),
 
                     /*
                 // orientation and gravity

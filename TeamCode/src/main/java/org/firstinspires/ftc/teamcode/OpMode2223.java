@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp
 public class OpMode2223 extends OpMode {
     private Hardware hardware = new Hardware();
@@ -204,6 +206,8 @@ public class OpMode2223 extends OpMode {
             prevRPower = targetRPower;
 
             telemetry.addData("Lift Home isPressed", hardware.liftHomeButton.isPressed());
+            telemetry.addData("Front Distance", hardware.frontDistance.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Rear Distance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
             telemetry.addData("Delta Time", hardware.getDeltaTime());
 //            telemetry.addData("is red", hardware.ernie.isRedTeam);
             telemetry.addData("Status","Running");
