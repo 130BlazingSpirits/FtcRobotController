@@ -94,125 +94,77 @@ public class OpMode2223 extends OpMode {
 //            hardware.lift.setPosition(LiftargetPosition);
 
 
-        if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left){
-            isAccelDriveMode = false;
-        }
-        else if(hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right){
-            isAccelDriveMode = false;
-        }
-
-        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
-            // Sliiide to the left!
-            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
-            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
-        }
-        else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
-            // Sliiide to the right!
-            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
-            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
-        }
-        /*else if (((hardware.gamepad1_previous_right_bumper) && (!hardware.gamepad1_current_right_bumper))
-                || (((hardware.gamepad1_previous_left_bumper) && (!hardware.gamepad1_current_left_bumper)))){
-            hardware.driveTrain.stopMotors();
-        }*/
-
-        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper){
-            // Tank drive! *doomph! doomph!
-            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
-            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
-            if(hardware.driveTrain.isTank)
-            {
-                desiredLPower = (Math.pow(-game1LeftY,3)/Math.abs(game1LeftY))*0.7;
-                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
-            }else{
-                desiredLPower = (Math.pow(-game1RightY,3)/Math.abs(game1RightY))*0.7;
-                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
-            }
-
-            if(Math.abs(desiredLPower) < 0.02) {
-                targetLPower = 0.0;
-            }
-            else {
-                targetLPower = desiredLPower;
-            }
-
-            if(Math.abs(desiredRPower) < 0.02) {
-                targetRPower = 0.0;
-            }
-            else {
-                targetRPower = desiredRPower;
-            }
-
-            if(isAccelDriveMode) {
-                hardware.driveTrain.goSpeedTankDrive(targetLPower * DriveTrain.MAX_LINEAR_VELOCITY,
-                        targetRPower * DriveTrain.MAX_LINEAR_VELOCITY);
-            }
-            else {
-                hardware.driveTrain.goTankDrive(targetLPower, targetRPower);
-            }
-        }
-
-        if(gamepad2.dpad_left) {
-
-        }
-
-        //Elevator Motor
-        /*desiredLiftPower = Math.pow(-game2LeftY,3)/Math.abs(game2LeftY);
-        if(Math.abs(desiredLiftPower) < 0.02) {
-            targetLiftPower = 0.0;
-        }
-        else {
-            targetLiftPower = desiredLiftPower;
-        }
-        if(hardware.ernie.transferState == 0){
-            hardware.elevator.goElevatorLift(targetLiftPower);
-        }
-         */
-
-//            if(gamepad1.right_trigger > 0.10 && !gamepad1RightTriggerPreviouslyPressed){
-//                gamepad1RightTriggerPreviouslyPressed = true;
+//        if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left){
+//            isAccelDriveMode = false;
+//        }
+//        else if(hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right){
+//            isAccelDriveMode = false;
+//        }
+//
+//        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+//            // Sliiide to the left!
+//            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
+//            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
+//        }
+//        else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
+//            // Sliiide to the right!
+//            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
+//            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
+//        }
+//        /*else if (((hardware.gamepad1_previous_right_bumper) && (!hardware.gamepad1_current_right_bumper))
+//                || (((hardware.gamepad1_previous_left_bumper) && (!hardware.gamepad1_current_left_bumper)))){
+//            hardware.driveTrain.stopMotors();
+//        }*/
+//
+//        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper){
+//            // Tank drive! *doomph! doomph!
+//            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
+//            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
+//            if(hardware.driveTrain.isTank)
+//            {
+//                desiredLPower = (Math.pow(-game1LeftY,3)/Math.abs(game1LeftY))*0.7;
+//                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
+//            }else{
+//                desiredLPower = (Math.pow(-game1RightY,3)/Math.abs(game1RightY))*0.7;
+//                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
 //            }
-//            else if (gamepad1.right_trigger < 0.05){
-//                gamepad1RightTriggerPreviouslyPressed = false;
+//
+//            if(Math.abs(desiredLPower) < 0.02) {
+//                targetLPower = 0.0;
 //            }
+//            else {
+//                targetLPower = desiredLPower;
+//            }
+//
+//            if(Math.abs(desiredRPower) < 0.02) {
+//                targetRPower = 0.0;
+//            }
+//            else {
+//                targetRPower = desiredRPower;
+//            }
+//
+//            if(isAccelDriveMode) {
+//                hardware.driveTrain.goSpeedTankDrive(targetLPower * DriveTrain.MAX_LINEAR_VELOCITY,
+//                        targetRPower * DriveTrain.MAX_LINEAR_VELOCITY);
+//            }
+//            else {
+////                hardware.driveTrain.goTankDrive(targetLPower, targetRPower);
+//            }
+//        }
+//
+//        if(gamepad2.dpad_left) {
+//
+//        }
 
-        // Gas Pedal
-        if(hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
-            hardware.driveTrain.setGasPedalPower(1.0);
-        }
-        else if(hardware.gamepad1_current_left_trigger  > 0.5){
-            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
-        }else if(hardware.gamepad1_current_right_trigger > 0.5){
-            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
-        }
-
-        if(hardware.gamepad1_current_a && !hardware.gamepad1_previous_a){
-
-        }
-        else if(hardware.gamepad1_current_b && !hardware.gamepad1_previous_b){
-
-        }
-
-        if(Math.abs(gamepad2.left_stick_y) > 0.05){
-
-        }
-
-        if(Math.abs(gamepad2.right_stick_y) > 0.05){
-
-        }
-
-        if(hardware.gamepad1_current_dpad_up){
-
-        }
-        else if(hardware.gamepad1_current_dpad_down){
-
-        }
-        else{
-
-        }
-
-        if(hardware.gamepad1_current_x && !hardware.gamepad1_previous_x){
-        }
+//        // Gas Pedal
+//        if(hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
+//            hardware.driveTrain.setGasPedalPower(1.0);
+//        }
+//        else if(hardware.gamepad1_current_left_trigger  > 0.5){
+//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
+//        }else if(hardware.gamepad1_current_right_trigger > 0.5){
+//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
+//        }
 
         hardware.loop();
 

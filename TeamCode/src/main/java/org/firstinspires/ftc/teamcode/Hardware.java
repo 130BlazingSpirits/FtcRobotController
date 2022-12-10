@@ -238,9 +238,9 @@ public class Hardware {
         motorRBack.setTargetPosition(0);
         motorLFront.setTargetPosition(0);
         motorLBack.setTargetPosition(0);
-        motorLFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //Position Control
+        motorLFront.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Position Control
         motorLBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //Speed Control
-        motorRFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); //Position Control
+        motorRFront.setMode(DcMotor.RunMode.RUN_TO_POSITION); //Position Control
         motorRBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER); //Speed Control
 
         motorLFront.setMotorEnable();
