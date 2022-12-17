@@ -21,7 +21,7 @@ public class OpMode2223 extends OpMode {
     @Override
     public void init() {
 
-        hardware.init(hardwareMap,this);
+        hardware.init(hardwareMap, this);
         hardware.driveTrain.setSpeedMode();
     }
 
@@ -49,39 +49,47 @@ public class OpMode2223 extends OpMode {
         float game2LeftY = hardware.gamepad2_current_left_stick_y;
         float game2RightY = hardware.gamepad2_current_right_stick_y;
         float game1LeftY = hardware.gamepad1_current_left_stick_y;
+        float game1LeftX = hardware.gamepad1_current_left_stick_x;
         float game1RightY = hardware.gamepad1_current_right_stick_y;
         double deltaExtension;
-        double rightTriggerPosition = gamepad2.right_trigger;
-        double leftTriggerPosition = gamepad2.left_trigger;
         double servoPower = 0;
-
 
         hardware.updateValues();
         //Flippers
-        if(hardware.gamepad2_current_left_bumper){selectedFlipper = hardware.leftFlipper;}
-        if(hardware.gamepad2_current_right_bumper){selectedFlipper = hardware.rightFlipper;}
+        if (hardware.gamepad2_current_left_bumper) {
+            selectedFlipper = hardware.leftFlipper;
+        }
+        if (hardware.gamepad2_current_right_bumper) {
+            selectedFlipper = hardware.rightFlipper;
+        }
         //if(){}
 
         //Claw
-        if(hardware.gamepad2_current_dpad_up && !hardware.gamepad2_previous_dpad_up){
+        if (hardware.gamepad2_current_dpad_up && !hardware.gamepad2_previous_dpad_up) {
             hardware.claw.grip();
-        }
-        else if(hardware.gamepad2_current_dpad_down && !hardware.gamepad2_previous_dpad_down){
+        } else if (hardware.gamepad2_current_dpad_down && !hardware.gamepad2_previous_dpad_down) {
             //drop
-        }
-        else if(hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left){
+        } else if (hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
             hardware.claw.open();
-        }
-        else if(hardware.gamepad2_current_dpad_right && !hardware.gamepad2_previous_dpad_right){
+        } else if (hardware.gamepad2_current_dpad_right && !hardware.gamepad2_previous_dpad_right) {
             hardware.claw.stow();
         }
 
         //Lift  (!hardware.gamepad2_current_start is there because 'a' & 'b' needed protection from switching between gamepads)
-        if(hardware.gamepad2_current_a && !hardware.gamepad2_previous_a && !hardware.gamepad2_current_start) {hardware.lift.goToGround();}
-        if(hardware.gamepad2_current_x && !hardware.gamepad2_previous_x){hardware.lift.goToLow();}
-        if(hardware.gamepad2_current_y && !hardware.gamepad2_previous_y){hardware.lift.goToMed();}
-        if(hardware.gamepad2_current_b && !hardware.gamepad2_previous_b && !hardware.gamepad2_current_start) {hardware.lift.goToHigh();}
+        if (hardware.gamepad2_current_a && !hardware.gamepad2_previous_a && !hardware.gamepad2_current_start) {
+            hardware.lift.goToGround();
+        }
+        if (hardware.gamepad2_current_x && !hardware.gamepad2_previous_x) {
+            hardware.lift.goToLow();
+        }
+        if (hardware.gamepad2_current_y && !hardware.gamepad2_previous_y) {
+            hardware.lift.goToMed();
+        }
+        if (hardware.gamepad2_current_b && !hardware.gamepad2_previous_b && !hardware.gamepad2_current_start) {
+            hardware.lift.goToHigh();
+        }
 
+        //Lift Test
 //            if(hardware.gamepad2_current_a & !hardware.gamepad2_previous_a){
 //                hardware.lift.calibrateLift();
 //            }
@@ -93,90 +101,85 @@ public class OpMode2223 extends OpMode {
 //            }
 //            hardware.lift.setPosition(LiftargetPosition);
 
+        if (hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left) {
+            isAccelDriveMode = false;
+        } else if (hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right) {
+            isAccelDriveMode = false;
+        }
 
-//        if(hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left){
-//            isAccelDriveMode = false;
-//        }
-//        else if(hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right){
-//            isAccelDriveMode = false;
-//        }
-//
-//        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
-//            // Sliiide to the left!
-//            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
-//            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
-//        }
-//        else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
-//            // Sliiide to the right!
-//            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
-//            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
-//        }
-//        /*else if (((hardware.gamepad1_previous_right_bumper) && (!hardware.gamepad1_current_right_bumper))
-//                || (((hardware.gamepad1_previous_left_bumper) && (!hardware.gamepad1_current_left_bumper)))){
-//            hardware.driveTrain.stopMotors();
-//        }*/
-//
-//        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper){
-//            // Tank drive! *doomph! doomph!
-//            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
-//            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
-//            if(hardware.driveTrain.isTank)
-//            {
-//                desiredLPower = (Math.pow(-game1LeftY,3)/Math.abs(game1LeftY))*0.7;
-//                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
-//            }else{
-//                desiredLPower = (Math.pow(-game1RightY,3)/Math.abs(game1RightY))*0.7;
-//                desiredRPower = (Math.pow(-game1RightY, 3)/Math.abs(game1RightY))*0.7;
-//            }
-//
-//            if(Math.abs(desiredLPower) < 0.02) {
-//                targetLPower = 0.0;
-//            }
-//            else {
-//                targetLPower = desiredLPower;
-//            }
-//
-//            if(Math.abs(desiredRPower) < 0.02) {
-//                targetRPower = 0.0;
-//            }
-//            else {
-//                targetRPower = desiredRPower;
-//            }
-//
-//            if(isAccelDriveMode) {
-//                hardware.driveTrain.goSpeedTankDrive(targetLPower * DriveTrain.MAX_LINEAR_VELOCITY,
-//                        targetRPower * DriveTrain.MAX_LINEAR_VELOCITY);
-//            }
-//            else {
-////                hardware.driveTrain.goTankDrive(targetLPower, targetRPower);
-//            }
-//        }
-//
-//        if(gamepad2.dpad_left) {
-//
-//        }
+        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+            // Sliiide to the left!
+            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
+            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
+        } else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
+            // Sliiide to the right!
+            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
+            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
+        }
+        /*else if (((hardware.gamepad1_previous_right_bumper) && (!hardware.gamepad1_current_right_bumper))
+                || (((hardware.gamepad1_previous_left_bumper) && (!hardware.gamepad1_current_left_bumper)))){
+            hardware.driveTrain.stopMotors();
+        }*/
 
-//        // Gas Pedal
-//        if(hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
-//            hardware.driveTrain.setGasPedalPower(1.0);
-//        }
-//        else if(hardware.gamepad1_current_left_trigger  > 0.5){
-//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
-//        }else if(hardware.gamepad1_current_right_trigger > 0.5){
-//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
-//        }
+        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper) {
+            // Tank drive! *doomph! doomph!
+            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
+            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
+            if (hardware.driveTrain.isTank) {
+                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+                desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
+            } else if ((Math.abs(game1LeftX) < 0.02) && (Math.abs(game1RightY) > 0.02)) { //non tank drive + no rotation
+                desiredLPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
+                desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
+            } else if (Math.abs(game1LeftX) > .02 && Math.abs(game1RightY) < .02) { //non tank drive + no forward
+                desiredLPower = (-1.0 * Math.pow(-game1LeftX, 3) / Math.abs(game1LeftX));
+                desiredRPower = (Math.pow(-game1LeftX, 3) / Math.abs(game1LeftX));
+            }
+
+            if (Math.abs(desiredLPower) < 0.02) {
+                targetLPower = 0.0;
+            } else {
+                targetLPower = desiredLPower;
+            }
+
+            if (Math.abs(desiredRPower) < 0.02) {
+                targetRPower = 0.0;
+            } else {
+                targetRPower = desiredRPower;
+            }
+
+            if (isAccelDriveMode) {
+                hardware.driveTrain.goSpeedTankDrive(targetLPower * DriveTrain.MAX_LINEAR_VELOCITY,
+                        targetRPower * DriveTrain.MAX_LINEAR_VELOCITY);
+            } else {
+                hardware.driveTrain.goTankDrive(targetLPower, targetRPower);
+            }
+        }
+
+        if (gamepad2.dpad_left) {
+
+        }
+
+        // Gas Pedal
+        if (hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
+            hardware.driveTrain.setGasPedalPower(1.0);
+        } else if (hardware.gamepad1_current_left_trigger > 0.5) {
+            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
+        } else if (hardware.gamepad1_current_right_trigger > 0.5) {
+            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
+        }
 
         hardware.loop();
 
         prevLPower = targetLPower;
         prevRPower = targetRPower;
 
-        telemetry.addData("Lift Home isPressed", hardware.liftHomeButton.isPressed());
-        telemetry.addData("Front Distance", hardware.frontDistance.getDistance(DistanceUnit.INCH));
-        telemetry.addData("Rear Distance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
+//        telemetry.addData("Lift Home isPressed", hardware.liftHomeButton.isPressed());
+//        telemetry.addData("Front Distance", hardware.frontDistance.getDistance(DistanceUnit.INCH));
+//        telemetry.addData("Rear Distance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Delta Time", hardware.getDeltaTime());
 //            telemetry.addData("is red", hardware.ernie.isRedTeam);
-        telemetry.addData("Status","Running");
+        telemetry.addData("Status", "Running");
         telemetry.update();
     }
 

@@ -24,13 +24,15 @@ public class DriveTrain {
     private static final int MAXSPEED = 950; // encoders per sec
     //private static final double FRONTPOWERREDUCTION = 0.80;
     //private static final double BACKPOWERINCREASE = 0.7;
-    //private static final double MAXPOWER = 0.7;
+//    private static final double MAXPOWER = 0.7;
     private static final double FRONTPOWERREDUCTION = 1.0;
     private static final double BACKPOWERINCREASE = 1.0;
     private static final double MAXPOWER = 1.0;
     private double gasPedalPower = 1.0;
-    public static final int MAX_LINEAR_VELOCITY = 2600; //Encoders/second
-    private static final int MAX_ANGULAR_VELOCITY = 1800; //Encoders/second
+    // *WARNING* SET TO FALSE BEFORE TESTING MAX VELOCITY OF MOTOR
+    private boolean useSetVelocity = true; // true is for setVelocity method while false is for setPower method.
+    public static final int MAX_LINEAR_VELOCITY = 2100; //Encoders/second | Tested max velocity was 2334 12/17/22 useSetVelocity should be set to false when testing
+    private static final int MAX_ANGULAR_VELOCITY = 2100; //Encoders/second | Tested max velocity was 2362 12/17/22 useSetVelocity should be set to false when testing
     private static final int ACCELERATION_RATE = 2400; //Encoders/second^2
     private static final int DECELERATION_RATE = -4800; //Encoders/second^2
     public static final double FORWARD_DISTANCE_PER_PULSE = 25.10416/1000; //found through rigorous testing and throwing what looks good together
@@ -166,10 +168,26 @@ public class DriveTrain {
 
     public void goTankDrive(double leftPower, double rightPower){
         driveMode = DRIVE_MODE_POWER;
-        motorLFront.setPower(leftPower*gasPedalPower*MAXPOWER);
-        motorLBack.setPower(leftPower*gasPedalPower*MAXPOWER);
-        motorRFront.setPower(rightPower*gasPedalPower*MAXPOWER);
-        motorRBack.setPower(rightPower*gasPedalPower*MAXPOWER);
+        if(useSetVelocity){
+            {
+                if(Math.abs(leftPower - rightPower) < 0.02){
+                    motorLFront.setVelocity(leftPower*gasPedalPower*MAX_LINEAR_VELOCITY);
+                    motorLBack.setVelocity(leftPower*gasPedalPower*MAX_LINEAR_VELOCITY);
+                    motorRFront.setVelocity(rightPower*gasPedalPower*MAX_LINEAR_VELOCITY);
+                    motorRBack.setVelocity(rightPower*gasPedalPower*MAX_LINEAR_VELOCITY);
+                }else{
+                    motorLFront.setVelocity(leftPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
+                    motorLBack.setVelocity(leftPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
+                    motorRFront.setVelocity(rightPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
+                    motorRBack.setVelocity(rightPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
+                }
+            }
+        }else{
+            motorLFront.setPower(leftPower*gasPedalPower*MAXPOWER);
+            motorLBack.setPower(leftPower*gasPedalPower*MAXPOWER);
+            motorRFront.setPower(rightPower*gasPedalPower*MAXPOWER);
+            motorRBack.setPower(rightPower*gasPedalPower*MAXPOWER);
+        }
     }
 
     public void goSpeedLeft(double speed){
