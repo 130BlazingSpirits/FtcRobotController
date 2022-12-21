@@ -15,6 +15,7 @@ public class OpMode2223 extends OpMode {
     private boolean isAccelDriveMode = false;
     private boolean gamepad1RightTriggerPreviouslyPressed = false;
     private Flipper selectedFlipper = null;
+    private int liftTargetPos = 0;
 
 //    int LiftargetPosition = 0;
 
@@ -51,6 +52,7 @@ public class OpMode2223 extends OpMode {
         float game1LeftY = hardware.gamepad1_current_left_stick_y;
         float game1LeftX = hardware.gamepad1_current_left_stick_x;
         float game1RightY = hardware.gamepad1_current_right_stick_y;
+        float game1RightX = hardware.gamepad1_current_right_stick_x;
         double deltaExtension;
         double servoPower = 0;
 
@@ -88,18 +90,17 @@ public class OpMode2223 extends OpMode {
         if (hardware.gamepad2_current_b && !hardware.gamepad2_previous_b && !hardware.gamepad2_current_start) {
             hardware.lift.goToHigh();
         }
-
-        //Lift Test
-//            if(hardware.gamepad2_current_a & !hardware.gamepad2_previous_a){
-//                hardware.lift.calibrateLift();
-//            }
-//
-//            if(hardware.gamepad2_current_left_stick_y > 0.03) {
-//                LiftargetPosition = hardware.lift.getCurrentPos() + 250;
-//            }else if(hardware.gamepad2_current_left_stick_y < -0.03) {
-//                LiftargetPosition = hardware.lift.getCurrentPos() - 250;
-//            }
-//            hardware.lift.setPosition(LiftargetPosition);
+        if(hardware.gamepad2_current_right_stick_button && !hardware.gamepad2_previous_right_stick_button) {
+            hardware.lift.calibrateLift();
+        }
+        //Lift Manual Controls
+            if(hardware.gamepad2_current_right_stick_y > 0.03) {
+                liftTargetPos = hardware.lift.getCurrentPos() - 250;
+                hardware.lift.setPosition(liftTargetPos);
+            }else if(hardware.gamepad2_current_right_stick_y < -0.03) {
+                liftTargetPos = hardware.lift.getCurrentPos() + 250;
+                hardware.lift.setPosition(liftTargetPos);
+            }
 
         if (hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left) {
             isAccelDriveMode = false;
@@ -128,12 +129,12 @@ public class OpMode2223 extends OpMode {
             if (hardware.driveTrain.isTank) {
                 desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
                 desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
-            } else if ((Math.abs(game1LeftX) < 0.02) && (Math.abs(game1RightY) > 0.02)) { //non tank drive + no rotation
-                desiredLPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
-                desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
-            } else if (Math.abs(game1LeftX) > .02 && Math.abs(game1RightY) < .02) { //non tank drive + no forward
-                desiredLPower = (-1.0 * Math.pow(-game1LeftX, 3) / Math.abs(game1LeftX));
-                desiredRPower = (Math.pow(-game1LeftX, 3) / Math.abs(game1LeftX));
+            } else if ((Math.abs(game1RightX) < 0.02) && (Math.abs(game1LeftY) > 0.02)) { //non tank drive + no rotation
+                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+                desiredRPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+            } else if (Math.abs(game1RightX) > .02 && Math.abs(game1LeftY) < .02) { //non tank drive + no forward
+                desiredLPower = (-1.0 * Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
+                desiredRPower = (Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
             }
 
             if (Math.abs(desiredLPower) < 0.02) {
