@@ -23,4 +23,9 @@ android {
     namespace = 'com.qualcomm.ftcrobotcontroller'
 }
 
+dependencies {
+    implementation files('..\\navx-micro\\android\\libs\\navx_ftc-release.aar')
+}
+
+
 apply from: '../build.dependencies.gradle'
