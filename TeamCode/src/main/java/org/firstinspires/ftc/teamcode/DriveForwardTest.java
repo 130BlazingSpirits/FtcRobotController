@@ -105,10 +105,10 @@ public class DriveForwardTest extends OpMode
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Left Front mode", motorLFront.getMode().name());
-        telemetry.addData("Left Back mode", motorLBack.getMode().name());
-        telemetry.addData("Right Front mode", motorRFront.getMode().name());
-        telemetry.addData("Right Back mode", motorRBack.getMode().name());
+        //telemetry.addData("Left Front mode", motorLFront.getMode().name());
+        //telemetry.addData("Left Back mode", motorLBack.getMode().name());
+        //telemetry.addData("Right Front mode", motorRFront.getMode().name());
+        //telemetry.addData("Right Back mode", motorRBack.getMode().name());
 
 
     }
@@ -186,15 +186,15 @@ public class DriveForwardTest extends OpMode
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Forward Position", forwardPosition);
-        telemetry.addData("LFrontCurrPos",motorLFront.getCurrentPosition());
-        telemetry.addData("LBackCurrPos",motorLBack.getCurrentPosition());
-        telemetry.addData("RFrontCurrPos",motorRFront.getCurrentPosition());
-        telemetry.addData("RBackCurrPos",motorRBack.getCurrentPosition());
+        //telemetry.addData("LFrontCurrPos",motorLFront.getCurrentPosition());
+        //telemetry.addData("LBackCurrPos",motorLBack.getCurrentPosition());
+        //telemetry.addData("RFrontCurrPos",motorRFront.getCurrentPosition());
+        //telemetry.addData("RBackCurrPos",motorRBack.getCurrentPosition());
 
-        telemetry.addData("Left Front mode", motorLFront.getMode().name());
-        telemetry.addData("Left Back mode", motorLBack.getMode().name());
-        telemetry.addData("Right Front mode", motorRFront.getMode().name());
-        telemetry.addData("Right Back mode", motorRBack.getMode().name());
+        //telemetry.addData("Left Front mode", motorLFront.getMode().name());
+        //telemetry.addData("Left Back mode", motorLBack.getMode().name());
+        //telemetry.addData("Right Front mode", motorRFront.getMode().name());
+        //telemetry.addData("Right Back mode", motorRBack.getMode().name());
     }
 
     /*
