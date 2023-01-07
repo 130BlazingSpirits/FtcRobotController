@@ -48,7 +48,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Lift DriveRotateTest", group="tests")
+@TeleOp(name="DriveRotateTest", group="tests")
 //@Disabled
 public class DriveRotateTest extends OpMode
 {
@@ -58,9 +58,9 @@ public class DriveRotateTest extends OpMode
     private static int rotatedPosition = 2000; //225 degrees
     private static double motourPower = 1.0;
 
-    //private DcMotor motorLFront = null;
+    private DcMotor motorLFront = null;
     private DcMotor motorLBack = null;
-    //private DcMotor motorRFront = null;
+    private DcMotor motorRFront = null;
     private DcMotor motorRBack = null;
 
 
@@ -78,37 +78,37 @@ public class DriveRotateTest extends OpMode
         telemetry.addData("Status", "Initializing");
         hardware.init(hardwareMap,this);
 
-        //motorLFront = hardware.motorLFront;
+        motorLFront = hardware.motorLFront;
         motorLBack = hardware.motorLBack;
-        //motorRFront = hardware.motorRFront;
+        motorRFront = hardware.motorRFront;
         motorRBack = hardware.motorRBack;
 
-        //motorLFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //motorRFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //motorLFront.setTargetPosition(0);
+        motorLFront.setTargetPosition(0);
         motorLBack.setTargetPosition(0);
-        //motorRFront.setTargetPosition(0);
+        motorRFront.setTargetPosition(0);
         motorRBack.setTargetPosition(0);
 
-        //motorLFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //motorRFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorRFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorRBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //motorLFront.setPower(0.0);
+        motorLFront.setPower(0.0);
         motorLBack.setPower(0.0);
-        //motorRFront.setPower(0.0);
+        motorRFront.setPower(0.0);
         motorRBack.setPower(0.0);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
-        //telemetry.addData("Left Front mode", motorLFront.getMode().name());
-        telemetry.addData("Left Back mode", motorLBack.getMode().name());
-        //telemetry.addData("Right Front mode", motorRFront.getMode().name());
-        telemetry.addData("Right Back mode", motorRBack.getMode().name());
+        telemetry.addData("Left Front mode", motorLFront.getMode().name());
+//        telemetry.addData("Left Back mode", motorLBack.getMode().name());
+        telemetry.addData("Right Front mode", motorRFront.getMode().name());
+//        telemetry.addData("Right Back mode", motorRBack.getMode().name());
 
 
     }
@@ -139,14 +139,14 @@ public class DriveRotateTest extends OpMode
         Boolean currentDpadLeft = gamepad1.dpad_left;
         Boolean currentDpadRight = gamepad1.dpad_right;
 
-        //motorLFront.setTargetPosition(-rotatedPosition);
+        motorLFront.setTargetPosition(-rotatedPosition);
         motorLBack.setTargetPosition(-rotatedPosition);
-        //motorRFront.setTargetPosition(rotatedPosition);
+        motorRFront.setTargetPosition(rotatedPosition);
         motorRBack.setTargetPosition(rotatedPosition);
 
-       // motorLFront.setPower(motourPower);
+        motorLFront.setPower(motourPower);
         motorLBack.setPower(motourPower);
-        //motorRFront.setPower(motourPower);
+        motorRFront.setPower(motourPower);
         motorRBack.setPower(motourPower);
 
 
@@ -186,15 +186,15 @@ public class DriveRotateTest extends OpMode
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Rotaterd Position", rotatedPosition);
-       // telemetry.addData("LFrontCurrPos",motorLFront.getCurrentPosition());
+        telemetry.addData("LFrontCurrPos",motorLFront.getCurrentPosition());
         telemetry.addData("LBackCurrPos",motorLBack.getCurrentPosition());
-        //telemetry.addData("RFrontCurrPos",motorRFront.getCurrentPosition());
+        telemetry.addData("RFrontCurrPos",motorRFront.getCurrentPosition());
         telemetry.addData("RBackCurrPos",motorRBack.getCurrentPosition());
 
-       // telemetry.addData("Left Front mode", motorLFront.getMode().name());
-        telemetry.addData("Left Back mode", motorLBack.getMode().name());
-        //telemetry.addData("Right Front mode", motorRFront.getMode().name());
-        telemetry.addData("Right Back mode", motorRBack.getMode().name());
+        telemetry.addData("Left Front mode", motorLFront.getMode().name());
+//        telemetry.addData("Left Back mode", motorLBack.getMode().name());
+        telemetry.addData("Right Front mode", motorRFront.getMode().name());
+//        telemetry.addData("Right Back mode", motorRBack.getMode().name());
     }
 
     /*
