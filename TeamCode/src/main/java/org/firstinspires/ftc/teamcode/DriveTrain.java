@@ -287,4 +287,9 @@ public class DriveTrain {
         this.gasPedalPower = gasPedalPower;
     }
 
+
+    public void tileTurnCW() {}
+    public void tileTurnCCW() {}
+    public void forwardTile() {}
+    public void reverseTile() {}
 }

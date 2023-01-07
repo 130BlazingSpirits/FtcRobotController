@@ -38,7 +38,7 @@ public class Hardware {
     private Gamepad gamepad2 = null;
 
     //Control Classes
-    public ErnieBot ernie = null;
+    public Robot130 robo130 = null;
     public Claw claw = null;
     public Lift lift = null;
     public DriveTrain driveTrain = null;
@@ -190,7 +190,8 @@ public class Hardware {
         //BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
         //BNO055IMU.Parameters parameters2 = new BNO055IMU.Parameters();
 
-//        ernie = new ErnieBot(opMode, this);
+        robo130 = new Robot130(opMode, this);
+
         driveTrain = new DriveTrain(opMode, this);
 
         //Lift
@@ -290,7 +291,7 @@ public class Hardware {
         logCSVData();
         driveTrain.loop();
         lift.doLoop();
-//        ernie.doLoop();
+        robo130.doLoop();
         //elevator.loop();  //Probably not needed here, because it's not so vitally important to always keep the elevator up and running
         updatePreviousValues();
     }
