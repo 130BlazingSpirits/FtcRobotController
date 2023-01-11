@@ -19,6 +19,8 @@ public class Lift {
     private ElapsedTime timeout = new ElapsedTime();
     private static final int LIFT_MAXPOS = 3100; //(Hardware limit is 3175)
     private static final int LIFT_MINPOS = 20;
+    private static final int LIFT_MAX_SPEED = 495; //(Hardware Limit is 495)
+    private static final int LIFT_MANUAL_SPEED = (int) (LIFT_MAX_SPEED * .85);
 
     private double startTime = 0;
     private double liftPower = 1.0;

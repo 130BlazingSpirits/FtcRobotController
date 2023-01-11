@@ -24,7 +24,6 @@ android {
 }
 
 dependencies {
-    implementation files('..\\navx-micro\\android\\libs\\navx_ftc-release.aar')
 }
 
 
