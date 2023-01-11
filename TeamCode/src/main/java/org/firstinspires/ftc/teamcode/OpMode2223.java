@@ -14,7 +14,9 @@ public class OpMode2223 extends OpMode {
     private double prevRPower = 0.0;
     private boolean isAccelDriveMode = false;
     private Flipper selectedFlipper = null;
-    private int liftTargetPos = 0;
+    private int liftTargetPosition = 0;
+    private boolean liftManualMode = false;
+    private int liftPreviousManualPosition = Lift.LIFT_MINPOS;
 
     @Override
     public void init() {
@@ -90,12 +92,21 @@ public class OpMode2223 extends OpMode {
             hardware.lift.calibrateLift();
         }
         //Lift Manual Controls
-        if (hardware.gamepad2_current_right_stick_y > 0.03) {
-            liftTargetPos = hardware.lift.getCurrentPos() - 250;
-            hardware.lift.setPosition(liftTargetPos);
-        } else if (hardware.gamepad2_current_right_stick_y < -0.03) {
-            liftTargetPos = hardware.lift.getCurrentPos() + 250;
-            hardware.lift.setPosition(liftTargetPos);
+        if (!liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) > 0.03) {
+            liftManualMode = true;
+            liftPreviousManualPosition = hardware.lift.getCurrentPos();
+            liftTargetPosition = liftPreviousManualPosition + (int) (-1 * hardware.gamepad2_current_right_stick_y * Lift.LIFT_MANUAL_SPEED * hardware.getDeltaTime());
+            liftPreviousManualPosition = liftTargetPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+        } else if (liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) > 0.03) {
+            liftTargetPosition = liftPreviousManualPosition + (int) (-1 * hardware.gamepad2_current_right_stick_y * Lift.LIFT_MANUAL_SPEED * hardware.getDeltaTime());
+            liftPreviousManualPosition = liftTargetPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+        } else if (liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) < 0.03) {
+            liftPreviousManualPosition = hardware.lift.getCurrentPos();
+            liftTargetPosition = liftPreviousManualPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+            liftManualMode = false;
         }
 
         //Driving Controls
