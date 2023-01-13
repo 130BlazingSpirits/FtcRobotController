@@ -35,9 +35,9 @@ public class DriveTrain {
     private static final int MAX_ANGULAR_VELOCITY = 2100; //Encoders/second | Tested max velocity was 2362 12/17/22 useSetVelocity should be set to false when testing
     private static final int ACCELERATION_RATE = 2400; //Encoders/second^2
     private static final int DECELERATION_RATE = -4800; //Encoders/second^2
-    public static final double FORWARD_DISTANCE_PER_PULSE = 25.10416/1000; //found through rigorous testing and throwing what looks good together
+    public static final double FORWARD_DISTANCE_PER_PULSE = 25.75/1000; //found through rigorous testing and throwing what looks good together
     public static final double STRAFE_DISTANCE_PER_PULSE = 16.0/1000; //ibid
-    public static final double DEGREE_PER_PULSE = 225.0/2000; //ibid
+    public static final double DEGREE_PER_PULSE = 371.0/2000; //ibid
     private static       double motorLFrontVelocitySetpoint = 0;
     private static       double motorLBackVelocitySetpoint = 0;
     private static       double motorRFrontVelocitySetpoint = 0;
