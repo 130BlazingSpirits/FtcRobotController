@@ -17,12 +17,19 @@ public class OpMode2223 extends OpMode {
     private int liftTargetPosition = 0;
     private boolean liftManualMode = false;
     private int liftPreviousManualPosition = Lift.LIFT_MINPOS;
+    private boolean flipperManualMode = false;
+    private double flipperTargetPosition = 0;
 
     @Override
     public void init() {
 
         hardware.init(hardwareMap, this);
         hardware.driveTrain.setSpeedMode();
+
+        hardware.rightFlipper.goToStow();
+        hardware.leftFlipper.goToStow();
+
+        selectedFlipper = hardware.leftFlipper;
     }
 
     @Override
@@ -58,11 +65,26 @@ public class OpMode2223 extends OpMode {
         //Flippers
         if (hardware.gamepad2_current_left_bumper) {
             selectedFlipper = hardware.leftFlipper;
+            flipperManualMode = false;
         }
         if (hardware.gamepad2_current_right_bumper) {
             selectedFlipper = hardware.rightFlipper;
+            flipperManualMode = false;
         }
-        //if(){}
+
+        if (!flipperManualMode && Math.abs(hardware.gamepad2_current_left_stick_y) > 0.03) {
+            flipperManualMode = true;
+            flipperTargetPosition = selectedFlipper.getCurrentPosition() + ((selectedFlipper.needReverse ? 1 : -1) * hardware.gamepad2_current_left_stick_y * Flipper.MANUAL_SPEED * hardware.getDeltaTime());
+            selectedFlipper.setPosition(flipperTargetPosition);
+        } else if (flipperManualMode && Math.abs(hardware.gamepad2_current_left_stick_y) > 0.03) {
+            flipperTargetPosition = selectedFlipper.getCurrentPosition() + ((selectedFlipper.needReverse ? 1 : -1) * hardware.gamepad2_current_left_stick_y * Flipper.MANUAL_SPEED * hardware.getDeltaTime());
+            selectedFlipper.setPosition(flipperTargetPosition);
+        } else if (flipperManualMode && Math.abs(hardware.gamepad2_current_left_stick_y) < 0.03) {
+            flipperTargetPosition = selectedFlipper.getCurrentPosition();
+            selectedFlipper.setPosition(flipperTargetPosition);
+            flipperManualMode = false;
+        }
+
 
         //Claw
         if (hardware.gamepad2_current_dpad_up && !hardware.gamepad2_previous_dpad_up) {
@@ -198,6 +220,7 @@ public class OpMode2223 extends OpMode {
         telemetry.addData("Rear Distance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Delta Time", hardware.getDeltaTime());
         telemetry.addData("is red", hardware.robo130.isRedTeam);
+        telemetry.addData("Selected Flipper: ", selectedFlipper.name);
         telemetry.addData("Status", "Running");
         telemetry.update();
     }
@@ -214,9 +237,9 @@ public class OpMode2223 extends OpMode {
     @Override
     public void start() {
         hardware.updateValues();
-        selectedFlipper = hardware.leftFlipper;
         hardware.logMessage(false, "MyFirstJava", "Start Button Pressed");
         super.start();
         hardware.start();
+        hardware.claw.open();
     }
 }

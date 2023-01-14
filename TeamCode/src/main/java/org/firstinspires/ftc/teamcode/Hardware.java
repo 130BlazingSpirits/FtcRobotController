@@ -208,8 +208,8 @@ public class Hardware {
         //Flippers
         leftFlipServo = hwMap.get(Servo.class, "leftFlipServo");
         rightFlipServo = hwMap.get(Servo.class, "rightFlipServo");
-        leftFlipper = new Flipper(opMode,this, leftFlipServo, 0, 1, "Left Flipper");
-        rightFlipper = new Flipper(opMode,this, rightFlipServo, 0,1, "Right Flipper");
+        leftFlipper = new Flipper(opMode,this, leftFlipServo, 0.133, 0.8, "Left Flipper", false);
+        rightFlipper = new Flipper(opMode,this, rightFlipServo, 0.21,0.93, "Right Flipper", true);
 
         //Distance Sensors
         frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
@@ -292,7 +292,6 @@ public class Hardware {
         driveTrain.loop();
         lift.doLoop();
         robo130.doLoop();
-        //elevator.loop();  //Probably not needed here, because it's not so vitally important to always keep the elevator up and running
         updatePreviousValues();
     }
 
