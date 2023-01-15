@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp
+@TeleOp(name="OpMode 2223", group="A")
 public class OpMode2223 extends OpMode {
     private Hardware hardware = new Hardware();
 
@@ -20,6 +20,11 @@ public class OpMode2223 extends OpMode {
     private boolean flipperManualMode = false;
     private double flipperTargetPosition = 0;
 
+    private RobotConfiguration robotConfiguration = null;
+
+    private boolean isRed = false;
+    private boolean isLeftStartingPos = false;
+
     @Override
     public void init() {
 
@@ -30,6 +35,16 @@ public class OpMode2223 extends OpMode {
         hardware.leftFlipper.goToStow();
 
         selectedFlipper = hardware.leftFlipper;
+
+        robotConfiguration = new RobotConfiguration();
+        robotConfiguration.readConfig();
+        isRed = robotConfiguration.isRed;
+        isLeftStartingPos = robotConfiguration.isLeftStartPos;
+
+        telemetry.addLine("Configuration Fetched");
+        telemetry.addData("Is Red?? ", isRed);
+        telemetry.addData("Is Left Position? ", isLeftStartingPos);
+        telemetry.update();
     }
 
     @Override
