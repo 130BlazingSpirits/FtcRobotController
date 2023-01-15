@@ -118,6 +118,9 @@ public class DriveForwardTest extends OpMode
      */
     @Override
     public void init_loop() {
+        hardware.updateValues();
+        super.init_loop();
+        hardware.init_loop();
     }
 
     /*
@@ -138,6 +141,8 @@ public class DriveForwardTest extends OpMode
         Boolean currentDpadDown = gamepad1.dpad_down;
         Boolean currentDpadLeft = gamepad1.dpad_left;
         Boolean currentDpadRight = gamepad1.dpad_right;
+
+        hardware.updateValues();
 
         motorLFront.setTargetPosition(forwardPosition);
         motorLBack.setTargetPosition(forwardPosition);
@@ -183,6 +188,8 @@ public class DriveForwardTest extends OpMode
         prevDpadLeft = currentDpadLeft;
         prevDpadRight = currentDpadRight;
 
+        hardware.loop();
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Forward Position", forwardPosition);
@@ -202,6 +209,9 @@ public class DriveForwardTest extends OpMode
      */
     @Override
     public void stop() {
+        hardware.updateValues();
+        hardware.stop();
+        super.stop();
     }
 
 }
