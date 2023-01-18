@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Robot130 {
     private OpMode opMode = null;
     private Hardware hardware = null;
@@ -10,23 +13,23 @@ public class Robot130 {
 //    private ElapsedTime runtime = new ElapsedTime();
 //    private ElapsedTime timeout = new ElapsedTime();
 
-    //CONFIGURATION STATE MACHINE VARIABLES
-    public boolean isRedTeam;
-    public String teamColor = "";
-    private static final int CONFIGURATION_ASK_TEAM_COLOUR = 1;
-    private static final int CONFIGURATION_READY = 2;
-    public int configurationState = CONFIGURATION_ASK_TEAM_COLOUR;
-
     //MAIN STATE MACHINE VARIABLES
     private final int NOT_READY = 0;
     private final int READY = 1;
     public int loopState = NOT_READY;
+
     //DROP STATES
     private final int DROP_CONE_LIFT_MOVING_DOWN = 10;
     private final int DROP_CONE_DROPPING = 11;
     private final int DROP_CONE_LIFT_MOVING_UP = 12;
 
     String[] loopListValues = {"NOT_READY", "READY", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "DROP_CONE_LIFT_MOVING_DOWN", "DROP_CONE_DROPPING", "DROP_CONE_LIFT_MOVING_UP"};
+
+    //Command Stack
+    public int currentRobotCommand = -1;
+    public int nextRobotCommand = 0;
+    public List<RobCommand> robotCommands = new ArrayList<RobCommand>();
+
 
     //OTHER
     private int dropPos = 0;
@@ -41,32 +44,8 @@ public class Robot130 {
     }
 
     public void init() {
-        configurationState = CONFIGURATION_ASK_TEAM_COLOUR;
 //        runtime.reset();
 //        timeout.reset();
-    }
-
-    public void doConfigurationLoop() {
-        switch (configurationState) {
-            case CONFIGURATION_ASK_TEAM_COLOUR:
-                opMode.telemetry.addLine("Team Colour? RED or BLUE button.");
-                opMode.telemetry.update();
-                if (hardware.gamepad2_current_x || hardware.gamepad1_current_x) {
-                    isRedTeam = false;
-                    teamColor = "BLUE";
-                    configurationState = CONFIGURATION_READY;
-                } else if (hardware.gamepad2_current_b || hardware.gamepad1_current_b) {
-                    isRedTeam = true;
-                    teamColor = "RED";
-                    configurationState = CONFIGURATION_READY;
-                }
-                break;
-
-            case CONFIGURATION_READY:
-                opMode.telemetry.addLine("Config Results:");
-                opMode.telemetry.addData("Team Colour is: ", teamColor);
-                opMode.telemetry.update();
-        }
     }
 
     public void doLoop() {
@@ -115,5 +94,40 @@ public class Robot130 {
         hardware.lift.setPosition(dropPos);
         liftTimeout = opMode.time;
         loopState = DROP_CONE_LIFT_MOVING_DOWN;
+    }
+
+    public void processCommands(){
+        if(currentRobotCommand == -1){
+            if(robotCommands.size() > nextRobotCommand)
+            {
+                currentRobotCommand = nextRobotCommand;
+                robotCommands.get(currentRobotCommand).run();
+                //nextRobotCommand++;
+            }
+        }
+        else if(currentRobotCommand < robotCommands.size()){
+            if(robotCommands.get(currentRobotCommand).isComplete()){
+                nextRobotCommand++;
+                if(nextRobotCommand < robotCommands.size()) {
+                    currentRobotCommand = nextRobotCommand;
+                    robotCommands.get(currentRobotCommand).run();
+                }
+                else currentRobotCommand = -1;
+            }
+        }
+    }
+
+    public void addCommand(RobCommand command){
+        robotCommands.add(command);
+    }
+
+    public int getNumCommands(){
+        return robotCommands.size();
+    }
+    public int getCurrentCommand(){
+        return currentRobotCommand;
+    }
+    public int getNextCommand(){
+        return nextRobotCommand;
     }
 }

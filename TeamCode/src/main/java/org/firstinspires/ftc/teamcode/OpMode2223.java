@@ -225,6 +225,13 @@ public class OpMode2223 extends OpMode {
             hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
         }
 
+        //Commands
+        if(hardware.gamepad1_current_y && !hardware.gamepad1_previous_y){
+            hardware.robo130.addCommand(new RCWait(hardware, 2.0));
+        }
+
+        hardware.robo130.processCommands();
+
         hardware.loop();
 
         prevLPower = targetLPower;
@@ -234,8 +241,10 @@ public class OpMode2223 extends OpMode {
         telemetry.addData("Front Distance", hardware.frontDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Rear Distance", hardware.rearDistance.getDistance(DistanceUnit.INCH));
         telemetry.addData("Delta Time", hardware.getDeltaTime());
-        telemetry.addData("is red", hardware.robo130.isRedTeam);
         telemetry.addData("Selected Flipper: ", selectedFlipper.name);
+        telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
+        telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommand());
+        telemetry.addData("Next Command: ", hardware.robo130.getNextCommand());
         telemetry.addData("Status", "Running");
         telemetry.update();
     }
