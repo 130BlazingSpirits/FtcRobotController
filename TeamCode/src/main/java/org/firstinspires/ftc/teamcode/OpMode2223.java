@@ -266,5 +266,6 @@ public class OpMode2223 extends OpMode {
         super.start();
         hardware.start();
         hardware.claw.open();
+        hardware.lift.calibrateLift();
     }
 }
