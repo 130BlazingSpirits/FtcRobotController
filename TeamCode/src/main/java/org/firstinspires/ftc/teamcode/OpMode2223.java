@@ -25,6 +25,12 @@ public class OpMode2223 extends OpMode {
     private boolean isRed = false;
     private boolean isLeftStartingPos = false;
 
+    private boolean isPreviousManualDrive = false;
+    private boolean isCurrentManualDrive = false;
+
+//    public boolean isManualDriveForward = false;
+//    public boolean isManualDriveRotate = false;
+
     @Override
     public void init() {
 
@@ -157,12 +163,6 @@ public class OpMode2223 extends OpMode {
             hardware.driveTrain.tileTurnCW();
         }
 
-        if (hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left) {
-            isAccelDriveMode = false;
-        } else if (hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right) {
-            isAccelDriveMode = false;
-        }
-
         if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
             // Sliiide to the left!
             hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
@@ -185,31 +185,32 @@ public class OpMode2223 extends OpMode {
                 desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
                 desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
             } else if ((Math.abs(game1RightX) < 0.02) && (Math.abs(game1LeftY) > 0.02)) { //non tank drive + no rotation
+                isCurrentManualDrive = true;
                 desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
                 desiredRPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
             } else if (Math.abs(game1RightX) > .02 && Math.abs(game1LeftY) < .02) { //non tank drive + no forward
+                isCurrentManualDrive = true;
                 desiredLPower = (-1.0 * Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
                 desiredRPower = (Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
             }
 
             if (Math.abs(desiredLPower) < 0.02) {
                 targetLPower = 0.0;
+                isCurrentManualDrive = false;
             } else {
                 targetLPower = desiredLPower;
             }
 
             if (Math.abs(desiredRPower) < 0.02) {
                 targetRPower = 0.0;
+                isCurrentManualDrive = false;
             } else {
                 targetRPower = desiredRPower;
             }
 
-            if (isAccelDriveMode) {
-                hardware.driveTrain.goSpeedTankDrive(targetLPower * DriveTrain.MAX_LINEAR_VELOCITY,
-                        targetRPower * DriveTrain.MAX_LINEAR_VELOCITY);
-            } else {
-                hardware.driveTrain.goTankDrive(targetLPower, targetRPower);
-            }
+            //hardware.driveTrain.goTankDrive(targetLPower, targetRPower);  //pre 2023 drive command using speed control
+        hardware.driveTrain.goTankPositionDrive(targetLPower, targetRPower, !(!isPreviousManualDrive && isCurrentManualDrive));
+            isPreviousManualDrive = isCurrentManualDrive;
         }
 
         if (gamepad2.dpad_left) {

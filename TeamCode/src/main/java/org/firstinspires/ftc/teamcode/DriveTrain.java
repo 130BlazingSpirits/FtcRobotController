@@ -51,6 +51,14 @@ public class DriveTrain {
     private static final int DRIVE_MODE_POSITION = 2;
     private static       int driveMode = DRIVE_MODE_POWER;
 
+    private int motorLFrontNextPosition = 0;
+    private int motorLBackNextPosition = 0;
+    private int motorRFrontNextPosition = 0;
+    private int motorRBackNextPosition = 0;
+
+    private int testCounter = 0;
+
+
     public DriveTrain(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;
         this.hardware = hardware;
@@ -181,6 +189,52 @@ public class DriveTrain {
                     motorRFront.setVelocity(rightPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
                     motorRBack.setVelocity(rightPower*gasPedalPower*MAX_ANGULAR_VELOCITY);
                 }
+            }
+        }else{
+            motorLFront.setPower(leftPower*gasPedalPower*MAXPOWER);
+            motorLBack.setPower(leftPower*gasPedalPower*MAXPOWER);
+            motorRFront.setPower(rightPower*gasPedalPower*MAXPOWER);
+            motorRBack.setPower(rightPower*gasPedalPower*MAXPOWER);
+        }
+    }
+
+    public void goTankPositionDrive(double leftPower, double rightPower, boolean drivenBefore){
+        driveMode = DRIVE_MODE_POWER;
+        double leftVelocity = 0.0;
+        double rightVelocity = 0.0;
+        if (useSetVelocity) {
+            {
+                if (Math.abs(leftPower - rightPower) < 0.02) {
+                    leftVelocity = leftPower * gasPedalPower * MAX_LINEAR_VELOCITY;
+                    rightVelocity = rightPower * gasPedalPower * MAX_LINEAR_VELOCITY;
+                } else {
+                    leftVelocity = leftPower * gasPedalPower * MAX_ANGULAR_VELOCITY;
+                    rightVelocity = rightPower * gasPedalPower * MAX_ANGULAR_VELOCITY;
+                }
+                if(!drivenBefore){
+                    motorLFrontNextPosition = motorLFront.getCurrentPosition() + (int) (leftVelocity * hardware.getDeltaTime());
+                    motorLBackNextPosition = motorLBack.getCurrentPosition() + (int) (leftVelocity * hardware.getDeltaTime());
+                    motorRFrontNextPosition = motorRFront.getCurrentPosition() + (int) (rightVelocity * hardware.getDeltaTime());
+                    motorRBackNextPosition = motorRBack.getCurrentPosition() + (int) (rightVelocity * hardware.getDeltaTime());
+                }else{
+                    motorLFrontNextPosition += (int) (leftVelocity * hardware.getDeltaTime());
+                    motorLBackNextPosition += (int) (leftVelocity * hardware.getDeltaTime());
+                    motorRFrontNextPosition += (int) (rightVelocity * hardware.getDeltaTime());
+                    motorRBackNextPosition += (int) (rightVelocity * hardware.getDeltaTime());
+                }
+                testCounter ++;
+                motorLFront.setTargetPosition(motorLFrontNextPosition);
+                motorLBack.setTargetPosition(motorLBackNextPosition);
+                motorRFront.setTargetPosition(motorRFrontNextPosition);
+                motorRBack.setTargetPosition(motorRBackNextPosition);
+                motorLFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorLBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorRFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorRBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                motorLFront.setVelocity(leftVelocity);
+                motorLBack.setVelocity(leftVelocity);
+                motorRFront.setVelocity(rightVelocity);
+                motorRBack.setVelocity(rightVelocity);
             }
         }else{
             motorLFront.setPower(leftPower*gasPedalPower*MAXPOWER);
