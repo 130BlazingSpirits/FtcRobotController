@@ -26,5 +26,7 @@ android {
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+    implementation 'org.openftc:easyopencv:1.5.3'
     implementation files('..\\navx-micro\\android\\libs\\navx_ftc-release.aar')
 }
+
