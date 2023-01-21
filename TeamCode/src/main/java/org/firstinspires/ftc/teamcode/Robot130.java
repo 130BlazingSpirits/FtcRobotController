@@ -102,7 +102,6 @@ public class Robot130 {
             {
                 currentRobotCommand = nextRobotCommand;
                 robotCommands.get(currentRobotCommand).run();
-                //nextRobotCommand++;
             }
         }
         else if(currentRobotCommand < robotCommands.size()){
