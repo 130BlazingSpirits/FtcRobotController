@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -12,7 +13,7 @@ public class Lift {
     private OpMode opMode = null;
     private Hardware hardware = null;
 
-    private DcMotor liftMotor = null;
+    private DcMotorEx liftMotor = null;
     private TouchSensor liftSensor = null;
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -36,10 +37,10 @@ public class Lift {
     List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
 
-    private static final int GROUND_JUCTION_POSITION= 550;
-    private static final int LOW_JUCTION_POSITION= 1500;
-    private static final int MED_JUCTION_POSITION= 2300;
-    private static final int HIGH_JUCTION_POSITION= 3100;
+    public static final int GROUND_JUCTION_POSITION= 550;
+    public static final int LOW_JUCTION_POSITION= 1500;
+    public static final int MED_JUCTION_POSITION= 2300;
+    public static final int HIGH_JUCTION_POSITION= 3100;
 
     public Lift(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;
@@ -52,6 +53,8 @@ public class Lift {
         liftSensor = hardware.liftHomeButton;
         runtime.reset();
         timeout.reset();
+
+        calibrateLift();
 
         // Let the driver know Initialization is complete
         opMode.telemetry.addData("Lift Status", "Initialized");
@@ -150,5 +153,11 @@ public class Lift {
         liftMotor.setPower(liftPower*0.5);
         hardware.logMessage(false, "Lift","Lift State: Backing Off Home");
         state = LIFTBACKOFFHOME;
+    }
+
+    public void stop(){
+        liftMotor.setPower(0.0);
+        liftMotor.setVelocity(0.0);
+        liftMotor.setMotorDisable();
     }
 }

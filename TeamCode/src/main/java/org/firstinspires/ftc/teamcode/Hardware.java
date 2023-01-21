@@ -199,6 +199,7 @@ public class Hardware {
         liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        liftMotor.setMotorEnable();
         liftHomeButton = hwMap.get(TouchSensor.class, "liftHome");
 
         //Claw
@@ -223,6 +224,7 @@ public class Hardware {
         motorRFront = hwMap.get(DcMotorEx.class, "motorRFront");
 //        motorRBack = hwMap.get(DcMotorEx.class, "motorRBack");
         motorRBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
+        motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorRFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

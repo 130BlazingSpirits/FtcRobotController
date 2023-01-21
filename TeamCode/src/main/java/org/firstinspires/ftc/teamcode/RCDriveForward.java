@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class RCDriveForward extends RobCommand{
+public class RCDriveForward extends RCDriveCommand{
     public               double moveBy = 0.0;
     public               double power = 1.0;
     public               int targPosLF = 0;
@@ -37,11 +37,18 @@ public class RCDriveForward extends RobCommand{
         hardware.motorRFront.setTargetPosition(targPosRF);
         hardware.motorRBack.setTargetPosition(targPosRB);
 
-        hardware.motorLFront.setPower(power);
-        hardware.motorLBack.setPower(power);
-        hardware.motorRFront.setPower(power);
-        hardware.motorRBack.setPower(power);
-
+        if(hardware.driveTrain.useSetVelocity){
+            hardware.motorLFront.setVelocity(power*DriveTrain.MAX_LINEAR_VELOCITY);
+            hardware.motorLBack.setVelocity(power*DriveTrain.MAX_LINEAR_VELOCITY);
+            hardware.motorRFront.setVelocity(power*DriveTrain.MAX_LINEAR_VELOCITY);
+            hardware.motorRBack.setVelocity(power*DriveTrain.MAX_LINEAR_VELOCITY);
+        }
+        else{
+            hardware.motorLFront.setPower(power);
+            hardware.motorLBack.setPower(power);
+            hardware.motorRFront.setPower(power);
+            hardware.motorRBack.setPower(power);
+        }
     }
 
     public boolean isComplete(){
@@ -49,7 +56,7 @@ public class RCDriveForward extends RobCommand{
         hardware.opMode.telemetry.addData("isComplete tarLB", targPosLB);
         hardware.opMode.telemetry.addData("isComplete tarRF", targPosRF);
         hardware.opMode.telemetry.addData("isComplete tarRB", targPosRB);*/
-        if (Math.abs(hardware.motorLFront.getCurrentPosition() - targPosLF) < 7
+        if (Math.abs(hardware.motorLFront.getCurrentPosition() - targPosLF) < 15
                 /*&& Math.abs(hardware.motorLBack.getCurrentPosition() - targPosLB) < 7
                 && Math.abs(hardware.motorRFront.getCurrentPosition() - targPosRF) < 7
                 && Math.abs(hardware.motorRBack.getCurrentPosition() - targPosRB) < 7*/){

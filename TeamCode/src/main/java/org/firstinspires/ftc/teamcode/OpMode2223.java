@@ -209,7 +209,9 @@ public class OpMode2223 extends OpMode {
             }
 
             //hardware.driveTrain.goTankDrive(targetLPower, targetRPower);  //pre 2023 drive command using speed control
-        hardware.driveTrain.goTankPositionDrive(targetLPower, targetRPower, !(!isPreviousManualDrive && isCurrentManualDrive));
+            if(!(hardware.robo130.getCurrentCommand() instanceof RCDriveCommand)){
+                hardware.driveTrain.goTankPositionDrive(targetLPower, targetRPower, !(!isPreviousManualDrive && isCurrentManualDrive));
+            }
             isPreviousManualDrive = isCurrentManualDrive;
         }
 
@@ -227,8 +229,8 @@ public class OpMode2223 extends OpMode {
         }
 
         //Commands
-        if(hardware.gamepad1_current_y && !hardware.gamepad1_previous_y){
-            hardware.robo130.addCommand(new RCWait(hardware, 2.0));
+        if(hardware.gamepad1_current_x && !hardware.gamepad1_previous_x){
+            hardware.robo130.cancelFutureCommands(); //XXX LOOK AT THIS LATER, THIS WILL PROBABLY BREAK THE ROBOT IN THE FUTURE LOL
         }
 
         hardware.robo130.processCommands();
@@ -244,8 +246,8 @@ public class OpMode2223 extends OpMode {
         telemetry.addData("Delta Time", hardware.getDeltaTime());
         telemetry.addData("Selected Flipper: ", selectedFlipper.name);
         telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
-        telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommand());
-        telemetry.addData("Next Command: ", hardware.robo130.getNextCommand());
+        telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
+        telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());
         telemetry.addData("Status", "Running");
         telemetry.update();
     }
@@ -254,7 +256,7 @@ public class OpMode2223 extends OpMode {
     public void stop() {
         hardware.updateValues();
 
-        hardware.logMessage(false, "MyFirstJava", "Stop Button Pressed");
+        hardware.logMessage(false, "OpMode2223", "Stop Button Pressed");
         hardware.stop();
         super.stop();
     }

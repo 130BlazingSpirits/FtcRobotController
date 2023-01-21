@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-public class RCDriveForwardUntil extends RobCommand{
+public class RCDriveForwardUntil extends RCDriveCommand{
     public               double moveBy = 0.0;
     public               double moveStartSplit = 0.0;
     public               double power = 1.0;

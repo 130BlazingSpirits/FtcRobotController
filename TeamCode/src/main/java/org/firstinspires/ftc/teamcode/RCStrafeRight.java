@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-public class RCStrafeRight extends RobCommand{
+public class RCStrafeRight extends RCDriveCommand{
     public               double slideBy = 0;
     public               double power = 1.0;
     public               int targPosLF = 0;

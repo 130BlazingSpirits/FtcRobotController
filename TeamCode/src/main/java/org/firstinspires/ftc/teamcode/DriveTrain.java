@@ -30,9 +30,9 @@ public class DriveTrain {
     private static final double MAXPOWER = 1.0;
     private double gasPedalPower = 1.0;
     // *WARNING* SET TO FALSE BEFORE TESTING MAX VELOCITY OF MOTOR
-    private boolean useSetVelocity = true; // true is for setVelocity method while false is for setPower method.
+    public boolean useSetVelocity = true; // true is for setVelocity method while false is for setPower method.
     public static final int MAX_LINEAR_VELOCITY = (int) (1922 * 0.93); //Encoders/second | Tested max velocity was 1922 1/15/23 useSetVelocity should be set to false when testing
-    private static final int MAX_ANGULAR_VELOCITY = (int) (2213 * 0.93); //Encoders/second | Tested max velocity was 2213 1/15/23 useSetVelocity should be set to false when testing
+    public static final int MAX_ANGULAR_VELOCITY = (int) (2213 * 0.93); //Encoders/second | Tested max velocity was 2213 1/15/23 useSetVelocity should be set to false when testing
     private static final int ACCELERATION_RATE = 2400; //Encoders/second^2
     private static final int DECELERATION_RATE = -4800; //Encoders/second^2
     public static final double FORWARD_DISTANCE_PER_PULSE = 25.75/1000; //found through rigorous testing and throwing what looks good together
@@ -342,8 +342,20 @@ public class DriveTrain {
     }
 
 
-    public void tileTurnCW() {}
-    public void tileTurnCCW() {}
-    public void forwardTile() {}
-    public void reverseTile() {}
+    public void tileTurnCW() {
+        hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90,.8));
+        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+    }
+    public void tileTurnCCW() {
+        hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90,.8));
+        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+    }
+    public void forwardTile() {
+        hardware.robo130.addCommand(new RCDriveForward(hardware,24,.8));
+        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+    }
+    public void reverseTile() {
+        hardware.robo130.addCommand(new RCDriveForward(hardware,-24,.8));
+        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+    }
 }

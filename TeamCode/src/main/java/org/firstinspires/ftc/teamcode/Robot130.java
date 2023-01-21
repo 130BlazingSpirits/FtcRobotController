@@ -25,9 +25,11 @@ public class Robot130 {
 
     String[] loopListValues = {"NOT_READY", "READY", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "DROP_CONE_LIFT_MOVING_DOWN", "DROP_CONE_DROPPING", "DROP_CONE_LIFT_MOVING_UP"};
 
+    private RobCommand robotCommandNull = new RobCommand();
+
     //Command Stack
-    public int currentRobotCommand = -1;
-    public int nextRobotCommand = 0;
+    public int currentRobotCommandIndex = -1;
+    public int nextRobotCommandIndex = 0;
     public List<RobCommand> robotCommands = new ArrayList<RobCommand>();
 
 
@@ -97,21 +99,21 @@ public class Robot130 {
     }
 
     public void processCommands(){
-        if(currentRobotCommand == -1){
-            if(robotCommands.size() > nextRobotCommand)
+        if(currentRobotCommandIndex == -1){
+            if(robotCommands.size() > nextRobotCommandIndex)
             {
-                currentRobotCommand = nextRobotCommand;
-                robotCommands.get(currentRobotCommand).run();
+                currentRobotCommandIndex = nextRobotCommandIndex;
+                robotCommands.get(currentRobotCommandIndex).run();
             }
         }
-        else if(currentRobotCommand < robotCommands.size()){
-            if(robotCommands.get(currentRobotCommand).isComplete()){
-                nextRobotCommand++;
-                if(nextRobotCommand < robotCommands.size()) {
-                    currentRobotCommand = nextRobotCommand;
-                    robotCommands.get(currentRobotCommand).run();
+        else if(currentRobotCommandIndex < robotCommands.size()){
+            if(robotCommands.get(currentRobotCommandIndex).isComplete()){
+                nextRobotCommandIndex++;
+                if(nextRobotCommandIndex < robotCommands.size()) {
+                    currentRobotCommandIndex = nextRobotCommandIndex;
+                    robotCommands.get(currentRobotCommandIndex).run();
                 }
-                else currentRobotCommand = -1;
+                else currentRobotCommandIndex = -1;
             }
         }
     }
@@ -123,10 +125,22 @@ public class Robot130 {
     public int getNumCommands(){
         return robotCommands.size();
     }
-    public int getCurrentCommand(){
-        return currentRobotCommand;
+    public int getCurrentCommandIndex(){
+        return currentRobotCommandIndex;
     }
-    public int getNextCommand(){
-        return nextRobotCommand;
+    public int getNextCommandIndex(){
+        return nextRobotCommandIndex;
+    }
+
+    public RobCommand getCurrentCommand(){
+        if(currentRobotCommandIndex == -1){
+            return robotCommandNull;
+        }
+        return robotCommands.get(currentRobotCommandIndex);
+    }
+
+    public void cancelFutureCommands(){
+        currentRobotCommandIndex = -1;
+        nextRobotCommandIndex = robotCommands.size();
     }
 }
