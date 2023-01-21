@@ -262,7 +262,7 @@ public class OpMode2223 extends OpMode {
     @Override
     public void start() {
         hardware.updateValues();
-        hardware.logMessage(false, "MyFirstJava", "Start Button Pressed");
+        hardware.logMessage(false, "OpMode2223", "Start Button Pressed");
         super.start();
         hardware.start();
         hardware.claw.open();
