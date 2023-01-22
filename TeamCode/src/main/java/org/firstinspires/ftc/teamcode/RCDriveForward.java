@@ -9,6 +9,8 @@ public class RCDriveForward extends RCDriveCommand{
     public               int targPosLB = 0;
     public               int targPosRF = 0;
     public               int targPosRB = 0;
+    private boolean isRunning = false;
+    private boolean isMoveComplete = false;
 
     public RCDriveForward(Hardware hardware, double moveBy){
         this.hardware = hardware;
@@ -22,6 +24,10 @@ public class RCDriveForward extends RCDriveCommand{
     }
 
     public void run(){
+        hardware.logMessage(false,"RCDriveForward","Command Ran, set to move by " + moveBy);
+
+        isRunning = true;
+
         int currPosLF = hardware.motorLFront.getCurrentPosition();
         int currPosLB = hardware.motorLBack.getCurrentPosition();
         int currPosRF = hardware.motorRFront.getCurrentPosition();
@@ -60,8 +66,45 @@ public class RCDriveForward extends RCDriveCommand{
                 /*&& Math.abs(hardware.motorLBack.getCurrentPosition() - targPosLB) < 7
                 && Math.abs(hardware.motorRFront.getCurrentPosition() - targPosRF) < 7
                 && Math.abs(hardware.motorRBack.getCurrentPosition() - targPosRB) < 7*/){
+            hardware.logMessage(false,"RCDriveForward","Command Complete, at requested position");
+            isRunning = false;
+            isMoveComplete = true;
             return true;
         }
         return false;
+    }
+    public void updateMoveBy(double incremintalMove) {
+        hardware.logMessage(false,"RCDriveForward","Command Updated By " + incremintalMove);
+
+        moveBy += incremintalMove;
+        if (isRunning) {
+            targPosLF += (int) (incremintalMove / DriveTrain.FORWARD_DISTANCE_PER_PULSE);
+            targPosLB += (int) (incremintalMove / DriveTrain.FORWARD_DISTANCE_PER_PULSE);
+            targPosRF += (int) (incremintalMove / DriveTrain.FORWARD_DISTANCE_PER_PULSE);
+            targPosRB += (int) (incremintalMove / DriveTrain.FORWARD_DISTANCE_PER_PULSE);
+
+            hardware.motorLFront.setTargetPosition(targPosLF);
+            hardware.motorLBack.setTargetPosition(targPosLB);
+            hardware.motorRFront.setTargetPosition(targPosRF);
+            hardware.motorRBack.setTargetPosition(targPosRB);
+        }
+    }
+
+    public boolean getIsRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public String toString() {
+        return "RCDriveForward{" +
+                "moveBy=" + moveBy +
+                ", power=" + power +
+                ", targPosLF=" + targPosLF +
+                ", targPosLB=" + targPosLB +
+                ", targPosRF=" + targPosRF +
+                ", targPosRB=" + targPosRB +
+                ", isRunning=" + isRunning +
+                ", isMoveComplete=" + isMoveComplete +
+                '}';
     }
 }

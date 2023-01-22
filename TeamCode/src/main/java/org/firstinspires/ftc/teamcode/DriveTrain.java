@@ -343,19 +343,46 @@ public class DriveTrain {
 
 
     public void tileTurnCW() {
-        hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90,.8));
-        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+        if ((hardware.robo130.getCurrentCommand() instanceof RCTurnCounterClockwise) && (hardware.robo130.getCurrentCommandIndex() == (hardware.robo130.getNumCommands() - 2))) {
+            ((RCTurnCounterClockwise) hardware.robo130.getCurrentCommand()).updateRotateBy(-90);
+            hardware.logMessage(false,"DriveTrain","Update Rotate By CW");
+        } else {
+            hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware, -90, .8));
+            hardware.robo130.addCommand(new RCWait(hardware,0.3));
+            hardware.logMessage(false,"DriveTrain","Add Rotate By CW");
+        }
     }
+
     public void tileTurnCCW() {
-        hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90,.8));
-        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+        if ((hardware.robo130.getCurrentCommand() instanceof RCTurnCounterClockwise) && (hardware.robo130.getCurrentCommandIndex() == (hardware.robo130.getNumCommands() - 2))) {
+            ((RCTurnCounterClockwise) hardware.robo130.getCurrentCommand()).updateRotateBy(90);
+            hardware.logMessage(false,"DriveTrain","Update Rotate By CCW");
+        } else {
+            hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware, 90, .8));
+            hardware.robo130.addCommand(new RCWait(hardware,0.3));
+            hardware.logMessage(false,"DriveTrain","Add Rotate By CCW");
+        }
     }
+
     public void forwardTile() {
-        hardware.robo130.addCommand(new RCDriveForward(hardware,24,.8));
-        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+        if ((hardware.robo130.getCurrentCommand() instanceof RCDriveForward) && (hardware.robo130.getCurrentCommandIndex() == (hardware.robo130.getNumCommands() - 2))) {
+            ((RCDriveForward) hardware.robo130.getCurrentCommand()).updateMoveBy(24);
+            hardware.logMessage(false,"DriveTrain","Update Drive Forward");
+        } else {
+            hardware.robo130.addCommand(new RCDriveForward(hardware, 24, .8));
+            hardware.robo130.addCommand(new RCWait(hardware,0.3));
+            hardware.logMessage(false,"DriveTrain","Add Drive Forward");
+        }
     }
+
     public void reverseTile() {
-        hardware.robo130.addCommand(new RCDriveForward(hardware,-24,.8));
-        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+        if ((hardware.robo130.getCurrentCommand() instanceof RCDriveForward) && (hardware.robo130.getCurrentCommandIndex() == (hardware.robo130.getNumCommands() - 2))) {
+            ((RCDriveForward) hardware.robo130.getCurrentCommand()).updateMoveBy(-24);
+            hardware.logMessage(false,"DriveTrain","Update Drive Reverse");
+        } else {
+            hardware.robo130.addCommand(new RCDriveForward(hardware, -24, .8));
+            hardware.robo130.addCommand(new RCWait(hardware,0.3));
+            hardware.logMessage(false,"DriveTrain","Add Drive Reverse");
+        }
     }
 }

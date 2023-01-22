@@ -8,6 +8,9 @@ public class RCTurnCounterClockwise extends RCDriveCommand{
     public               int targPosRF = 0;
     public               int targPosRB = 0;
 
+    private boolean isRunning = false;
+    private boolean isMoveComplete = false;
+
     public RCTurnCounterClockwise(Hardware hardware, double rotateBy){
         this.hardware = hardware;
         this.rotateBy = rotateBy;
@@ -20,6 +23,10 @@ public class RCTurnCounterClockwise extends RCDriveCommand{
     }
 
     public void run(){
+        hardware.logMessage(false,"RCTurnCounterClockwise","Command Ran, set to rotate by " + rotateBy);
+
+        isRunning = true;
+
         int currPosLF = hardware.motorLFront.getCurrentPosition();
         int currPosLB = hardware.motorLBack.getCurrentPosition();
         int currPosRF = hardware.motorRFront.getCurrentPosition();
@@ -58,8 +65,46 @@ public class RCTurnCounterClockwise extends RCDriveCommand{
 //                && Math.abs(hardware.motorLBack.getCurrentPosition() - targPosLB) < 7
 //                && Math.abs(hardware.motorRFront.getCurrentPosition() - targPosRF) < 7
 /*                && Math.abs(hardware.motorRBack.getCurrentPosition() - targPosRB) < 7*/){
+            hardware.logMessage(false,"RCTurnCounterClockwise","Command Complete, at requested position");
+
+            isRunning = true;
+            isMoveComplete = false;
             return true;
         }
         return false;
+    }
+    public void updateRotateBy(double incremintalRotation) {
+        hardware.logMessage(false,"RCTurnCounterClockwise","Command Updated By " + incremintalRotation);
+
+        rotateBy += incremintalRotation;
+        if (isRunning) {
+            targPosLF += (int) (incremintalRotation / DriveTrain.DEGREE_PER_PULSE);
+            targPosLB += (int) (incremintalRotation / DriveTrain.DEGREE_PER_PULSE);
+            targPosRF += (int) (incremintalRotation / DriveTrain.DEGREE_PER_PULSE);
+            targPosRB += (int) (incremintalRotation / DriveTrain.DEGREE_PER_PULSE);
+
+            hardware.motorLFront.setTargetPosition(targPosLF);
+            hardware.motorLBack.setTargetPosition(targPosLB);
+            hardware.motorRFront.setTargetPosition(targPosRF);
+            hardware.motorRBack.setTargetPosition(targPosRB);
+        }
+    }
+
+    public boolean getIsRunning() {
+        return isRunning;
+    }
+
+    @Override
+    public String toString() {
+        return "RCTurnCounterClockwise{" +
+                "rotateBy=" + rotateBy +
+                ", power=" + power +
+                ", targPosLF=" + targPosLF +
+                ", targPosLB=" + targPosLB +
+                ", targPosRF=" + targPosRF +
+                ", targPosRB=" + targPosRB +
+                ", isRunning=" + isRunning +
+                ", isMoveComplete=" + isMoveComplete +
+                '}';
     }
 }

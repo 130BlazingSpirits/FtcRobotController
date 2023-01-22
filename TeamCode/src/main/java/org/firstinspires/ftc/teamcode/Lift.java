@@ -25,7 +25,7 @@ public class Lift {
 
     private double startTime = 0;
     private double liftPower = 1.0;
-    private double liftPowerDownFactor = 1.0;
+    private double liftPowerDownFactor = 0.65;
     private double liftHomingPower =- 0.5;
     private int previousTargetPos = 0;
 
@@ -54,14 +54,46 @@ public class Lift {
         runtime.reset();
         timeout.reset();
 
-        calibrateLift();
+//        calibrateLift();
 
         // Let the driver know Initialization is complete
         opMode.telemetry.addData("Lift Status", "Initialized");
         opMode.telemetry.update();
     }
 
-    //public void doInitLoop() {
+    public void doInitLoop() {
+        opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
+        opMode.telemetry.update();
+        switch(state)
+        {
+            case LIFTNOTHOMED:
+                break;
+
+            case LIFTBACKOFFHOME:
+                if(opMode.time - startTime >= 0.2){
+                    findHome();
+                }
+                break;
+
+            case LIFTFINDINGHOME:
+                if(!liftSensor.isPressed()){
+                    if(opMode.time - startTime >= MAX_TIMEOUT){
+                        liftMotor.setPower(0);
+                        opMode.telemetry.addLine("Lift could not find home position");
+                        hardware.logMessage(true, "Lift", "COULD NOT LOCATE HOME POSITION");
+                    }
+                    break;
+                }
+                else{
+                    liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    setPosition(0, liftPower);
+                    hardware.logMessage(false, "Lift","Lift State:  Ready");
+                    state = LIFTREADY;
+                }
+                break;
+        }
+        opMode.telemetry.addData("Lift State", states.get(state));
+    }
     public void doLoop() {
         opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
         opMode.telemetry.update();

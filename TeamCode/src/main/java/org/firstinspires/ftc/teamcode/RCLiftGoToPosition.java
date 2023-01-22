@@ -21,13 +21,28 @@ public class RCLiftGoToPosition extends RobCommand{
     }
 
     public void run(){
+        hardware.logMessage(false,"RCLiftGoToPosition","Command Ran, set to position " + position);
         hardware.lift.setPosition(position);
     }
 
     public boolean isComplete(){
         if(skipWait){
+            hardware.logMessage(false,"RCLiftGoToPosition","Command Complete, Skip Wait");
             return true;
         }
-        return Math.abs(hardware.lift.getCurrentPos() - position) < 7;
+        if(Math.abs(hardware.lift.getCurrentPos() - position) < 7){
+            hardware.logMessage(false,"RCLiftGoToPosition","Command Complete, at requested position");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "RCLiftGoToPosition{" +
+                ", position=" + position +
+                ", power=" + power +
+                ", skipWait=" + skipWait +
+                '}';
     }
 }

@@ -49,7 +49,45 @@ public class Robot130 {
 //        runtime.reset();
 //        timeout.reset();
     }
+    public void doInitLoop() {
+        switch (loopState) {
+            case NOT_READY:
+                break;
 
+            case READY:
+                break;
+
+            case DROP_CONE_LIFT_MOVING_DOWN:
+                if (Math.abs(hardware.lift.getCurrentPos() - dropPos) < 10) {
+                    hardware.claw.open();
+                    clawOpenTime = opMode.time;
+                    loopState = DROP_CONE_DROPPING;
+                } else if (opMode.time - liftTimeout > 2.0) {
+                    opMode.telemetry.addLine("Lift Timed Out going to position: " + dropPos + "currently at" + hardware.lift.getCurrentPos());
+                    hardware.logMessage(true, "Lift", "Lift Timed Out getting to position" + dropPos + "current position is" + hardware.lift.getCurrentPos());
+                }
+                break;
+
+            case DROP_CONE_DROPPING:
+                if (opMode.time - clawOpenTime >= 0.5) {
+                    hardware.lift.setPosition(preDropPos);
+                    liftTimeout = opMode.time;
+                    loopState = DROP_CONE_LIFT_MOVING_UP;
+                }
+                break;
+
+            case DROP_CONE_LIFT_MOVING_UP:
+                if (Math.abs(hardware.lift.getCurrentPos() - preDropPos) < 10) {
+                    loopState = READY;
+                } else if (opMode.time - liftTimeout > 2.0) {
+                    opMode.telemetry.addLine("Lift Timed Out going to position " + preDropPos + "currently at" + hardware.lift.getCurrentPos());
+                    hardware.logMessage(true, "Lift", "Lift Timed Out getting to position" + preDropPos + "current position is" + hardware.lift.getCurrentPos());
+                }
+                break;
+        }
+        opMode.telemetry.addLine("Robot State: " + loopListValues[loopState]);
+        opMode.telemetry.update();
+    }
     public void doLoop() {
         switch (loopState) {
             case NOT_READY:
@@ -119,6 +157,7 @@ public class Robot130 {
     }
 
     public void addCommand(RobCommand command){
+        hardware.logMessage(false,"Robot130","Command Added: " + command.toString());
         robotCommands.add(command);
     }
 

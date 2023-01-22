@@ -10,13 +10,23 @@ public class RCWait extends RobCommand{
     }
 
     public void run(){
+        hardware.logMessage(false,"RCWait","Wait Command Started");
         endTime = hardware.getCurrentTime() + delayTime;
     }
 
     public boolean isComplete(){
        if (hardware.getCurrentTime() > endTime){
-            return true;
+           hardware.logMessage(false,"RCWait","Wait Command Finished");
+           return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "RCWait{" +
+                "delayTime=" + delayTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }
