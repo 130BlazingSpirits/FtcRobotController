@@ -14,9 +14,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -36,6 +39,9 @@ public class Hardware {
 
     private Gamepad gamepad1 = null;
     private Gamepad gamepad2 = null;
+
+    //Webcam
+    public OpenCvWebcam webcam = null;
 
     //Control Classes
     public Robot130 robo130 = null;
@@ -193,6 +199,10 @@ public class Hardware {
         robo130 = new Robot130(opMode, this);
 
         driveTrain = new DriveTrain(opMode, this);
+
+        //Camera
+        int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
         //Lift
         lift = new Lift(opMode,this);

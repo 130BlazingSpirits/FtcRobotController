@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -97,7 +98,7 @@ public class WebcamExample extends LinearOpMode
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -211,6 +212,16 @@ public class WebcamExample extends LinearOpMode
             /*
              * Draw a simple box around the middle 1/2 of the entire frame
              */
+            Mat hsvIMG = new Mat();
+
+            Imgproc.cvtColor(input,hsvIMG,Imgproc.COLOR_BGR2HSV);
+
+            Scalar low = new Scalar(32,100,100);
+            Scalar high = new Scalar(52,255,255);
+
+            Mat mask = new Mat();
+
+            Core.inRange(hsvIMG,low,high,mask);
 
             Imgproc.rectangle(
                     input,
@@ -228,7 +239,7 @@ public class WebcamExample extends LinearOpMode
              * tapped, please see {@link PipelineStageSwitchingExample}
              */
 
-            return input;
+            return mask;
         }
 
         @Override
