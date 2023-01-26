@@ -21,6 +21,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -29,6 +31,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -98,7 +101,7 @@ public class WebcamExample extends LinearOpMode
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -123,6 +126,7 @@ public class WebcamExample extends LinearOpMode
             /*
              * Send some stats to the telemetry
              */
+
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
             telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
@@ -239,7 +243,11 @@ public class WebcamExample extends LinearOpMode
              * tapped, please see {@link PipelineStageSwitchingExample}
              */
 
-            return mask;
+
+
+//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/robotTestImage.jpg", input);
+
+            return input;
         }
 
         @Override
