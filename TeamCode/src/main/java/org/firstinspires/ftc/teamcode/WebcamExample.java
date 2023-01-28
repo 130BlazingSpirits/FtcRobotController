@@ -21,6 +21,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -29,6 +31,7 @@ import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -98,7 +101,7 @@ public class WebcamExample extends LinearOpMode
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
             }
 
             @Override
@@ -123,6 +126,7 @@ public class WebcamExample extends LinearOpMode
             /*
              * Send some stats to the telemetry
              */
+
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
             telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
@@ -189,6 +193,18 @@ public class WebcamExample extends LinearOpMode
     {
         boolean viewportPaused;
 
+        Mat mat = new Mat();
+
+        Mat purpleIMG = new Mat();
+        Mat greenIMG = new Mat();
+        Mat yellowIMG = new Mat();
+
+        int numPurple = 0;
+        int numGreen = 0;
+        int numYellow = 0;
+
+        boolean firstRun = true;
+
         /*
          * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
          * highly recommended to declare them here as instance variables and re-use them for
@@ -212,16 +228,55 @@ public class WebcamExample extends LinearOpMode
             /*
              * Draw a simple box around the middle 1/2 of the entire frame
              */
-            Mat hsvIMG = new Mat();
 
-            Imgproc.cvtColor(input,hsvIMG,Imgproc.COLOR_BGR2HSV);
+            Imgproc.cvtColor(input,mat,Imgproc.COLOR_BGR2HSV);
+
+            //Purple
+            Scalar purpleLowHSV = new Scalar(166,50,50);
+            Scalar purpleHighHSV = new Scalar(186,255,255);
+            Core.inRange(mat,purpleLowHSV,purpleHighHSV,purpleIMG);
+
+            //Green
+            Scalar greenLowHSV = new Scalar(13,50,50);
+            Scalar greenHighHSV = new Scalar(33,255,255);
+            Core.inRange(mat,greenLowHSV,greenHighHSV,greenIMG);
+
+            //Yellow
+            Scalar yellowLowHSV = new Scalar(39,50,50);
+            Scalar yellowHighHSV = new Scalar(59,255,255);
+            Core.inRange(mat,yellowLowHSV,yellowHighHSV,yellowIMG);
+
+            numPurple = Core.countNonZero(purpleIMG);
+            numGreen = Core.countNonZero(greenIMG);
+            numYellow = Core.countNonZero(yellowIMG);
+
+//            telemetry.addData("Purple Value: ",numPurple);
+//            telemetry.addData("Green Value: ",numGreen);
+//            telemetry.addData("Yellow Value: ",numYellow);
+
+//            if((numGreen > numYellow) && (numGreen > numPurple)){
+////                conePlacement = 1;
+//                mat = greenIMG;
+//            }
+//            else if((numYellow > numGreen) && (numYellow > numPurple)){
+////                conePlacement = 2;
+//                mat = yellowIMG;
+//            }
+//            else if((numPurple > numGreen) && (numPurple > numYellow)){
+////                conePlacement = 3;
+//                mat = purpleIMG;
+//            }
+
+//            Mat hsvIMG = new Mat();
+
+//            Imgproc.cvtColor(input,hsvIMG,Imgproc.COLOR_BGR2HSV);
 
             Scalar low = new Scalar(32,100,100);
             Scalar high = new Scalar(52,255,255);
 
             Mat mask = new Mat();
 
-            Core.inRange(hsvIMG,low,high,mask);
+//            Core.inRange(hsvIMG,low,high,mask);
 
             Imgproc.rectangle(
                     input,
@@ -239,12 +294,26 @@ public class WebcamExample extends LinearOpMode
              * tapped, please see {@link PipelineStageSwitchingExample}
              */
 
-            return mask;
+
+
+//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/robotTestImage.jpg", input);
+            if(firstRun){
+                firstRun=false;
+                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/originalImage"+time+".jpg", input);
+                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/HSVImage"+time+".jpg", mat);
+                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotPurpleTestImage"+time+".jpg", purpleIMG);
+                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotGreenImage"+time+".jpg", greenIMG);
+                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotYellowImage"+time+".jpg", yellowIMG);
+            }
+
+
+            return purpleIMG;
         }
 
         @Override
         public void onViewportTapped()
         {
+
             /*
              * The viewport (if one was specified in the constructor) can also be dynamically "paused"
              * and "resumed". The primary use case of this is to reduce CPU, memory, and power load
@@ -256,6 +325,9 @@ public class WebcamExample extends LinearOpMode
              *
              * Here we demonstrate dynamically pausing/resuming the viewport when the user taps it
              */
+//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotPurpleTestImage"+time+".jpg", purpleIMG);
+//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotGreenImage"+time+".jpg", greenIMG);
+//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotYellowImage"+time+".jpg", yellowIMG);
 
             viewportPaused = !viewportPaused;
 
