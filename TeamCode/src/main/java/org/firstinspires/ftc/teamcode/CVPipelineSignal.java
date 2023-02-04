@@ -106,11 +106,13 @@ public class CVPipelineSignal extends OpenCvPipeline {
             telemetry.addLine("Purple Image Selected");
             highImg = purpleIMG;
             conePosition = 3;
-        } else if ((0.045 > yellowPercent) && (yellowPercent > 0.02)) {
-            telemetry.addLine("Yellow Image Selected");
-            highImg = yellowIMG;
-            conePosition = 2;
-        }  else {
+        }
+//         else if ((0.045 > yellowPercent) && (yellowPercent > 0.02)) {
+//            telemetry.addLine("Yellow Image Selected");
+//            highImg = yellowIMG;
+//            conePosition = 2;
+//        }
+        else {
             telemetry.addLine("No Image Selected");
             highImg = croppedIMG;
             conePosition = 0;
