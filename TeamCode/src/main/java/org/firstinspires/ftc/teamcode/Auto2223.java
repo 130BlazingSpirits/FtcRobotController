@@ -90,7 +90,6 @@ public class Auto2223 extends OpMode {
         hardware.loop();
 
         hardware.robo130.processCommands();
-
         telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
         telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
         telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());

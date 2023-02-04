@@ -44,6 +44,8 @@ public class WebcamExample extends LinearOpMode
 {
     OpenCvWebcam webcam;
 
+    SamplePipeline pipeline = new SamplePipeline();
+
     @Override
     public void runOpMode()
     {
@@ -68,7 +70,8 @@ public class WebcamExample extends LinearOpMode
          * of a frame from the camera. Note that switching pipelines on-the-fly
          * (while a streaming session is in flight) *IS* supported.
          */
-        webcam.setPipeline(new SamplePipeline());
+
+        webcam.setPipeline(pipeline);
 
         /*
          * Open the connection to the camera device. New in v1.4.0 is the ability
@@ -195,15 +198,24 @@ public class WebcamExample extends LinearOpMode
 
         Mat mat = new Mat();
 
+        Mat croppedIMG = new Mat();
+
         Mat purpleIMG = new Mat();
         Mat greenIMG = new Mat();
         Mat yellowIMG = new Mat();
+        Mat highImg = new Mat();
+
+        String path = Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/";
 
         int numPurple = 0;
         int numGreen = 0;
         int numYellow = 0;
 
+        int counter = 0;
+
         boolean firstRun = true;
+
+        int conePosition = 0;
 
         /*
          * NOTE: if you wish to use additional Mat objects in your processing pipeline, it is
@@ -214,9 +226,21 @@ public class WebcamExample extends LinearOpMode
          * constantly allocating and freeing large chunks of memory.
          */
 
+        public int getConePosition(){
+            return conePosition;
+        }
+
         @Override
         public Mat processFrame(Mat input)
         {
+            croppedIMG.release();
+            highImg.release();
+            mat.release();
+            purpleIMG.release();
+            greenIMG.release();
+            yellowIMG.release();
+
+            counter++;
             /*
              * IMPORTANT NOTE: the input Mat that is passed in as a parameter to this method
              * will only dereference to the same image for the duration of this particular
@@ -229,64 +253,82 @@ public class WebcamExample extends LinearOpMode
              * Draw a simple box around the middle 1/2 of the entire frame
              */
 
-            Imgproc.cvtColor(input,mat,Imgproc.COLOR_BGR2HSV);
+            Imgproc.cvtColor(input,input,Imgproc.COLOR_BGRA2BGR);
+            croppedIMG = input.submat(130,465,475,815);
+
+            Imgproc.cvtColor(croppedIMG,mat,Imgproc.COLOR_BGR2HSV);
 
             //Purple
-            Scalar purpleLowHSV = new Scalar(166,50,50);
-            Scalar purpleHighHSV = new Scalar(186,255,255);
+            Scalar purpleLowHSV = new Scalar(109,50,50);
+            Scalar purpleHighHSV = new Scalar(151,255,255);
             Core.inRange(mat,purpleLowHSV,purpleHighHSV,purpleIMG);
 
             //Green
-            Scalar greenLowHSV = new Scalar(13,50,50);
-            Scalar greenHighHSV = new Scalar(33,255,255);
+            Scalar greenLowHSV = new Scalar(70,50,50);
+            Scalar greenHighHSV = new Scalar(91,255,255);
             Core.inRange(mat,greenLowHSV,greenHighHSV,greenIMG);
 
             //Yellow
-            Scalar yellowLowHSV = new Scalar(39,50,50);
-            Scalar yellowHighHSV = new Scalar(59,255,255);
+            Scalar yellowLowHSV = new Scalar(92,50,50);
+            Scalar yellowHighHSV = new Scalar(108,255,255);
             Core.inRange(mat,yellowLowHSV,yellowHighHSV,yellowIMG);
 
             numPurple = Core.countNonZero(purpleIMG);
             numGreen = Core.countNonZero(greenIMG);
             numYellow = Core.countNonZero(yellowIMG);
 
-//            telemetry.addData("Purple Value: ",numPurple);
-//            telemetry.addData("Green Value: ",numGreen);
-//            telemetry.addData("Yellow Value: ",numYellow);
+            double purplePercent = 0;
+            double greenPercent = 0;
+            double yellowPercent = 0;
 
+            if (numPurple > 100) {
+                purplePercent = numPurple / (double) (purpleIMG.rows() * purpleIMG.cols());
+            }
+            if (numGreen > 100) {
+                greenPercent = numGreen / (double) (greenIMG.rows() * greenIMG.cols());
+            }
+            if (numYellow > 100) {
+                yellowPercent = numYellow / (double) (yellowIMG.rows() * yellowIMG.cols());
+            }
+
+            telemetry.addData("Purple Percent: ", purplePercent);
+            telemetry.addData("Green Percent: ", greenPercent);
+            telemetry.addData("Yellow Percent: ", yellowPercent);
+
+//            0.045 > percent > 0.02
 //            if((numGreen > numYellow) && (numGreen > numPurple)){
-////                conePlacement = 1;
-//                mat = greenIMG;
+//                telemetry.addLine("Green Image Selected");
+//                highImg = greenIMG;
 //            }
 //            else if((numYellow > numGreen) && (numYellow > numPurple)){
-////                conePlacement = 2;
-//                mat = yellowIMG;
+//                telemetry.addLine("Yellow Image Selected");
+//                highImg = yellowIMG;
 //            }
 //            else if((numPurple > numGreen) && (numPurple > numYellow)){
-////                conePlacement = 3;
-//                mat = purpleIMG;
+//                telemetry.addLine("Purple Image Selected");
+//                highImg = purpleIMG;
 //            }
 
-//            Mat hsvIMG = new Mat();
-
-//            Imgproc.cvtColor(input,hsvIMG,Imgproc.COLOR_BGR2HSV);
-
-            Scalar low = new Scalar(32,100,100);
-            Scalar high = new Scalar(52,255,255);
-
-            Mat mask = new Mat();
-
-//            Core.inRange(hsvIMG,low,high,mask);
-
-            Imgproc.rectangle(
-                    input,
-                    new Point(
-                            140,
-                            170),
-                    new Point(
-                            180,
-                            210),
-                    new Scalar(0, 255, 0), 4);
+            if((0.045 > greenPercent) && (greenPercent > 0.02)){
+                telemetry.addLine("Green Image Selected");
+                highImg = greenIMG;
+                conePosition = 1;
+            }
+            else if((0.045 > yellowPercent) && (yellowPercent > 0.02)){
+                telemetry.addLine("Yellow Image Selected");
+                highImg = yellowIMG;
+                conePosition = 2;
+            }
+            else if((0.045 > purplePercent) && (purplePercent > 0.02)){
+                telemetry.addLine("Purple Image Selected");
+                highImg = purpleIMG;
+                conePosition = 3;
+            }
+            else{
+                telemetry.addLine("No Image Selected");
+                highImg = croppedIMG;
+                conePosition = 0;
+            }
 
             /**
              * NOTE: to see how to get data from your pipeline to your OpMode as well as how
@@ -295,19 +337,19 @@ public class WebcamExample extends LinearOpMode
              */
 
 
-
 //            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/robotTestImage.jpg", input);
             if(firstRun){
                 firstRun=false;
-                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/originalImage"+time+".jpg", input);
-                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/HSVImage"+time+".jpg", mat);
-                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotPurpleTestImage"+time+".jpg", purpleIMG);
-                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotGreenImage"+time+".jpg", greenIMG);
-                Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotYellowImage"+time+".jpg", yellowIMG);
+                saveMatToDiskFullPath(input,path+ "originalImage"+time+".jpg");
+                saveMatToDiskFullPath(mat,path+ "HSVImage"+time+".jpg");
+                saveMatToDiskFullPath(croppedIMG,path+ "croppedIMG"+time+".jpg");
+                saveMatToDiskFullPath(purpleIMG,path+ "robotPurpleTestImage"+time+".jpg");
+                saveMatToDiskFullPath(greenIMG,path+ "robotGreenImage"+time+".jpg");
+                saveMatToDiskFullPath(yellowIMG,path+ "robotYellowImage"+time+".jpg");
             }
 
-
-            return purpleIMG;
+            telemetry.addData("Cone Position: ", conePosition);
+            return counter%10==0? croppedIMG:highImg;
         }
 
         @Override
@@ -325,9 +367,6 @@ public class WebcamExample extends LinearOpMode
              *
              * Here we demonstrate dynamically pausing/resuming the viewport when the user taps it
              */
-//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotPurpleTestImage"+time+".jpg", purpleIMG);
-//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotGreenImage"+time+".jpg", greenIMG);
-//            Imgcodecs.imwrite(Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/robotYellowImage"+time+".jpg", yellowIMG);
 
             viewportPaused = !viewportPaused;
 
