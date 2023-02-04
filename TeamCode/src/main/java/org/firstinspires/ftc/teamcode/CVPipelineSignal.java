@@ -32,6 +32,10 @@ public class CVPipelineSignal extends OpenCvPipeline {
 
     int conePosition = 0;
 
+    public double purplePercent = 0;
+    public double greenPercent = 0;
+    public double yellowPercent = 0;
+
     public CVPipelineSignal(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
@@ -79,10 +83,6 @@ public class CVPipelineSignal extends OpenCvPipeline {
         numPurple = Core.countNonZero(purpleIMG);
         numGreen = Core.countNonZero(greenIMG);
         numYellow = Core.countNonZero(yellowIMG);
-
-        double purplePercent = 0;
-        double greenPercent = 0;
-        double yellowPercent = 0;
 
         if (numPurple > 100) {
             purplePercent = numPurple / (double) (purpleIMG.rows() * purpleIMG.cols());

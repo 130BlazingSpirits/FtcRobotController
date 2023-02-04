@@ -366,6 +366,11 @@ public class Hardware {
 
                 + "liftHomeButton,"
 
+                +"yellow percentage,"
+                +"purple percentage,"
+                +"green percentage,"
+                +"cone position,"
+
                 + "leftFlipperCurrentPosition,"
                 + "rightFlipperCurrentPosition,"
 
@@ -466,6 +471,11 @@ public class Hardware {
                     liftMotor.getVelocity(),
 
                     liftHomeButton.isPressed()?1.0:0.0,
+
+                    webcamPipeline.yellowPercent,
+                    webcamPipeline.purplePercent,
+                    webcamPipeline.greenPercent,
+                    webcamPipeline.conePosition,
 
                     leftFlipper.getCurrentPosition(),
                     rightFlipper.getCurrentPosition(),
