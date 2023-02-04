@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.io.BufferedWriter;
@@ -42,6 +43,7 @@ public class Hardware {
 
     //Webcam
     public OpenCvWebcam webcam = null;
+    public CVPipelineSignal webcamPipeline = null;
 
     //Control Classes
     public Robot130 robo130 = null;
@@ -201,8 +203,11 @@ public class Hardware {
         driveTrain = new DriveTrain(opMode, this);
 
         //Camera
+        webcamPipeline = new CVPipelineSignal(opMode.telemetry);
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam.setPipeline(webcamPipeline);
+
 
         //Lift
         lift = new Lift(opMode,this);
