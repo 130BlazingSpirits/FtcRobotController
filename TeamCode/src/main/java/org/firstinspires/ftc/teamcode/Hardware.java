@@ -75,8 +75,8 @@ public class Hardware {
     public Servo rightFlipServo = null;
 
     //Distance Sensors
-    public Rev2mDistanceSensor frontDistance = null;
-    public Rev2mDistanceSensor rearDistance = null;
+//    public Rev2mDistanceSensor frontDistance = null;
+//    public Rev2mDistanceSensor rearDistance = null;
 
     // IMU(s)
     public BNO055IMU imu1 = null;
@@ -209,20 +209,20 @@ public class Hardware {
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         webcam.setPipeline(webcamPipeline);
-        if(opMode instanceof Auto2223){
-            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
-                }
-
-                @Override
-                public void onError(int errorCode) {
-
-                }
-
-            });
-        }
+//        if(opMode instanceof Auto2223){
+//            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//                @Override
+//                public void onOpened() {
+//                    webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+//                }
+//
+//                @Override
+//                public void onError(int errorCode) {
+//
+//                }
+//
+//            });
+//        }
 
         //Lift
         lift = new Lift(opMode,this);
@@ -243,8 +243,8 @@ public class Hardware {
         rightFlipper = new Flipper(opMode,this, rightFlipServo, 0.21,0.93, "Right Flipper", true);
 
         //Distance Sensors
-        frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
-        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistance");
+//        frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
+//        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistance");
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
@@ -369,8 +369,8 @@ public class Hardware {
                 + "leftFlipperCurrentPosition,"
                 + "rightFlipperCurrentPosition,"
 
-                + "frontDistance,"
-                + "rearDistance,"
+//                + "frontDistance,"
+//                + "rearDistance,"
 
                 /*
                 // orientation and gravity
@@ -470,8 +470,8 @@ public class Hardware {
                     leftFlipper.getCurrentPosition(),
                     rightFlipper.getCurrentPosition(),
 
-                    frontDistance.getDistance(DistanceUnit.INCH),
-                    rearDistance.getDistance(DistanceUnit.INCH),
+//                    frontDistance.getDistance(DistanceUnit.INCH),
+//                    rearDistance.getDistance(DistanceUnit.INCH),
 
                     /*
                 // orientation and gravity

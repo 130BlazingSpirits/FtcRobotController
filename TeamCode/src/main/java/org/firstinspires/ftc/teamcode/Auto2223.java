@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+
 @Autonomous(name = "Auto2223", group = "auto")
 
 public class Auto2223 extends OpMode {
@@ -35,7 +38,18 @@ public class Auto2223 extends OpMode {
         hardware.lift.calibrateLift();
         hardware.claw.stow();
 
-//        hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+        hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+                @Override
+                public void onOpened() {
+                    hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+                }
+
+                @Override
+                public void onError(int errorCode) {
+
+                }
+
+            });
     }
 
     @Override
@@ -52,21 +66,19 @@ public class Auto2223 extends OpMode {
         if(firstRun){
             firstRun = false;
             secondRun = true;
-            startTime = time;
+            startTime = hardware.getCurrentTime();
         }
-        if(secondRun && (Math.abs(time - startTime) > 1.0)){
+        if(secondRun && (Math.abs(hardware.getCurrentTime() - startTime) > 1.0)){
             hardware.lift.goToLow();
-            startTime = time;
+            startTime = hardware.getCurrentTime();
             secondRun = false;
         }
         hardware.updateValues();
         hardware.loop();
 
-        while(!commandsGrabbed && !firstRun && !secondRun){
-            if(Math.abs(time - startTime) > 5){
+        if(!commandsGrabbed && !firstRun && !secondRun){
+            if(Math.abs(time - startTime) > 10.0){
                 //skip camera
-                commandsGrabbed = true;
-                hardware.webcam.stopStreaming();
                 hardware.lift.goMin();
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
@@ -112,9 +124,10 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
                 }
-
+                commandsGrabbed = true;
+                hardware.webcam.stopStreaming();
             }
-            else if(hardware.webcamPipeline.isFrameSelected()){
+            else if(hardware.webcamPipeline.isFrameSelected() && ((hardware.getCurrentTime()-startTime)>3.0)){
                 conePlacement = hardware.webcamPipeline.getConePosition();
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
@@ -138,6 +151,7 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
+
                 }else{      //Right Position
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
                     hardware.robo130.addCommand(new RCWait(hardware,0.3));
@@ -178,7 +192,10 @@ public class Auto2223 extends OpMode {
             }
         }
 
-        hardware.robo130.processCommands();
+        if(commandsGrabbed){
+            hardware.robo130.processCommands();
+        }
+
         telemetry.addData("Cone Position: ",conePlacement);
         telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
         telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
