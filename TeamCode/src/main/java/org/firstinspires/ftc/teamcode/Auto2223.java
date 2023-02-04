@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.openftc.easyopencv.OpenCvCameraRotation;
-
 @Autonomous(name = "Auto2223", group = "auto")
 
 public class Auto2223 extends OpMode {
@@ -13,10 +11,12 @@ public class Auto2223 extends OpMode {
     private boolean isRed = false;
     private boolean isLeftStartingPos = false;
     private int conePlacement = 0;
+    private boolean firstRun = true;
+    private boolean secondRun = true;
 
     private boolean commandsGrabbed = false;
 
-    public double timeout = 0.0;
+    public double startTime = 0.0;
 
     @Override
     public void init() {
@@ -35,7 +35,7 @@ public class Auto2223 extends OpMode {
         hardware.lift.calibrateLift();
         hardware.claw.stow();
 
-        hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+//        hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
     }
 
     @Override
@@ -49,15 +49,25 @@ public class Auto2223 extends OpMode {
 
     @Override
     public void loop() {
+        if(firstRun){
+            firstRun = false;
+            secondRun = true;
+            startTime = time;
+        }
+        if(secondRun && (Math.abs(time - startTime) > 1.0)){
+            hardware.lift.goToLow();
+            startTime = time;
+            secondRun = false;
+        }
         hardware.updateValues();
         hardware.loop();
 
-        while(!commandsGrabbed){
-            if(Math.abs(time - timeout) > 8.0){
+        while(!commandsGrabbed && !firstRun && !secondRun){
+            if(Math.abs(time - startTime) > 5){
                 //skip camera
                 commandsGrabbed = true;
                 hardware.webcam.stopStreaming();
-                hardware.lift.calibrateLift();
+                hardware.lift.goMin();
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
@@ -164,11 +174,12 @@ public class Auto2223 extends OpMode {
                 }
                 commandsGrabbed = true;
                 hardware.webcam.stopStreaming();
-                hardware.lift.calibrateLift();
+                hardware.lift.goMin();
             }
         }
 
         hardware.robo130.processCommands();
+        telemetry.addData("Cone Position: ",conePlacement);
         telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
         telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
         telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());
@@ -183,13 +194,10 @@ public class Auto2223 extends OpMode {
         super.start();
         hardware.start();
         hardware.claw.grip();
-        hardware.lift.goToLow();
-        timeout = time;
     }
 
     public void stop() {
         hardware.updateValues();
-
         hardware.logMessage(false, "Auto2223", "Stop Button Pressed");
         hardware.stop();
         super.stop();
