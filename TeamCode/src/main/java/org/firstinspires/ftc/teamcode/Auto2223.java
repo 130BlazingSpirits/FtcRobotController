@@ -41,7 +41,7 @@ public class Auto2223 extends OpMode {
         hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
                 @Override
                 public void onOpened() {
-                    hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+                    hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
                 }
 
                 @Override
@@ -99,9 +99,13 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }else{      //Right Position
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
                     hardware.robo130.addCommand(new RCWait(hardware,0.3));
@@ -120,9 +124,13 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 commandsGrabbed = true;
                 hardware.webcam.stopStreaming();
@@ -148,9 +156,13 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
 
                 }else{      //Right Position
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
@@ -170,21 +182,33 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 if(!isLeftStartingPos && conePlacement == 1){
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 else if(!isLeftStartingPos && conePlacement == 3){
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,-24,0.5));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 else if(isLeftStartingPos && conePlacement == 1){
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,-24,0.5));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 else if(isLeftStartingPos && conePlacement == 3){
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
                 commandsGrabbed = true;
                 hardware.webcam.stopStreaming();

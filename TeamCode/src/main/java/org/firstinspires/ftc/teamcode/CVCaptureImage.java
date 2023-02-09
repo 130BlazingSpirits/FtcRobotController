@@ -14,6 +14,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class CVCaptureImage extends OpenCvPipeline {
     public Telemetry telemetry;
     public OpMode opMode;
+    public Hardware hardware;
+
     boolean viewportPaused;
 
     String path = Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/ImageCapture/";
@@ -21,24 +23,23 @@ public class CVCaptureImage extends OpenCvPipeline {
     Mat mat = new Mat();
     boolean firstRun = true;
 
-    public CVCaptureImage(Telemetry telemetry, OpMode opMode) {
+    public CVCaptureImage(Telemetry telemetry, OpMode opMode,Hardware hardware) {
         this.telemetry = telemetry;
         this.opMode = opMode;
+        this.hardware = hardware;
     }
 
     @Override
     public Mat processFrame(Mat input) {
         if (firstRun) {
             firstRun = false;
-            saveMatToDiskFullPath(input, path + "Image" + opMode.time + ".jpg");
+            saveMatToDiskFullPath(input, path + "Image" + hardware.getCurrentTime() + ".jpg");
         }
-
         mat = input;
-//    saveMatToDiskFullPath(input, path + "Image" + hardware.getCurrentTime() + ".jpg");
         return input;
     }
 
     public void saveImage(){
-        saveMatToDiskFullPath(mat, path + "Image" + opMode.time + ".jpg");
+        saveMatToDiskFullPath(mat, path + "Image" + hardware.getCurrentTime() + ".jpg");
     }
 }

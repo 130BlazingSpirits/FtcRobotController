@@ -42,21 +42,20 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @TeleOp
 public class CaptureImage extends LinearOpMode {
     private Hardware hardware = new Hardware();
-    OpenCvWebcam webcam;
-    CVCaptureImage pipeline = new CVCaptureImage(telemetry, this);
+    CVCaptureImage pipeline = new CVCaptureImage(telemetry, this, hardware);
 
     @Override
     public void runOpMode() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        hardware.init(hardwareMap,this);
+        hardware.init_loop();
 
-        webcam.setPipeline(pipeline);
+        hardware.webcam.setPipeline(pipeline);
 
-        webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        hardware.webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
+        hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -70,26 +69,29 @@ public class CaptureImage extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+
             hardware.updateValues();
-            
-            telemetry.addData("Frame Count", webcam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
-            telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
+
+            telemetry.addData("Frame Count", hardware.webcam.getFrameCount());
+            telemetry.addData("FPS", String.format("%.2f", hardware.webcam.getFps()));
+            telemetry.addData("Total frame time ms", hardware.webcam.getTotalFrameTimeMs());
+            telemetry.addData("Pipeline time ms", hardware.webcam.getPipelineTimeMs());
+            telemetry.addData("Overhead time ms", hardware.webcam.getOverheadTimeMs());
+            telemetry.addData("Theoretical max FPS", hardware.webcam.getCurrentPipelineMaxFps());
             telemetry.update();
 
-            if (gamepad1.a) {
+            if (hardware.gamepad1_current_a && !hardware.gamepad1_previous_a) {
 
-                webcam.stopStreaming();
+                hardware.webcam.stopStreaming();
             }
 
-            if (gamepad1.a) {
-
-                webcam.saveImage();
+            if (gamepad1.x) {
+                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                pipeline.saveImage();
             }
 
+            hardware.loop();
             sleep(100);
         }
     }

@@ -61,7 +61,7 @@ public class CVPipelineSignal extends OpenCvPipeline {
         counter++;
 
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
-        croppedIMG = input.submat(130, 465, 475, 815);
+        croppedIMG = input.submat(121, 393, 450, 785);
 
         Imgproc.cvtColor(croppedIMG, mat, Imgproc.COLOR_BGR2HSV);
 
@@ -98,20 +98,19 @@ public class CVPipelineSignal extends OpenCvPipeline {
         telemetry.addData("Green Percent: ", greenPercent);
         telemetry.addData("Yellow Percent: ", yellowPercent);
 
-        if ((0.045 > greenPercent) && (greenPercent > 0.02)) {
+        if ((0.07 > greenPercent) && (greenPercent > 0.02)) {
             telemetry.addLine("Green Image Selected");
             highImg = greenIMG;
             conePosition = 1;
-        }else if ((0.045 > purplePercent) && (purplePercent > 0.02)) {
+        }else if ((0.07 > purplePercent) && (purplePercent > 0.02)) {
             telemetry.addLine("Purple Image Selected");
             highImg = purpleIMG;
             conePosition = 3;
+        } else if ((0.07 > yellowPercent) && (yellowPercent > 0.02)) {
+            telemetry.addLine("Yellow Image Selected");
+            highImg = yellowIMG;
+            conePosition = 2;
         }
-//         else if ((0.045 > yellowPercent) && (yellowPercent > 0.02)) {
-//            telemetry.addLine("Yellow Image Selected");
-//            highImg = yellowIMG;
-//            conePosition = 2;
-//        }
         else {
             telemetry.addLine("No Image Selected");
             highImg = croppedIMG;

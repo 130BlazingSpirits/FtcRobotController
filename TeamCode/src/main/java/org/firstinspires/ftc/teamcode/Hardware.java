@@ -208,7 +208,7 @@ public class Hardware {
         webcamPipeline = new CVPipelineSignal(opMode.telemetry);
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-//        webcam.setPipeline(webcamPipeline);
+        webcam.setPipeline(webcamPipeline);
 //        if(opMode instanceof Auto2223){
 //            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
 //                @Override

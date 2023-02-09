@@ -104,7 +104,7 @@ public class WebcamExample extends LinearOpMode
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPSIDE_DOWN);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -254,7 +254,7 @@ public class WebcamExample extends LinearOpMode
              */
 
             Imgproc.cvtColor(input,input,Imgproc.COLOR_BGRA2BGR);
-            croppedIMG = input.submat(130,465,475,815);
+            croppedIMG = input.submat(121, 393, 501, 735);
 
             Imgproc.cvtColor(croppedIMG,mat,Imgproc.COLOR_BGR2HSV);
 
