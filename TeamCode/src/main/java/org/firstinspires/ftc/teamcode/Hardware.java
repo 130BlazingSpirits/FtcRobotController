@@ -254,11 +254,10 @@ public class Hardware {
         motorRFront = hwMap.get(DcMotorEx.class, "motorRFront");
 //        motorRBack = hwMap.get(DcMotorEx.class, "motorRBack");
         motorRBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
-        motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorLBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorRBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorLBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        motorRBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motorLFront.setDirection(DcMotor.Direction.REVERSE);
         motorLBack.setDirection(DcMotor.Direction.REVERSE);
         motorRFront.setDirection(DcMotor.Direction.FORWARD);

@@ -72,54 +72,54 @@ public class Auto2223 extends OpMode {
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90.0, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }else{      //Right Position
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90.0, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 hardware.lift.goMin();
                 commandsGrabbed = true;
@@ -129,75 +129,75 @@ public class Auto2223 extends OpMode {
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90.0, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
 
                 }else{      //Right Position
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90.0, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCClaw(hardware,3,false));
                     hardware.robo130.addCommand(new RCWait(hardware,1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 if(!isLeftStartingPos && conePlacement == 1){
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 else if(!isLeftStartingPos && conePlacement == 3){
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,-24,0.5));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 else if(isLeftStartingPos && conePlacement == 1){
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,-24,0.5));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 else if(isLeftStartingPos && conePlacement == 3){
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                     hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.3));
+                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
                 }
                 hardware.lift.goMin();
                 commandsGrabbed = true;
