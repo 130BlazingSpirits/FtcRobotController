@@ -63,23 +63,12 @@ public class Auto2223 extends OpMode {
 
     @Override
     public void loop() {
-        if(firstRun){
-            firstRun = false;
-            secondRun = true;
-            startTime = hardware.getCurrentTime();
-        }
-        if(secondRun && (Math.abs(hardware.getCurrentTime() - startTime) > 1.0)){
-            hardware.lift.goToLow();
-            startTime = hardware.getCurrentTime();
-            secondRun = false;
-        }
         hardware.updateValues();
         hardware.loop();
 
-        if(!commandsGrabbed && !firstRun && !secondRun){
-            if(Math.abs(time - startTime) > 10.0){
+        if(!commandsGrabbed){
+            if(!hardware.webcamPipeline.isFrameSelected()){
                 //skip camera
-                hardware.lift.goMin();
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
@@ -132,10 +121,10 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
                     hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
+                hardware.lift.goMin();
                 commandsGrabbed = true;
-                hardware.webcam.stopStreaming();
             }
-            else if(hardware.webcamPipeline.isFrameSelected() && ((hardware.getCurrentTime()-startTime)>3.0)){
+            else if(hardware.webcamPipeline.isFrameSelected()){
                 conePlacement = hardware.webcamPipeline.getConePosition();
                 if(isLeftStartingPos){      //Left Position
                     hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
@@ -210,9 +199,8 @@ public class Auto2223 extends OpMode {
                     hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
                     hardware.robo130.addCommand(new RCWait(hardware,0.3));
                 }
-                commandsGrabbed = true;
-                hardware.webcam.stopStreaming();
                 hardware.lift.goMin();
+                commandsGrabbed = true;
             }
         }
 
@@ -229,6 +217,7 @@ public class Auto2223 extends OpMode {
     }
 
     public void start(){
+        hardware.webcam.stopStreaming();
         hardware.claw.open();
         hardware.updateValues();
         hardware.logMessage(false, "Auto2223", "Start Button Pressed");
