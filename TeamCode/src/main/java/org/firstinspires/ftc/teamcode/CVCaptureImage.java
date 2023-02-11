@@ -11,6 +11,11 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class CVCaptureImage extends OpenCvPipeline {
     public Telemetry telemetry;
     public OpMode opMode;
@@ -33,7 +38,9 @@ public class CVCaptureImage extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         if (firstRun) {
             firstRun = false;
-            saveMatToDiskFullPath(input, path + "Image" + hardware.getCurrentTime() + ".jpg");
+            DateFormat sdf = new SimpleDateFormat("yyyyMMdd HHmmss ", Locale.US);
+            Date dateNow = new Date();
+            saveMatToDiskFullPath(input, path + "Image" + sdf.format(dateNow) + ".jpg");
         }
         mat = input;
         return input;
