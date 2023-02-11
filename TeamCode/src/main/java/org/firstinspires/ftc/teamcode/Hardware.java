@@ -365,6 +365,8 @@ public class Hardware {
 
                 + "liftHomeButton,"
 
+                + "servoPosition, "
+
                 +"yellow percentage,"
                 +"purple percentage,"
                 +"green percentage,"
@@ -470,6 +472,8 @@ public class Hardware {
                     liftMotor.getVelocity(),
 
                     liftHomeButton.isPressed()?1.0:0.0,
+
+                    clawServo.getPosition(),
 
                     webcamPipeline.yellowPercent,
                     webcamPipeline.purplePercent,

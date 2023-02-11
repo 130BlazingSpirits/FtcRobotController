@@ -42,7 +42,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @TeleOp
 public class CaptureImage extends LinearOpMode {
     private Hardware hardware = new Hardware();
-    CVCaptureImage pipeline = new CVCaptureImage(telemetry, this, hardware);
+    CVLocateClosestJunction pipeline = new CVLocateClosestJunction(telemetry, this, hardware);
 
     @Override
     public void runOpMode() {
@@ -86,10 +86,10 @@ public class CaptureImage extends LinearOpMode {
                 hardware.webcam.stopStreaming();
             }
 
-            if (gamepad1.x) {
-                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-                pipeline.saveImage();
-            }
+//            if (gamepad1.x) {
+//                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+//                pipeline.saveImage();
+//            }
 
             hardware.loop();
             sleep(100);
