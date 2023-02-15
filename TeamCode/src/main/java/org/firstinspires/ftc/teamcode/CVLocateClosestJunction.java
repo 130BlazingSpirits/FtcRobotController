@@ -20,6 +20,7 @@ public class CVLocateClosestJunction extends OpenCvPipeline {
     public Hardware hardware;
 
     private Mat hsvImage = new Mat();
+    private Mat croppedIMG = new Mat();
     private Mat mask = new Mat();
     private Mat finalImg = new Mat();
 
@@ -31,24 +32,39 @@ public class CVLocateClosestJunction extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-
         //Convert To HSV
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
-        Imgproc.cvtColor(input, hsvImage, Imgproc.COLOR_BGR2HSV);
+        croppedIMG = input.submat(0, 20, 0, 1279);
+        Imgproc.cvtColor(croppedIMG, hsvImage, Imgproc.COLOR_BGR2HSV);
 
         //Mask Out Yellow
-        Scalar yellowLowHSV = new Scalar(16, 155, 50);
-        Scalar yellowHighHSV = new Scalar(26, 255, 255);
+        Scalar yellowLowHSV = new Scalar(94, 155, 50);
+        Scalar yellowHighHSV = new Scalar(104, 255, 255);
         Core.inRange(hsvImage, yellowLowHSV, yellowHighHSV, mask);
 
         //Finding Contours
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchey = new Mat();
         Imgproc.findContours(mask, contours, hierarchey, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
         //Drawing Contours
         Scalar color = new Scalar(0, 0, 255);
-        Imgproc.drawContours(finalImg, contours, -1, color, 2, Imgproc.LINE_8, hierarchey, 2, new Point() ) ;
+        Imgproc.drawContours(mask, contours, -1, color, 2, Imgproc.LINE_8, hierarchey, 2, new Point() ) ;
 
-        return finalImg;
+//        double maxVal = 0;
+//        int maxValIdx = 0;
+//        for (int contourIdx = 0; contourIdx < contours.size(); contourIdx++)
+//        {
+//            double contourArea = Imgproc.contourArea(contours.get(contourIdx));
+//            if (maxVal < contourArea)
+//            {
+//                maxVal = contourArea;
+//                maxValIdx = contourIdx;
+//            }
+//        }
+//
+//        Imgproc.drawContours(finalImg, contours, maxValIdx, new Scalar(0,255,0), 15);
+
+        return mask;
     }
 }
