@@ -34,6 +34,7 @@ public class RCFindClosestJunction extends RobCommand {
             @Override
             public void onOpened() {
                 hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+                hardware.logMessage(false, "RCFindClosestJunction", "Stream Opened");
             }
 
             @Override
@@ -47,6 +48,7 @@ public class RCFindClosestJunction extends RobCommand {
     public boolean isComplete() {
 
         if (hardware.getCurrentTime() - startTime > timeout) {
+            hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, Could Not Complete");
             hardware.webcam.stopStreaming();
             return true;
         }
@@ -76,6 +78,8 @@ public class RCFindClosestJunction extends RobCommand {
             case DRIVETOJUNCTION:
                 if (Math.abs(hardware.motorLFront.getCurrentPosition() - targPosLF) < 15) {
                     hardware.logMessage(false, "RCFindClosestJunction", "Command Complete, at requested position");
+                    hardware.webcam.stopStreaming();
+                    hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, At Correct Placement");
                     return true;
                 }
                 break;
