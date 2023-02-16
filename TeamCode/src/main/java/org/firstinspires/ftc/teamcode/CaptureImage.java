@@ -42,7 +42,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @TeleOp
 public class CaptureImage extends LinearOpMode {
     private Hardware hardware = new Hardware();
-    CVLocateClosestJunction pipeline = new CVLocateClosestJunction(telemetry, this, hardware);
+    CVCaptureImage pipeline = new CVCaptureImage(telemetry, this, hardware);
 
     @Override
     public void runOpMode() {
@@ -81,11 +81,6 @@ public class CaptureImage extends LinearOpMode {
             telemetry.addData("Theoretical max FPS", hardware.webcam.getCurrentPipelineMaxFps());
 
             //ONLY FOR JUNCTION PIPELINE
-            telemetry.addData("Left",pipeline.left);
-            telemetry.addData("Right",pipeline.right);
-            telemetry.addData("Center",pipeline.center);
-            telemetry.addData("Width",pipeline.width);
-
             telemetry.update();
             hardware.loop();
             sleep(100);
