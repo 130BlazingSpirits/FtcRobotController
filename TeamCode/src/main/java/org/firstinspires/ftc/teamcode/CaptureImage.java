@@ -79,18 +79,14 @@ public class CaptureImage extends LinearOpMode {
             telemetry.addData("Pipeline time ms", hardware.webcam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", hardware.webcam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", hardware.webcam.getCurrentPipelineMaxFps());
+
+            //ONLY FOR JUNCTION PIPELINE
+            telemetry.addData("Left",pipeline.left);
+            telemetry.addData("Right",pipeline.right);
+            telemetry.addData("Center",pipeline.center);
+            telemetry.addData("Width",pipeline.width);
+
             telemetry.update();
-
-            if (hardware.gamepad1_current_a && !hardware.gamepad1_previous_a) {
-
-                hardware.webcam.stopStreaming();
-            }
-
-//            if (gamepad1.x) {
-//                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-//                pipeline.saveImage();
-//            }
-
             hardware.loop();
             sleep(100);
         }

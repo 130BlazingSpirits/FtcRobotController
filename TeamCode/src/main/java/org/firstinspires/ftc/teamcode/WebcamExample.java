@@ -44,7 +44,7 @@ public class WebcamExample extends LinearOpMode
 {
     OpenCvWebcam webcam;
 
-    SamplePipeline pipeline = new SamplePipeline();
+    CVLocateClosestJunction pipeline = new CVLocateClosestJunction(telemetry, this);
 
     @Override
     public void runOpMode()
@@ -136,6 +136,15 @@ public class WebcamExample extends LinearOpMode
             telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
+
+            //ONLY FOR JUNCTION PIPELINE
+            telemetry.addData("Left",pipeline.left);
+            telemetry.addData("Right",pipeline.right);
+            telemetry.addData("Center",pipeline.center);
+            telemetry.addData("Width",pipeline.width);
+            telemetry.addData("Estimated Distance", pipeline.estimatedDistance);
+            telemetry.addData("Estimated Angle", pipeline.estimatedAngle);
+            telemetry.addData("Desired Center",pipeline.desiredCenterLocation);
             telemetry.update();
 
             /*
