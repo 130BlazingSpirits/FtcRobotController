@@ -13,6 +13,7 @@ public class RCFindClosestJunction extends RobCommand {
     private CVLocateClosestJunction pipeline = null;
     private double startTime = 0.0;
     private double timeout = 0.0;
+    private double startOfDriveDelayTime = -1.0;
 
     public double power = 0.5; //50% Speed
     public int targPosLF = 0;
@@ -71,23 +72,37 @@ public class RCFindClosestJunction extends RobCommand {
 
             case ROTATETOJUNCTION:
                 if (Math.abs(hardware.motorLFront.getCurrentPosition() - targPosLF) < 15) {
-                    hardware.logMessage(false, "RCFindClosestJunction", "Rotate Complete, at requested position");
-                    if (pipeline.estimatedAngle > 15) { //Check if angle is close
-                        hardware.logMessage(false, "RCFindClosestJunction", "Driving To Junction");
-                        state = DRIVETOJUNCTION;
-                        runDrive(pipeline.estimatedDistance - 5.5);
-                    } else { //Wrong Angle
-                        state = FINDCLOSEJUNCTION;
+                    if(startOfDriveDelayTime < 0.0){
+                        startOfDriveDelayTime = hardware.getCurrentTime();
+                        hardware.logMessage(false, "RCFindClosestJunction", "Start of after rotation delay");
+                    }
+                    else if((hardware.getCurrentTime() - startOfDriveDelayTime) > .200) {
+                        hardware.logMessage(false, "RCFindClosestJunction", "Rotate Complete, at requested position");
+                        startOfDriveDelayTime = -1.0;
+                        if (Math.abs(pipeline.estimatedAngle) < 2.0) { //Check if angle is close
+                            hardware.logMessage(false, "RCFindClosestJunction", "Driving To Junction");
+                            state = DRIVETOJUNCTION;
+                            runDrive(pipeline.estimatedDistance - 5.5);
+                        } else { //Wrong Angle
+                            state = FINDCLOSEJUNCTION;
+                        }
                     }
                 }
                 break;
 
             case DRIVETOJUNCTION:
                 if (Math.abs(hardware.motorLFront.getCurrentPosition() - targPosLF) < 15) {
-                    hardware.logMessage(false, "RCFindClosestJunction", "Command Complete, at requested position");
-                    hardware.webcam.stopStreaming();
-                    hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, At Correct Placement");
-                    return true;
+                    if(startOfDriveDelayTime < 0.0){
+                        startOfDriveDelayTime = hardware.getCurrentTime();
+                        hardware.logMessage(false, "RCFindClosestJunction", "Start of after driveforward delay");
+                    }
+                    else if((hardware.getCurrentTime() - startOfDriveDelayTime) > .300) {
+                        hardware.logMessage(false, "RCFindClosestJunction", "Command Complete, at requested position");
+                        startOfDriveDelayTime = -1.0;
+                        hardware.webcam.stopStreaming();
+                        hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, At Correct Placement");
+                        return true;
+                    }
                 }
                 break;
         }
@@ -95,7 +110,7 @@ public class RCFindClosestJunction extends RobCommand {
     }
 
     public void runRotate(double rotateBy) {
-        hardware.logMessage(false, "RCFindClosestJunction", "Starting Rotation" + rotateBy);
+        hardware.logMessage(false, "RCFindClosestJunction", "Starting Rotation " + rotateBy);
 
         int currPosLF = hardware.motorLFront.getCurrentPosition();
         int currPosLB = hardware.motorLBack.getCurrentPosition();
