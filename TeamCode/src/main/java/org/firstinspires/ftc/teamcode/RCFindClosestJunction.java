@@ -57,6 +57,13 @@ public class RCFindClosestJunction extends RobCommand {
             case FINDCLOSEJUNCTION:
                 if (pipeline.estimatedAngle > -999) {
                     hardware.logMessage(false, "RCFindClosestJunction", "Junction Found");
+                    hardware.logMessage(false, "RCFindClosestJunction","left=" + pipeline.left);
+                    hardware.logMessage(false, "RCFindClosestJunction","right=" + pipeline.right);
+                    hardware.logMessage(false, "RCFindClosestJunction","center=" + pipeline.center);
+                    hardware.logMessage(false, "RCFindClosestJunction","width=" + pipeline.width);
+                    hardware.logMessage(false, "RCFindClosestJunction","estimated distance=" + pipeline.estimatedDistance);
+                    hardware.logMessage(false, "RCFindClosestJunction","estimated angle=" + pipeline.estimatedAngle);
+                    hardware.logMessage(false, "RCFindClosestJunction","desired center location=" + pipeline.desiredCenterLocation);
                     state = ROTATETOJUNCTION;
                     runRotate(-1 * pipeline.estimatedAngle);
                 }

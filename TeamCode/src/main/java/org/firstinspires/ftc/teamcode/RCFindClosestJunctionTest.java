@@ -10,6 +10,7 @@ public class RCFindClosestJunctionTest extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private Hardware hardware = new Hardware();
+    private CVLocateClosestJunction closestJunctionPipeline = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -40,6 +41,8 @@ public class RCFindClosestJunctionTest extends OpMode {
         runtime.reset();
         hardware.updateValues();
 
+        closestJunctionPipeline = new CVLocateClosestJunction(telemetry,this);
+
         hardware.logMessage(false, "MyFirstJava", "Start Button Pressed");
         super.start();
         hardware.start();
@@ -53,7 +56,7 @@ public class RCFindClosestJunctionTest extends OpMode {
         hardware.updateValues();
 
         if(hardware.gamepad1_current_a && !hardware.gamepad1_previous_a){
-            hardware.robo130.addCommand(new RCFindClosestJunction(hardware,new CVLocateClosestJunction(telemetry,this),15.0));
+            hardware.robo130.addCommand(new RCFindClosestJunction(hardware, closestJunctionPipeline,15.0));
         }
 
         hardware.robo130.processCommands();
@@ -62,6 +65,13 @@ public class RCFindClosestJunctionTest extends OpMode {
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
+        telemetry.addData("left", closestJunctionPipeline.left);
+        telemetry.addData("right", closestJunctionPipeline.right);
+        telemetry.addData("center", closestJunctionPipeline.center);
+        telemetry.addData("width", closestJunctionPipeline.width);
+        telemetry.addData("estimated distance", closestJunctionPipeline.estimatedDistance);
+        telemetry.addData("estimated angle", closestJunctionPipeline.estimatedAngle);
+        telemetry.addData("desired center location", closestJunctionPipeline.desiredCenterLocation);
         telemetry.update();
     }
 

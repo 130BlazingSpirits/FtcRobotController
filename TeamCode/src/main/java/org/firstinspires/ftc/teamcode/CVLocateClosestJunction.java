@@ -28,13 +28,13 @@ public class CVLocateClosestJunction extends OpenCvPipeline {
     private Rect maxContourRect = new Rect();
     private Mat contourImg = new Mat();
 
-    public int left = 0;
-    public int right = 0;
-    public int center = 0;
-    public int width = 0;
-    public double estimatedDistance = 0.0;
-    public double estimatedAngle = 0.0;
-    public int desiredCenterLocation = 0;
+    public int left = -1;
+    public int right = -1;
+    public int center = -1;
+    public int width = -1;
+    public double estimatedDistance = -999.0;
+    public double estimatedAngle = -999.0;
+    public int desiredCenterLocation = -1;
 
 
 
@@ -94,9 +94,11 @@ public class CVLocateClosestJunction extends OpenCvPipeline {
             right = maxContourRect.x + maxContourRect.width;
             width = maxContourRect.width;
             center = (left + right)/2;
-            estimatedDistance = 0.0018732823 * (width*width) - 0.4939630727 * width + 38.6729349358;
-            desiredCenterLocation = (int)(-0.0323989007 * (width*width) + 10.2385048305 * width + 180.1241663228);
-            estimatedAngle = (double)(center - desiredCenterLocation)/1280 * -78.0;
+            //estimatedDistance = 0.0018732823 * (width*width) - 0.4939630727 * width + 38.6729349358;
+            estimatedDistance = .0006622072 * (width*width) - .240561245 * width + 25.8748736663;
+            //desiredCenterLocation = (int)(-0.0323989007 * (width*width) + 10.2385048305 * width + 180.1241663228);
+            desiredCenterLocation = (int)(-.0073060143 * (width*width) + 5.7746287493 * width + 355.7881145247);
+            estimatedAngle = (double)(center - desiredCenterLocation)/1280 * 78.0;
         }
         else{
             left = -1;
