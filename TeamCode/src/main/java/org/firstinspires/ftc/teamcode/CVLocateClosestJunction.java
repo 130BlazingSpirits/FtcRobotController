@@ -101,15 +101,20 @@ public class CVLocateClosestJunction extends OpenCvPipeline {
             estimatedAngle = (double)(center - desiredCenterLocation)/1280 * 78.0;
         }
         else{
-            left = -1;
-            right = -1;
-            width = -1;
-            center = -1;
-            estimatedDistance = -999;
-            desiredCenterLocation = -1;
-            estimatedAngle = -999;
+            resetPipeline();
         }
 
         return contourImg;
+    }
+
+    public void resetPipeline(){
+//        hardware.logMessage(false,"CVLocateClosestJunction","Reset Pipeline Called");
+        left = -1;
+        right = -1;
+        width = -1;
+        center = -1;
+        estimatedDistance = -999;
+        desiredCenterLocation = -1;
+        estimatedAngle = -999;
     }
 }

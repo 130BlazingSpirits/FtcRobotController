@@ -4,11 +4,18 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class RCFindClosestJunction extends RobCommand {
     private final int FINDCLOSEJUNCTION = 0;
     private final int ROTATETOJUNCTION = 1;
     private final int DRIVETOJUNCTION = 2;
+    private final int FINISHED = 3;
     private int state = FINDCLOSEJUNCTION;
+
+//    List<String> states = new ArrayList<String>()("FINDCLOSEJUNCTION", "ROTATETOJUNCTION", "DRIVETOJUNCTION"};
 
     private CVLocateClosestJunction pipeline = null;
     private double startTime = 0.0;
@@ -20,16 +27,24 @@ public class RCFindClosestJunction extends RobCommand {
     public int targPosLB = 0;
     public int targPosRF = 0;
     public int targPosRB = 0;
+    private boolean isFinished = false;
+
+    private boolean finishedRunCommand = false;
+
 
     public RCFindClosestJunction(Hardware hardware, CVLocateClosestJunction pipeline, double timeout) {
         this.hardware = hardware;
         this.pipeline = pipeline;
         this.timeout = timeout;
+        finishedRunCommand = false;
     }
 
     public void run() {
+        state = FINDCLOSEJUNCTION;
+
         startTime = hardware.getCurrentTime();
 
+        pipeline.resetPipeline();
         hardware.webcam.setPipeline(pipeline);
         hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -37,16 +52,26 @@ public class RCFindClosestJunction extends RobCommand {
                 hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
                 hardware.logMessage(false, "RCFindClosestJunction", "Stream Opened");
             }
-
             @Override
             public void onError(int errorCode) {
+                hardware.logMessage(true,"RCFindClosestJunction","Camera Could Not Be Opened");
             }
         });
+
         hardware.logMessage(false, "RCFindClosestJunction", "Starting Check For Junctions");
+
+        finishedRunCommand = true;
     }
 
     @Override
     public boolean isComplete() {
+        hardware.logMessage(false,"RCFindClosestJunction","Current State: " + state);
+        hardware.logMessage(false, "RCFindClosestJunction","estimated angle=" + pipeline.estimatedAngle);
+        hardware.logMessage(false,"RCFindClosestJunction", "startOfDriveDelay: " + startOfDriveDelayTime);
+
+        if(!finishedRunCommand){
+            return false;
+        }
 
         if (hardware.getCurrentTime() - startTime > timeout) {
             hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, Could Not Complete");
@@ -96,13 +121,19 @@ public class RCFindClosestJunction extends RobCommand {
                         startOfDriveDelayTime = hardware.getCurrentTime();
                         hardware.logMessage(false, "RCFindClosestJunction", "Start of after driveforward delay");
                     }
-                    else if((hardware.getCurrentTime() - startOfDriveDelayTime) > .300) {
+                    else if((hardware.getCurrentTime() - startOfDriveDelayTime) > .200) {
                         hardware.logMessage(false, "RCFindClosestJunction", "Command Complete, at requested position");
                         startOfDriveDelayTime = -1.0;
                         hardware.webcam.stopStreaming();
                         hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, At Correct Placement");
-                        return true;
+                        isFinished = true;
                     }
+                }
+                break;
+
+            case FINISHED:
+                if(isFinished){
+                    return true;
                 }
                 break;
         }
