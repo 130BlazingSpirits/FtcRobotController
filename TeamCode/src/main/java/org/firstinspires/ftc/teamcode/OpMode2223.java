@@ -33,6 +33,7 @@ public class OpMode2223 extends OpMode {
 
     @Override
     public void init() {
+        System.gc();
 
         hardware.init(hardwareMap, this);
         hardware.driveTrain.setSpeedMode();

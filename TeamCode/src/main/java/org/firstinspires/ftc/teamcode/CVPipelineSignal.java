@@ -36,6 +36,8 @@ public class CVPipelineSignal extends OpenCvPipeline {
     public double greenPercent = 0;
     public double yellowPercent = 0;
 
+    private int frame = 0;
+
     public CVPipelineSignal(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
@@ -51,6 +53,12 @@ public class CVPipelineSignal extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+        frame ++;
+
+        if(frame %40 == 0){
+            System.gc();
+        }
+
         croppedIMG.release();
         highImg.release();
         mat.release();
