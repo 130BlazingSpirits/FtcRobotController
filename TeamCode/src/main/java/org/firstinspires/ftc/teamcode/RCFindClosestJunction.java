@@ -30,6 +30,7 @@ public class RCFindClosestJunction extends RobCommand {
     private boolean isFinished = false;
 
     private boolean finishedRunCommand = false;
+    private double finishTime = 0.0;
 
 
     public RCFindClosestJunction(Hardware hardware, CVLocateClosestJunction pipeline, double timeout) {
@@ -44,7 +45,7 @@ public class RCFindClosestJunction extends RobCommand {
 
         startTime = hardware.getCurrentTime();
 
-        pipeline.resetPipeline();
+//        pipeline.resetPipeline();
         hardware.webcam.setPipeline(pipeline);
         hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -76,7 +77,8 @@ public class RCFindClosestJunction extends RobCommand {
         if (hardware.getCurrentTime() - startTime > timeout) {
             hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, Could Not Complete");
             hardware.webcam.stopStreaming();
-            return true;
+            finishTime = hardware.getCurrentTime();
+            isFinished = true;
         }
 
         switch (state) {
@@ -127,12 +129,15 @@ public class RCFindClosestJunction extends RobCommand {
                         hardware.webcam.stopStreaming();
                         hardware.logMessage(false, "RCFindClosestJunction", "Stream Closed, At Correct Placement");
                         isFinished = true;
+                        finishTime = hardware.getCurrentTime();
+                        state = FINISHED;
                     }
                 }
                 break;
 
             case FINISHED:
-                if(isFinished){
+                if(isFinished && (hardware.getCurrentTime() - finishTime > 2.0)){
+                    hardware.logMessage(false, "RCFindClosestJunction", "Command Finished, Returning True");
                     return true;
                 }
                 break;
