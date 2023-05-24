@@ -100,14 +100,14 @@ public class LynxModuleUtil {
      */
     public static void ensureMinimumFirmwareVersion(HardwareMap hardwareMap) {
         Map<String, LynxFirmwareVersion> outdatedModules = new HashMap<>();
-//        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
-//            LynxFirmwareVersion version = getFirmwareVersion(module);
-//            if (version == null || version.compareTo(MIN_VERSION) < 0) {
-//                for (String name : hardwareMap.getNamesOf(module)) {
-//                    outdatedModules.put(name, version);
-//                }
-//            }
-//        }
+        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+            LynxFirmwareVersion version = getFirmwareVersion(module);
+            if (version == null || version.compareTo(MIN_VERSION) < 0) {
+                for (String name : hardwareMap.getNamesOf(module)) {
+                    outdatedModules.put(name, version);
+                }
+            }
+        }
         if (outdatedModules.size() > 0) {
             StringBuilder msgBuilder = new StringBuilder();
             msgBuilder.append("One or more of the attached Lynx modules has outdated firmware\n");

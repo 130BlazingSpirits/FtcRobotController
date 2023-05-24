@@ -116,11 +116,11 @@ public class ConceptTelemetry extends LinearOpMode  {
          *
          * @see Telemetry#getMsTransmissionInterval()
          */
-//        telemetry.addData("voltage", "%.1f volts", new Func<Double>() {
-//            @Override public Double value() {
-//                return getBatteryVoltage();
-//            }
-//            });
+        telemetry.addData("voltage", "%.1f volts", new Func<Double>() {
+            @Override public Double value() {
+                return getBatteryVoltage();
+            }
+            });
 
         // Reset to keep some timing stats for the post-'start' part of the opmode
         opmodeRunTime.reset();
@@ -165,14 +165,14 @@ public class ConceptTelemetry extends LinearOpMode  {
     }
 
     // Computes the current battery voltage
-//    double getBatteryVoltage() {
-//        double result = Double.POSITIVE_INFINITY;
-//        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
-//            double voltage = sensor.getVoltage();
-//            if (voltage > 0) {
-//                result = Math.min(result, voltage);
-//            }
-//        }
-//        return result;
-//    }
+    double getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        for (VoltageSensor sensor : hardwareMap.voltageSensor) {
+            double voltage = sensor.getVoltage();
+            if (voltage > 0) {
+                result = Math.min(result, voltage);
+            }
+        }
+        return result;
+    }
 }

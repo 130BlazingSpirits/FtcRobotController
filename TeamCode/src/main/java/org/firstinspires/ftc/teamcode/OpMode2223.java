@@ -1,16 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @TeleOp(name="OpMode 2223", group="A")
 public class OpMode2223 extends OpMode {
     private Hardware hardware = new Hardware();
-    private MecanumDriveTrain drive = new MecanumDriveTrain(hardwareMap,hardware);
+
     private static final double STRAFE_POWER = 0.50;
     private double prevLPower = 0.0;
     private double prevRPower = 0.0;
@@ -166,72 +164,70 @@ public class OpMode2223 extends OpMode {
             hardware.driveTrain.tileTurnCW();
         }
 
-//        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
-//            // Sliiide to the left!
-//            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
-//            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
-//        } else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
-//            // Sliiide to the right!
-//            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
-//            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
-//        }
+        if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+            // Sliiide to the left!
+            hardware.driveTrain.goLeft(STRAFE_POWER); //TODO SWITCH THIS WITH BELOW ASAP!!!!!!
+            //hardware.driveTrain.goSpeedLeft(STRAFE_POWER);
+        } else if (hardware.driveTrain.isMecanum && hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
+            // Sliiide to the right!
+            hardware.driveTrain.goRight(STRAFE_POWER); //TODO SWITCH THIS WITH ABOVE ASAP!!!!!!
+            //hardware.driveTrain.goSpeedRight(STRAFE_POWER);
+        }
         /*else if (((hardware.gamepad1_previous_right_bumper) && (!hardware.gamepad1_current_right_bumper))
                 || (((hardware.gamepad1_previous_left_bumper) && (!hardware.gamepad1_current_left_bumper)))){
             hardware.driveTrain.stopMotors();
         }*/
 
-//        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper) {
-//            // Tank drive! *doomph! doomph!
-//            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
-//            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
-//            if (hardware.driveTrain.isTank) {
-//                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
-//                desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
-//            } else if ((Math.abs(game1RightX) < 0.02) && (Math.abs(game1LeftY) > 0.02)) { //non tank drive + no rotation
-//                isCurrentManualDrive = true;
-//                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
-//                desiredRPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
-//            } else if (Math.abs(game1RightX) > .02 && Math.abs(game1LeftY) < .02) { //non tank drive + no forward
-//                isCurrentManualDrive = true;
-//                desiredLPower = (-1.0 * Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
-//                desiredRPower = (Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
-//            }
-//
-//            if (Math.abs(desiredLPower) < 0.02) {
-//                targetLPower = 0.0;
-//                isCurrentManualDrive = false;
-//            } else {
-//                targetLPower = desiredLPower;
-//            }
-//
-//            if (Math.abs(desiredRPower) < 0.02) {
-//                targetRPower = 0.0;
-//                isCurrentManualDrive = false;
-//            } else {
-//                targetRPower = desiredRPower;
-//            }
-//
-//            //hardware.driveTrain.goTankDrive(targetLPower, targetRPower);  //pre 2023 drive command using speed control
-//            if(!(hardware.robo130.getCurrentCommand() instanceof RCDriveCommand)){
-//                hardware.driveTrain.goTankPositionDrive(targetLPower, targetRPower, !(!isPreviousManualDrive && isCurrentManualDrive));
-//            }
-//            isPreviousManualDrive = isCurrentManualDrive;
-//        }
+        else if (!hardware.gamepad1_current_left_bumper && !hardware.gamepad1_current_right_bumper) {
+            // Tank drive! *doomph! doomph!
+            //targetLPower = Math.pow(-game1LeftY,3)/Math.abs(game1LeftY);
+            //targetRPower = Math.pow(-game1RightY, 3)/Math.abs(game1RightY);
+            if (hardware.driveTrain.isTank) {
+                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+                desiredRPower = (Math.pow(-game1RightY, 3) / Math.abs(game1RightY));
+            } else if ((Math.abs(game1RightX) < 0.02) && (Math.abs(game1LeftY) > 0.02)) { //non tank drive + no rotation
+                isCurrentManualDrive = true;
+                desiredLPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+                desiredRPower = (Math.pow(-game1LeftY, 3) / Math.abs(game1LeftY));
+            } else if (Math.abs(game1RightX) > .02 && Math.abs(game1LeftY) < .02) { //non tank drive + no forward
+                isCurrentManualDrive = true;
+                desiredLPower = (-1.0 * Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
+                desiredRPower = (Math.pow(-game1RightX, 3) / Math.abs(game1RightX));
+            }
 
-//        if (gamepad2.dpad_left) {
-//
-//        }
-//
-//        // Gas Pedal
-//        if (hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
-//            hardware.driveTrain.setGasPedalPower(1.0);
-//        } else if (hardware.gamepad1_current_left_trigger > 0.5) {
-//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
-//        } else if (hardware.gamepad1_current_right_trigger > 0.5) {
-//            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
-//        }
+            if (Math.abs(desiredLPower) < 0.02) {
+                targetLPower = 0.0;
+                isCurrentManualDrive = false;
+            } else {
+                targetLPower = desiredLPower;
+            }
 
-        drive.setWeightedDrivePower(new Pose2d(hardware.gamepad1_current_left_stick_x, -hardware.gamepad1_current_left_stick_y, -hardware.gamepad1_current_right_stick_x));
+            if (Math.abs(desiredRPower) < 0.02) {
+                targetRPower = 0.0;
+                isCurrentManualDrive = false;
+            } else {
+                targetRPower = desiredRPower;
+            }
+
+            //hardware.driveTrain.goTankDrive(targetLPower, targetRPower);  //pre 2023 drive command using speed control
+            if(!(hardware.robo130.getCurrentCommand() instanceof RCDriveCommand)){
+                hardware.driveTrain.goTankPositionDrive(targetLPower, targetRPower, !(!isPreviousManualDrive && isCurrentManualDrive));
+            }
+            isPreviousManualDrive = isCurrentManualDrive;
+        }
+
+        if (gamepad2.dpad_left) {
+
+        }
+
+        // Gas Pedal
+        if (hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
+            hardware.driveTrain.setGasPedalPower(1.0);
+        } else if (hardware.gamepad1_current_left_trigger > 0.5) {
+            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
+        } else if (hardware.gamepad1_current_right_trigger > 0.5) {
+            hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
+        }
 
         //Commands
         if(hardware.gamepad1_current_x && !hardware.gamepad1_previous_x){

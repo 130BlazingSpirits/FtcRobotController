@@ -21,7 +21,6 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -71,7 +70,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
-    private DcMotorEx motorLFront, motorLBack, motorRBack, motorRFront;
+    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
 
     private IMU imu;
@@ -88,11 +87,11 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 
-//        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-//        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
-//            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-//        }
+        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
+            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
         imu = hardwareMap.get(IMU.class, "imu");
@@ -100,12 +99,12 @@ public class SampleMecanumDrive extends MecanumDrive {
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
 
-        motorLFront = hardwareMap.get(DcMotorEx.class, "motorLFront");
-        motorLBack = hardwareMap.get(DcMotorEx.class, "motorLBack");
-        motorRBack = hardwareMap.get(DcMotorEx.class, "motorRBack");
-        motorRFront = hardwareMap.get(DcMotorEx.class, "motorRFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
 
-        motors = Arrays.asList(motorLFront, motorLBack, motorRBack, motorRFront);
+        motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
@@ -124,10 +123,6 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        motorLFront.setDirection(DcMotor.Direction.REVERSE);
-        motorLBack.setDirection(DcMotor.Direction.REVERSE);
-        motorRFront.setDirection(DcMotor.Direction.FORWARD);
-        motorRBack.setDirection(DcMotor.Direction.FORWARD);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -287,10 +282,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
-        motorLFront.setPower(v);
-        motorLBack.setPower(v1);
-        motorRBack.setPower(v2);
-        motorRFront.setPower(v3);
+        leftFront.setPower(v);
+        leftRear.setPower(v1);
+        rightRear.setPower(v2);
+        rightFront.setPower(v3);
     }
 
     @Override
