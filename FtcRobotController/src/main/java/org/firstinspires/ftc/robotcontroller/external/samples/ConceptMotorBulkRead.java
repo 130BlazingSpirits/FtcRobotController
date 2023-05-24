@@ -108,7 +108,7 @@ public class ConceptMotorBulkRead extends LinearOpMode {
         m4 = hardwareMap.get(DcMotorEx.class, "m4");
 
         // Important Step 2: Get access to a list of Expansion Hub Modules to enable changing caching methods.
-        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+//        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
         ElapsedTime timer = new ElapsedTime();
 
@@ -152,9 +152,9 @@ public class ConceptMotorBulkRead extends LinearOpMode {
         // --------------------------------------------------------------------------------------
 
         // Important Step 3: Option A. Set all Expansion hubs to use the AUTO Bulk Caching mode
-        for (LynxModule module : allHubs) {
-            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-        }
+//        for (LynxModule module : allHubs) {
+//            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+//        }
 
         timer.reset();
         cycles = 0;
@@ -183,18 +183,18 @@ public class ConceptMotorBulkRead extends LinearOpMode {
         // --------------------------------------------------------------------------------------
 
         // Important Step 3: Option B. Set all Expansion hubs to use the MANUAL Bulk Caching mode
-        for (LynxModule module : allHubs) {
-            module.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        }
+//        for (LynxModule module : allHubs) {
+//            module.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        }
 
         timer.reset();
         cycles = 0;
         while (opModeIsActive() && (cycles++ < TEST_CYCLES)) {
 
             // Important Step 4: If you are using MANUAL mode, you must clear the BulkCache once per control cycle
-            for (LynxModule module : allHubs) {
-                module.clearBulkCache();
-            }
+//            for (LynxModule module : allHubs) {
+//                module.clearBulkCache();
+//            }
 
             e1 = m1.getCurrentPosition();   // Uses 1 bulk-read to obtain ALL the motor data
             e2 = m2.getCurrentPosition();   // There is no penalty for doing more `get` operations in this cycle,
