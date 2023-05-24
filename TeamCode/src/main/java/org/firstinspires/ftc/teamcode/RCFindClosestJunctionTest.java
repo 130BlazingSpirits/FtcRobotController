@@ -56,8 +56,6 @@ public class RCFindClosestJunctionTest extends OpMode {
         hardware.updateValues();
 
         if(hardware.gamepad1_current_a && !hardware.gamepad1_previous_a){
-            hardware.robo130.cancelFutureCommands();
-            closestJunctionPipeline = new CVLocateClosestJunction(telemetry,this);
             hardware.robo130.addCommand(new RCFindClosestJunction(hardware, closestJunctionPipeline,15.0));
         }
 
@@ -74,10 +72,6 @@ public class RCFindClosestJunctionTest extends OpMode {
         telemetry.addData("estimated distance", closestJunctionPipeline.estimatedDistance);
         telemetry.addData("estimated angle", closestJunctionPipeline.estimatedAngle);
         telemetry.addData("desired center location", closestJunctionPipeline.desiredCenterLocation);
-
-        telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
-        telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
-        telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());
         telemetry.update();
     }
 
