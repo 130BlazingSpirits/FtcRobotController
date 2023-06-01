@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -20,6 +21,11 @@ public class Auto2223 extends OpMode {
     private boolean commandsGrabbed = false;
 
     public double startTime = 0.0;
+
+    private final Pose2d RED_RIGHT = new Pose2d(36,-60,90);
+    private final Pose2d RED_LEFT = new Pose2d(-36,-60,90);
+    private final Pose2d BLUE_RIGHT = new Pose2d(-36,60,-90);
+    private final Pose2d BLUE_LEFT = new Pose2d(36,60,-90);
 
     @Override
     public void init() {
