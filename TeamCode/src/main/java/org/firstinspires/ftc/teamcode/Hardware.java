@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -48,6 +49,7 @@ public class Hardware {
     public CVPipelineSignal webcamPipeline = null;
 
     //Control Classes
+    public SampleMecanumDrive drive = null;
     public Robot130 robo130 = null;
     public Claw claw = null;
     public Lift lift = null;
@@ -202,6 +204,8 @@ public class Hardware {
 
         robo130 = new Robot130(opMode, this);
 
+        drive = new SampleMecanumDrive(hwMap); //Roadrunner drivetrain
+
         driveTrain = new DriveTrain(opMode, this);
 
         //Camera
@@ -248,10 +252,10 @@ public class Hardware {
 
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
-        motorLFront = hwMap.get(DcMotorEx.class, "motorLFront");
+        motorLFront =  new DummyMotor(); // Removed so roadrunner can control
 //        motorLBack = hwMap.get(DcMotorEx.class, "motorLBack");
         motorLBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
-        motorRFront = hwMap.get(DcMotorEx.class, "motorRFront");
+        motorRFront =  new DummyMotor(); // Removed so roadrunner can control
 //        motorRBack = hwMap.get(DcMotorEx.class, "motorRBack");
         motorRBack = new DummyMotor(); //Not needed for 2022-2023 robot as only uses 2 wheels
         motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -322,6 +326,7 @@ public class Hardware {
     public void loop() {
         logCSVData();
         driveTrain.loop();
+        drive.update();
         lift.doLoop();
         robo130.doLoop();
         updatePreviousValues();
