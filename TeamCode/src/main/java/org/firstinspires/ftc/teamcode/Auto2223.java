@@ -22,10 +22,12 @@ public class Auto2223 extends OpMode {
 
     public double startTime = 0.0;
 
-    private final Pose2d RED_RIGHT = new Pose2d(36,-60,90);
-    private final Pose2d RED_LEFT = new Pose2d(-36,-60,90);
-    private final Pose2d BLUE_RIGHT = new Pose2d(-36,60,-90);
-    private final Pose2d BLUE_LEFT = new Pose2d(36,60,-90);
+    public static final Pose2d RED_RIGHT_STARTPOS = new Pose2d(36,-60,90);
+    public static final Pose2d RED_LEFT_STARTPOS = new Pose2d(-36,-60,90);
+    public static final Pose2d BLUE_RIGHT_STARTPOS = new Pose2d(-36,60,-90);
+    public static final Pose2d BLUE_LEFT_STARTPOS = new Pose2d(36,60,-90);
+
+    private Pose2d startPose = null;
 
     @Override
     public void init() {
@@ -42,6 +44,9 @@ public class Auto2223 extends OpMode {
         telemetry.addData("Is Red?? ", isRed);
         telemetry.addData("Is Left Position? ", isLeftStartingPos);
         telemetry.update();
+
+        //Set Starting Position
+        startPose = isRed ? (isLeftStartingPos ? RED_LEFT_STARTPOS : RED_RIGHT_STARTPOS) : (isLeftStartingPos ? BLUE_LEFT_STARTPOS : BLUE_RIGHT_STARTPOS);
 
         hardware.lift.calibrateLift();
         hardware.claw.stow();
