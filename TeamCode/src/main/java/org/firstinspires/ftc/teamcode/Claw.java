@@ -10,9 +10,9 @@ public class Claw {
 
     private Servo clawServo = null;
 
-    private static final double OPENPOS = 0.32;
-    private static final double GRIPPOS = 0.0;
-    private static final double STOWPOS = 0.51;
+    private static final double OPENPOS = 0.376;
+    private static final double GRIPPOS = 0.05;
+    private static final double STOWPOS = 0.514;
 
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime timeout = new ElapsedTime();
