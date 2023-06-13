@@ -85,6 +85,7 @@ public class OpMode2223 extends OpMode {
         float game1RightX = hardware.gamepad1_current_right_stick_x;
         double deltaExtension;
         double servoPower = 0;
+        double currentGasPedal = 1.0;
 
         hardware.updateValues();
         //Flippers
@@ -219,13 +220,6 @@ public class OpMode2223 extends OpMode {
 //            isPreviousManualDrive = isCurrentManualDrive;
 //        }
 
-        //Roadrunner Drive Controls
-        hardware.drive.setWeightedDrivePower(new Pose2d(
-                -hardware.gamepad1_current_left_stick_y,
-                -hardware.gamepad1_current_left_stick_x,
-                -hardware.gamepad1_current_right_stick_x
-        ));
-
         // Gas Pedal
         if (hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
             hardware.driveTrain.setGasPedalPower(1.0);
@@ -234,6 +228,14 @@ public class OpMode2223 extends OpMode {
         } else if (hardware.gamepad1_current_right_trigger > 0.5) {
             hardware.driveTrain.setGasPedalPower(Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
         }
+        currentGasPedal = hardware.driveTrain.getGasPedalPower();
+
+        //Roadrunner Drive Controls
+        hardware.drive.setWeightedDrivePower(new Pose2d(
+                -hardware.gamepad1_current_left_stick_y*currentGasPedal,
+                -hardware.gamepad1_current_left_stick_x*currentGasPedal,
+                -hardware.gamepad1_current_right_stick_x*currentGasPedal
+        ));
 
         //Commands
         if(hardware.gamepad1_current_x && !hardware.gamepad1_previous_x){
