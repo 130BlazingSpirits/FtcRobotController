@@ -31,11 +31,11 @@ public class RobotConfigurationOpMode extends LinearOpMode {
             telemetry.addLine("Starting Position: X for left, B for right");
             telemetry.update();
             while(true) {
-                if (gamepad1.dpad_left || gamepad2.dpad_left) {
+                if (gamepad1.x || gamepad2.x) {
                     isLeftStartPos = true;
                     break;
                 }
-                if (gamepad1.dpad_right || gamepad2.dpad_right) {
+                if (gamepad1.b || gamepad2.b) {
                     isLeftStartPos = false;
                     break;
                 }
