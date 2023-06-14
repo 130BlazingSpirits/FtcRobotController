@@ -26,10 +26,10 @@ public class Auto2223 extends OpMode {
 
     public double startTime = 0.0;
 
-    public static final Pose2d RED_RIGHT_STARTPOS = new Pose2d(36,-63.5,90);
-    public static final Pose2d RED_LEFT_STARTPOS = new Pose2d(-36,-63.5,90);
-    public static final Pose2d BLUE_RIGHT_STARTPOS = new Pose2d(-36,63.5,-90);
-    public static final Pose2d BLUE_LEFT_STARTPOS = new Pose2d(36,63.5,-90);
+    public static final Pose2d RED_RIGHT_STARTPOS = new Pose2d(36, -63.5, 90);
+    public static final Pose2d RED_LEFT_STARTPOS = new Pose2d(-36, -63.5, 90);
+    public static final Pose2d BLUE_RIGHT_STARTPOS = new Pose2d(-36, 63.5, -90);
+    public static final Pose2d BLUE_LEFT_STARTPOS = new Pose2d(36, 63.5, -90);
 
     private Pose2d startPose = null;
 
@@ -56,17 +56,17 @@ public class Auto2223 extends OpMode {
         hardware.claw.stow();
 
         hardware.webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-                }
+            @Override
+            public void onOpened() {
+                hardware.webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
+            }
 
-                @Override
-                public void onError(int errorCode) {
+            @Override
+            public void onError(int errorCode) {
 
-                }
+            }
 
-            });
+        });
     }
 
     @Override
@@ -80,283 +80,108 @@ public class Auto2223 extends OpMode {
 
     @Override
     public void loop() {
+
         hardware.updateValues();
         hardware.loop();
 
-//        startPose = BLUE_RIGHT_STARTPOS;
-//        isLeftStartingPos = false;
+        if (!commandsGrabbed) {
 
-        if(!commandsGrabbed){
             hardware.drive.setPoseEstimate(startPose);
-            if(!hardware.webcamPipeline.isFrameSelected()){
-                //skip camera
-                if(isLeftStartingPos){      //Left Position
-                    hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
 
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90.0, 0.6));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .forward(51.5)
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(-90))
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(45.0))
-                            .forward(7.5)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware,3,false));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(4)
-                            .turn(Math.toRadians(-45))
-                            .back(2)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                }else{      //Right Position
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
-
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90.0, 0.6));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .forward(51.5)
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(90))
-                            .resetAccelConstraint()                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(-45.0))
-                            .forward(3)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCClaw(hardware,3,false));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(4)
-                            .turn(Math.toRadians(45))
-                            .back(2)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                }
-                hardware.lift.goMin();
-                commandsGrabbed = true;
+            if (isLeftStartingPos) {      //Left Position
+                hardware.robo130.addCommand(new RCWait(hardware, 2.0));//Wait for lift to nationalize
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 100, 1, false));//go up
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 800, 1, false));//go up
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .forward(51.5)
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .turn(Math.toRadians(-90))
+                        .resetAccelConstraint()
+                        .build()
+                ));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .turn(Math.toRadians(45.0))
+                        .forward(7.5)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCClaw(hardware, 3, false));
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                        .back(4)
+                        .turn(Math.toRadians(-45))
+                        .back(2)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 100, 0.5, false));//go up
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+            } else {      //Right Position
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 100, 1, false));//go up
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 800, 1, false));//go up
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .forward(51.5)
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .turn(Math.toRadians(90))
+                        .resetAccelConstraint().build()
+                ));
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .turn(Math.toRadians(-45.0))
+                        .forward(3)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+                hardware.robo130.addCommand(new RCClaw(hardware, 3, false));
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                        .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                        .back(4)
+                        .turn(Math.toRadians(45))
+                        .back(2)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 100, 0.5, false));//go up
+                hardware.robo130.addCommand(new RCWait(hardware, 0.1));
             }
-            else if(hardware.webcamPipeline.isFrameSelected()){
+
+            if (hardware.webcamPipeline.isFrameSelected()) { //Parking
                 conePlacement = hardware.webcamPipeline.getConePosition();
-                if(isLeftStartingPos){      //Left Position
-                    hardware.robo130.addCommand(new RCWait(hardware,2.0));//Wait for lift to nationalize
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
-
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-90.0, 0.6));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .forward(51.5)
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(-90))
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-
+                if ((!isLeftStartingPos && conePlacement == 1) || (isLeftStartingPos && conePlacement == 3)) {
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(45.0))
-                            .forward(7.5)
-                            .resetAccelConstraint()
+                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                            .forward(24).resetAccelConstraint()
                             .build()
                     ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware,3,false));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-//
+                } else if ((!isLeftStartingPos && conePlacement == 3) || (isLeftStartingPos && conePlacement == 1)) {
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(4)
-                            .turn(Math.toRadians(-45))
-                            .back(2)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                }else{      //Right Position
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,1,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCClaw(hardware, 1, false)); //grip
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,800,1,false));//go up
-
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 48.0 + 3.5, 0.5 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,90.0, 0.6));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .forward(51.5)
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(90))
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,-45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, 7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2.0))
-                            .turn(Math.toRadians(-45.0))
-                            .forward(3)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCClaw(hardware,3,false));
-
-//                    hardware.robo130.addCommand(new RCWait(hardware,1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -7.5, 0.2 ));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCTurnCounterClockwise(hardware,45,0.3));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware, -2, 0.2 ));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(4)
-                            .turn(Math.toRadians(45))
-                            .back(2)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,100,0.5,false));//go up
-                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-                }
-                if((!isLeftStartingPos && conePlacement == 1) || (isLeftStartingPos && conePlacement == 3)){
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware,24,0.5));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .forward(24)                            .resetAccelConstraint()
+                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                            .back(24).resetAccelConstraint()
                             .build()
                     ));
                 }
-                else if((!isLeftStartingPos && conePlacement == 3) || (isLeftStartingPos && conePlacement == 1)){
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-//                    hardware.robo130.addCommand(new RCDriveForward(hardware,-24,0.5));
-//                    hardware.robo130.addCommand(new RCWait(hardware,0.1));
-
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(24)                            .resetAccelConstraint()
-                            .build()
-                    ));
-                }
-
-                hardware.lift.goMin();
-                commandsGrabbed = true;
             }
+            hardware.lift.goMin();
+            commandsGrabbed = true;
         }
 
-        if(commandsGrabbed){
+        if (commandsGrabbed) {
             hardware.robo130.processCommands();
         }
 
-        telemetry.addData("Cone Position: ",conePlacement);
+        telemetry.addData("Cone Position: ", conePlacement);
         telemetry.addData("Commands: ", hardware.robo130.getNumCommands());
         telemetry.addData("Current Command: ", hardware.robo130.getCurrentCommandIndex());
         telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());
@@ -364,7 +189,7 @@ public class Auto2223 extends OpMode {
         telemetry.update();
     }
 
-    public void start(){
+    public void start() {
         hardware.webcam.stopStreaming();
         hardware.claw.open();
         hardware.updateValues();
