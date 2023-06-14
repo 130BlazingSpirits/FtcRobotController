@@ -16,7 +16,7 @@ public class RobotConfigurationOpMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addLine("Team Colour? RED (left) or BLUE (right) button.");
+            telemetry.addLine("Team Colour? RED (right) or BLUE (left) button.");
             telemetry.update();
             while(true){
                 if(gamepad1.x || gamepad2.x){

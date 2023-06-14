@@ -83,8 +83,8 @@ public class Auto2223 extends OpMode {
         hardware.updateValues();
         hardware.loop();
 
-        startPose = BLUE_RIGHT_STARTPOS;
-        isLeftStartingPos = false;
+//        startPose = BLUE_RIGHT_STARTPOS;
+//        isLeftStartingPos = false;
 
         if(!commandsGrabbed){
             hardware.drive.setPoseEstimate(startPose);
@@ -139,7 +139,7 @@ public class Auto2223 extends OpMode {
 
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(7.5)
+                            .back(4)
                             .turn(Math.toRadians(-45))
                             .back(2)
                             .resetAccelConstraint()
@@ -194,7 +194,7 @@ public class Auto2223 extends OpMode {
 
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(7.5)
+                            .back(4)
                             .turn(Math.toRadians(45))
                             .back(2)
                             .resetAccelConstraint()
@@ -257,7 +257,7 @@ public class Auto2223 extends OpMode {
 //
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(7.5)
+                            .back(4)
                             .turn(Math.toRadians(-45))
                             .back(2)
                             .resetAccelConstraint()
@@ -313,8 +313,8 @@ public class Auto2223 extends OpMode {
 
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/5.0))
-                            .back(7.5)
-                            .turn(Math.toRadians(5))
+                            .back(4)
+                            .turn(Math.toRadians(45))
                             .back(2)
                             .resetAccelConstraint()
                             .build()
