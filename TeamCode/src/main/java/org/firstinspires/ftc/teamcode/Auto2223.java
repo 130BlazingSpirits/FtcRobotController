@@ -17,6 +17,7 @@ public class Auto2223 extends OpMode {
     private RobotConfiguration robotConfiguration = null;
     private boolean isRed = false;
     private boolean isLeftStartingPos = false;
+    private boolean stackExtraCones = false;
     private int conePlacement = 0;
     private boolean firstRun = true;
     private boolean secondRun = true;
@@ -43,6 +44,8 @@ public class Auto2223 extends OpMode {
         robotConfiguration.readConfig();
         isRed = robotConfiguration.isRed;
         isLeftStartingPos = robotConfiguration.isLeftStartPos;
+        stackExtraCones = robotConfiguration.stackExtraCones;
+
 
         telemetry.addLine("Configuration Fetched");
         telemetry.addData("Is Red?? ", isRed);
@@ -155,6 +158,42 @@ public class Auto2223 extends OpMode {
                 hardware.robo130.addCommand(new RCWait(hardware, 0.1));
                 hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 100, 0.5, false));//go up
                 hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+            }
+
+            if(stackExtraCones){ //Stack more cones
+                double nextPosition = 6.875;
+                for(int i = 0; i <= 4; i++){
+                    hardware.robo130.addCommand(new RCClaw(hardware,0,true));
+                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                            .turn(Math.toRadians(180))
+                            .forward(36)
+                            .resetAccelConstraint()
+                            .build()
+                    ));
+                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, (int) (nextPosition * RCLiftGoToPosition.inchesToPositionConversion),1 ));
+                    hardware.robo130.addCommand(new RCClaw(hardware,1,false));
+                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.HIGH_JUCTION_POSITION, 0.6));
+                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                            .back(48)
+                            .turn(Math.toRadians(-45.0))
+                            .forward(3)
+                            .resetAccelConstraint()
+                            .build()
+                    ));
+                    hardware.robo130.addCommand(new RCWait(hardware, 0.1));
+                    hardware.robo130.addCommand(new RCClaw(hardware, 3, false));
+                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                            .setAccelConstraint(hardware.drive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                            .back(3)
+                            .turn(Math.toRadians(45.0))
+                            .forward(12)
+                            .resetAccelConstraint()
+                            .build()
+                    ));
+                    hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, Lift.LIFT_MINPOS,1));
+                }
             }
 
             if (hardware.webcamPipeline.isFrameSelected()) { //Parking

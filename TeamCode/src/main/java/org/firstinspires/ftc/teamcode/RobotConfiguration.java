@@ -9,11 +9,13 @@ import java.io.IOException;
 public class RobotConfiguration {
     public boolean isRed = false;
     public boolean isLeftStartPos = false;
+    public boolean stackExtraCones = false;
 
     public RobotConfiguration(){}
-    public RobotConfiguration(boolean isRed, boolean isLeftStartPos){
+    public RobotConfiguration(boolean isRed, boolean isLeftStartPos, boolean stackExtraCones){
         this.isRed = isRed;
         this.isLeftStartPos = isLeftStartPos;
+        this.stackExtraCones = stackExtraCones;
     }
 
     public void saveConfig(){
@@ -31,6 +33,12 @@ public class RobotConfiguration {
                 configFile.write('L');
             }else{
                 configFile.write('R');
+            }
+
+            if(stackExtraCones){
+                configFile.write('Y');
+            }else{
+                configFile.write('N');
             }
 
             configFile.close();
@@ -60,6 +68,14 @@ public class RobotConfiguration {
                 isLeftStartPos = false;
             } else {
                 isLeftStartPos = true;
+            }
+
+            //Read Auto Setting
+            tempValue = (char) configFile.read();
+            if (tempValue == 'Y') {
+                stackExtraCones = true;
+            } else {
+                stackExtraCones = false;
             }
 
             configFile.close();

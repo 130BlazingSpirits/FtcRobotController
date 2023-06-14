@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class RobotConfigurationOpMode extends LinearOpMode {
     private boolean isRed = false;
     private boolean isLeftStartPos = false;
+    private boolean stackExtraCones = false;
 
     private RobotConfiguration roboConfig = null;
 
@@ -40,10 +41,22 @@ public class RobotConfigurationOpMode extends LinearOpMode {
                     break;
                 }
             }
+            telemetry.addLine("Stack Extra Cones Dpad Up for yes Dpad down for no");
+            telemetry.update();
+            while(true) {
+                if (gamepad1.dpad_up || gamepad2.dpad_up) {
+                    stackExtraCones = true;
+                    break;
+                }
+                if (gamepad1.dpad_down || gamepad2.dpad_down) {
+                    stackExtraCones = false;
+                    break;
+                }
+            }
             break;
         }
 
-        roboConfig = new RobotConfiguration(isRed,isLeftStartPos);
+        roboConfig = new RobotConfiguration(isRed,isLeftStartPos,stackExtraCones);
         roboConfig.saveConfig();
 
         while (opModeIsActive())

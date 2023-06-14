@@ -8,6 +8,8 @@ public class RCLiftGoToPosition extends RobCommand{
     private double power = 0.0;
     private boolean skipWait = false;
 
+    public static double inchesToPositionConversion = 0.5;
+
     public RCLiftGoToPosition(Hardware hardware, int position, double power){
         this.hardware = hardware;
         this.position = position;
